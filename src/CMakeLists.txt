@@ -43,6 +43,7 @@ LIST(SORT ER1_SOURCE)
 
 add_library(er1lib STATIC ${ER1_SOURCE})
 set_target_properties(er1lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_include_directories(er1lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/er1)
 
 # This corresponds with the VST plug-in itself.
 add_library(ER-1 MODULE ${JUCE_PLUGIN_SOURCE})
@@ -60,6 +61,8 @@ set(ER1_LIBS
 
 target_link_libraries(er1lib ${ER1_LIBS} )
 target_link_libraries(ER-1 er1lib)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/standalone)
 
 if(CMAKE_THREAD_LIBS_INIT)
     target_link_libraries(ER-1 ${CMAKE_THREAD_LIBS_INIT})

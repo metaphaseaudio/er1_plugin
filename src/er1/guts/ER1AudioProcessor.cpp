@@ -1,6 +1,6 @@
 #include <meta/audio/SingletonSampleRate.h>
-#include "PluginProcessor.h"
-#include "../gooey/PluginEditor.h"
+#include "ER1AudioProcessor.h"
+#include "../gooey/ER1AudioProcessorEditor.h"
 
 using namespace juce;
 

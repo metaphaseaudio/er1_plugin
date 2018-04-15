@@ -8,8 +8,8 @@
   ==============================================================================
 */
 
-#include "../guts/PluginProcessor.h"
-#include "PluginEditor.h"
+#include "../guts/ER1AudioProcessor.h"
+#include "ER1AudioProcessorEditor.h"
 
 using namespace juce;
 
@@ -19,7 +19,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor (ER1AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 600);
+    setSize(800, 600);
 
 	addAndMakeVisible(m_RedBoxComponent);
     addAndMakeVisible(m_AmpSectionComponent);

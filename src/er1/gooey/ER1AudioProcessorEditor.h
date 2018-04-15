@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../guts/PluginProcessor.h"
+#include "../guts/ER1AudioProcessor.h"
 #include "../gooey/left_box/Transport.h"
 #include "left_box/RedBox.h"
 #include "amp_section/AmpSectionComponent.h"
@@ -19,7 +19,8 @@
 //==============================================================================
 /**
 */
-class ER1AudioProcessorEditor  : public juce::AudioProcessorEditor
+class ER1AudioProcessorEditor
+    : public juce::AudioProcessorEditor
 {
 public:
     ER1AudioProcessorEditor (ER1AudioProcessor&);
