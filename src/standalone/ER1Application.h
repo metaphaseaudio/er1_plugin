@@ -19,7 +19,9 @@ public:
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise (const juce::String& commandLine) override
-        { mainWindow = new ER1InterfaceWindow (getApplicationName()); }
+    {
+        mainWindow = new ER1InterfaceWindow(getApplicationName());
+    }
 
     void shutdown() override { mainWindow = nullptr; }
     void systemRequestedQuit() override { quit(); }

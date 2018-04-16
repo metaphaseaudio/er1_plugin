@@ -13,6 +13,10 @@
 using namespace juce;
 
 AmpSectionComponent::AmpSectionComponent()
+    : m_Decay("Decay")
+    , m_Level("Level")
+    , m_Pan("Pan")
+    , m_LowBoost("Low Boost")
 {
     m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
@@ -33,6 +37,7 @@ void AmpSectionComponent::paint (Graphics& g)
 
     g.setColour(Colours::black);
     g.drawRect(getLocalBounds(), 2);
+    g.drawRect(header);
     g.fillRect(header);
 
     g.setColour(getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
@@ -41,7 +46,10 @@ void AmpSectionComponent::paint (Graphics& g)
 
 void AmpSectionComponent::resized()
 {
-    auto bounds = getLocalBounds().reduced(2);
+    auto bounds = getLocalBounds();
+    bounds.removeFromTop(22);
+    bounds = bounds.reduced(2);
+
     auto upperCtrls = bounds.removeFromTop(bounds.getHeight() / 2);
 
     auto decayBounds = upperCtrls.removeFromLeft(upperCtrls.getWidth() / 2);
@@ -54,4 +62,9 @@ void AmpSectionComponent::resized()
     m_Level.setBounds(levelBounds);
     m_Pan.setBounds(panBounds);
     m_LowBoost.setBounds(boostBounds);
+    
+    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 }

@@ -19,7 +19,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor (ER1AudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize(800, 600);
+    setSize(900, 600);
 
 	addAndMakeVisible(m_RedBoxComponent);
     addAndMakeVisible(m_AmpSectionComponent);
@@ -60,7 +60,6 @@ void ER1AudioProcessorEditor::resized()
     auto amp = oscandamp;
 
     m_AmpSectionComponent.setBounds(amp);
-
 
     // Left-box
     m_RedBoxComponent.setBounds(leftBox.removeFromTop(300));
