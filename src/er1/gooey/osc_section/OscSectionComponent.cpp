@@ -52,12 +52,17 @@ void OscSectionComponent::resized()
 
     auto upperCtrls = bounds.removeFromTop(bounds.getHeight() / 2);
 
-    auto pitchBounds = upperCtrls.removeFromLeft(upperCtrls.getWidth() / 3);
-    auto modDepthBounds = upperCtrls.removeFromLeft(upperCtrls.getWidth() / 3);
 
-    auto oscTypeBounds = bounds.removeFromLeft(bounds.getWidth() / 3);
-    auto modSpeedBounds = bounds.removeFromRight(bounds.getWidth() / 3);
-    auto modTypeBounds = bounds;
+    auto ctrlThirds = bounds.getWidth() / 3;
+    auto pitchBounds = upperCtrls.removeFromLeft(ctrlThirds);
+    auto modDepthBounds = upperCtrls.removeFromLeft(ctrlThirds);
+    auto modSpeedBounds = upperCtrls;
+
+    auto modTypeBounds = bounds.removeFromRight(ctrlThirds);
+
+    auto widthVals = bounds.getWidth() / 3;
+    auto prevValBounds = bounds.removeFromLeft(widthVals);
+    auto oscTypeBounds = bounds.removeFromLeft(widthVals);
 
     m_Pitch.setBounds(pitchBounds);
     m_ModDepth.setBounds(modDepthBounds);
