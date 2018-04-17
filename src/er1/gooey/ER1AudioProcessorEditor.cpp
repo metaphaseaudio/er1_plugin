@@ -22,8 +22,11 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor (ER1AudioProcessor& p)
     setSize(900, 600);
 
 	addAndMakeVisible(m_RedBoxComponent);
+    addAndMakeVisible(m_OscSectionComponent);
+    addAndMakeVisible(m_AmpOscDiv);
     addAndMakeVisible(m_AmpSectionComponent);
     addAndMakeVisible(m_TransportComponent);
+    addAndMakeVisible(m_Sequencer);
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -49,7 +52,8 @@ void ER1AudioProcessorEditor::resized()
     internalBounds.removeFromTop(5);  // margin
     auto ctrls = internalBounds.removeFromTop(400);
     internalBounds.removeFromTop(5);  // margin
-    auto sequencer = internalBounds;
+
+    m_Sequencer.setBounds(internalBounds);
 
     auto leftBox = ctrls.removeFromLeft(393);
     ctrls.removeFromLeft(5);  // margin
@@ -57,8 +61,10 @@ void ER1AudioProcessorEditor::resized()
     // Oscillator and Amp ctrls
     auto oscandamp = ctrls.removeFromTop(200);
     auto osc = oscandamp.removeFromLeft(300);
+    m_AmpOscDiv.setBounds(oscandamp.removeFromLeft(7));
     auto amp = oscandamp;
 
+    m_OscSectionComponent.setBounds(osc);
     m_AmpSectionComponent.setBounds(amp);
 
     // Left-box

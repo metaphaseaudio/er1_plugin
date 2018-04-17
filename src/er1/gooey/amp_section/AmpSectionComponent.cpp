@@ -36,8 +36,6 @@ void AmpSectionComponent::paint (Graphics& g)
     auto header = getLocalBounds().removeFromTop(22);
 
     g.setColour(Colours::black);
-    g.drawRect(getLocalBounds(), 2);
-    g.drawRect(header);
     g.fillRect(header);
 
     g.setColour(getLookAndFeel().findColour (ResizableWindow::backgroundColourId));

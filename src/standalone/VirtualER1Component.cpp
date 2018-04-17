@@ -6,7 +6,7 @@
 
 VirtualER1Component::VirtualER1Component()
 {
-    m_Laf = new ER1LAF();
+    m_Laf  = new ER1LAF();
     editor = new ER1AudioProcessorEditor(processor);
     setLookAndFeel(m_Laf);
     addAndMakeVisible(editor);
