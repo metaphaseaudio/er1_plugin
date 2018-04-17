@@ -61,7 +61,7 @@ void ER1AudioProcessorEditor::resized()
     // Oscillator and Amp ctrls
     auto oscandamp = ctrls.removeFromTop(200);
     auto osc = oscandamp.removeFromLeft(300);
-    m_AmpOscDiv.setBounds(oscandamp.removeFromLeft(7));
+    m_AmpOscDiv.setBounds(oscandamp.removeFromLeft(10));
     auto amp = oscandamp;
 
     m_OscSectionComponent.setBounds(osc);

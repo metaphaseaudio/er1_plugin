@@ -6,7 +6,7 @@
 
 void DividerLine::paint(juce::Graphics &g)
 {
-    const auto bounds = getBounds().reduced(2);
+    const auto bounds = getBounds();
     const auto width = bounds.getWidth();
     const auto height = bounds.getHeight();
 
@@ -20,6 +20,6 @@ void DividerLine::paint(juce::Graphics &g)
     else
     {
         const auto position = width / 2.0f;
-        g.drawLine(position, bounds.getTopLeft().y, position, bounds.getBottom(), 2);
+        g.drawLine(position, 0, position, bounds.getBottom(), 2);
     }
 }
