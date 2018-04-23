@@ -52,7 +52,6 @@ void OscSectionComponent::resized()
 
     auto upperCtrls = bounds.removeFromTop(bounds.getHeight() / 2);
 
-
     auto ctrlThirds = bounds.getWidth() / 3;
     auto pitchBounds = upperCtrls.removeFromLeft(ctrlThirds);
     auto modDepthBounds = upperCtrls.removeFromLeft(ctrlThirds);
