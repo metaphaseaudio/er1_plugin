@@ -85,15 +85,17 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName)
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    m_Voices[0].oscillator.params.waveType = meta::ER1::Oscillator::WaveType::SINE;
-    m_Voices[0].amplifier.envelope.amp = 1.0f;
-    m_Voices[0].amplifier.envelope.speed = 1.0f;
-    m_Voices[0].pitchModulator.amp = 200.0f;
-    m_Voices[0].pitchModulator.speed = 1.5f;
-    m_Voices[0].oscPitch = 20;
-    m_Voices[0].updateParams();
-    m_Voices[0].reset();
-    m_Voices[0].start();
+	for (int i = 4; --i >= 0;)
+	{
+		m_Voices[i].oscillator.params.waveType = meta::ER1::Oscillator::WaveType::SINE;
+		m_Voices[i].amplifier.envelope.amp = 1.0f;
+		m_Voices[i].amplifier.envelope.speed = 1.0f;
+		m_Voices[i].pitchModulator.amp = 200.0f;
+		m_Voices[i].pitchModulator.speed = 1.5f;
+		m_Voices[i].oscPitch = 20;
+		m_Voices[i].updateParams();
+		m_Voices[i].reset();
+	}
 }
 
 void ER1AudioProcessor::releaseResources() {}
@@ -151,7 +153,11 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
                                     , samplesRendered);
         }
 
-        if (m.isNoteOn()) { m_Voices[0].reset(); }
+        if (m.isNoteOn()) 
+		{
+			m_Voices[0].reset(); 
+			m_Voices[0].start();
+		}
     }
 
     // generate the remaining audio
