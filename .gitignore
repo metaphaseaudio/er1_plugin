@@ -2,3 +2,6 @@ build/
 .idea/
 *~
 .vs/
+*.reapeaks
+*.rpp-bak
+*.wav

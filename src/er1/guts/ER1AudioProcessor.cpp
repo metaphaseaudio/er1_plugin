@@ -85,7 +85,7 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName)
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	for (int i = 4; --i >= 0;)
+	for (int i = ER1_VOICE_COUNT; --i >= 0;)
 	{
 		m_Voices[i].oscillator.params.waveType = meta::ER1::Oscillator::WaveType::SINE;
 		m_Voices[i].amplifier.envelope.amp = 1.0f;
@@ -145,7 +145,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
     {
         const auto samplesToNextMessage = midiEventSample - samplesRendered;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < ER1_VOICE_COUNT; i++)
         {
             m_Voices[i].processBlock(buffer.getArrayOfWritePointers()
                                     , totalNumOutputChannels
@@ -158,10 +158,12 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 			m_Voices[0].reset(); 
 			m_Voices[0].start();
 		}
+
+		samplesRendered += samplesToNextMessage;
     }
 
     // generate the remaining audio
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < ER1_VOICE_COUNT; i++)
     {
         m_Voices[i].processBlock(buffer.getArrayOfWritePointers()
                 , totalNumOutputChannels

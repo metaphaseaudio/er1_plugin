@@ -21,6 +21,7 @@
 class ER1AudioProcessor
     : public juce::AudioProcessor
 {
+    static constexpr int ER1_VOICE_COUNT = 64;
 public:
     //==============================================================================
     ER1AudioProcessor();
@@ -60,7 +61,7 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
 private:
-    meta::ER1::Voice m_Voices[4];
+    meta::ER1::Voice m_Voices[ER1_VOICE_COUNT];
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };
