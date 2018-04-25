@@ -87,13 +87,14 @@ void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	for (int i = ER1_VOICE_COUNT; --i >= 0;)
 	{
-		m_Voices[i].oscillator.params.waveType = meta::ER1::Oscillator::WaveType::SINE;
-		m_Voices[i].amplifier.envelope.amp = 1.0f;
-		m_Voices[i].amplifier.envelope.speed = 1.0f;
-		m_Voices[i].pitchModulator.amp = 200.0f;
-		m_Voices[i].pitchModulator.speed = 1.5f;
-		m_Voices[i].oscPitch = 20;
-		m_Voices[i].updateParams();
+		m_Voices[i].oscillator.waveType = meta::ER1::Oscillator::WaveType::SINE;
+        m_Voices[i].pitch = 0;
+        m_Voices[i].level = 1.0f;
+        m_Voices[i].setModulationType(meta::ER1::Voice::ModType::DECAY);
+        m_Voices[i].setModulationSpeed(1.0f);
+        m_Voices[i].setModulationDepth(0.0f);
+        m_Voices[i].envelope.setSpeed(0.1f);
+
 		m_Voices[i].reset();
 	}
 }

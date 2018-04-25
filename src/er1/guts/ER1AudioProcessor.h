@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 #include <er1_dsp/Oscillator.h>
-#include <er1_dsp/Modulator.h>
+#include <er1_dsp/Envelope.h>
 #include <er1_dsp/Voice.h>
 
 //==============================================================================
@@ -21,7 +21,7 @@
 class ER1AudioProcessor
     : public juce::AudioProcessor
 {
-    static constexpr int ER1_VOICE_COUNT = 64;
+    static constexpr int ER1_VOICE_COUNT = 1;
 public:
     //==============================================================================
     ER1AudioProcessor();
