@@ -3,7 +3,15 @@
 #include "../gooey/ER1AudioProcessorEditor.h"
 
 using namespace juce;
-
+static juce::StringArray ModulationNames =
+        {
+            "Saw"
+            , "Square"
+            , "Triangle"
+            , "SAH"
+            , "Noise"
+            , "Decay"
+        };
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -16,7 +24,30 @@ ER1AudioProcessor::ER1AudioProcessor()
 #endif
                   )
 #endif
-{}
+{
+    for (int i = ER1_VOICE_COUNT; --i >= 0;)
+    {
+        auto voiceIDStr = "voice_" + juce::String(i);
+
+        auto modTypeIDStr = voiceIDStr + "mod_type";
+        auto modTypeName = "Modulation Type: " + voiceIDStr;
+        m_VoiceModType.emplace_back
+                (new AudioParameterChoice(modTypeIDStr, modTypeName, ModulationNames, 5));
+        addParameter(m_VoiceModType.at(i));
+
+        auto modDepthIDStr = voiceIDStr + "mod_depth";
+        auto modDepthName = "Modulation Depth: " + voiceIDStr;
+        m_VoiceModDepth.emplace_back
+                (new AudioParameterFloat(modDepthIDStr, modDepthName, -200.0f, 200.0f, 100.0f));
+        addParameter(m_VoiceModDepth.at(i));
+
+        auto modSpeedIDStr = voiceIDStr + "mod_speed";
+        auto modSpeedName = "Modulation Speed: " + voiceIDStr;
+        m_VoiceModSpeed.emplace_back
+                (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 100.0f, 0.1f));
+        addParameter(m_VoiceModSpeed.at(i));
+    }
+}
 
 ER1AudioProcessor::~ER1AudioProcessor() {}
 
@@ -88,13 +119,12 @@ void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 	for (int i = ER1_VOICE_COUNT; --i >= 0;)
 	{
 		m_Voices[i].oscillator.waveType = meta::ER1::Oscillator::WaveType::SINE;
-        m_Voices[i].pitch = 0;
+        m_Voices[i].pitch = 250;
         m_Voices[i].level = 1.0f;
         m_Voices[i].setModulationType(meta::ER1::Voice::ModType::DECAY);
         m_Voices[i].setModulationSpeed(1.0f);
-        m_Voices[i].setModulationDepth(0.0f);
+        m_Voices[i].setModulationDepth(100.0f);
         m_Voices[i].envelope.setSpeed(0.1f);
-
 		m_Voices[i].reset();
 	}
 }
@@ -128,6 +158,16 @@ bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) cons
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &midiMessages)
 {
     ScopedNoDenormals noDenormals;
+
+    // Prep Params
+    for (int i = ER1_VOICE_COUNT; --i >= 0;)
+    {
+        auto& voice = m_Voices[i];
+		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
+        voice.setModulationDepth(m_VoiceModDepth[i]->get());
+        voice.setModulationSpeed(m_VoiceModSpeed[i]->get());
+    }
+
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     auto numSamplesLeft = buffer.getNumSamples();
