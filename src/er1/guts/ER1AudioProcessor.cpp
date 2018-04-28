@@ -3,6 +3,11 @@
 #include "../gooey/ER1AudioProcessorEditor.h"
 
 using namespace juce;
+static juce::StringArray OscNames =
+        {
+            "Sine"
+            , "Triangle"
+        };
 static juce::StringArray ModulationNames =
         {
             "Saw"
@@ -28,7 +33,20 @@ ER1AudioProcessor::ER1AudioProcessor()
     for (int i = ER1_VOICE_COUNT; --i >= 0;)
     {
         auto voiceIDStr = "voice_" + juce::String(i);
+        //=========== Oscillator =============
+        auto oscTypeIDStr = voiceIDStr + "osc_type";
+        auto oscTypeName = "Oscillator Type: " + voiceIDStr;
+        m_VoiceWaveType.emplace_back
+                (new AudioParameterChoice(oscTypeIDStr, oscTypeName, OscNames, 0));
+        addParameter(m_VoiceWaveType.at(i));
 
+        auto oscPitchIDStr = voiceIDStr + "osc_pitch";
+        auto oscPitchName = "Oscillator Freq: " + voiceIDStr;
+        m_VoicePitch.emplace_back
+                (new AudioParameterFloat(oscPitchIDStr, oscPitchName, 10.0f, 15000.0f, 250.0f));
+        addParameter(m_VoicePitch.at(i));
+
+        //=========== Modulation =============
         auto modTypeIDStr = voiceIDStr + "mod_type";
         auto modTypeName = "Modulation Type: " + voiceIDStr;
         m_VoiceModType.emplace_back
@@ -46,6 +64,13 @@ ER1AudioProcessor::ER1AudioProcessor()
         m_VoiceModSpeed.emplace_back
                 (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 100.0f, 0.1f));
         addParameter(m_VoiceModSpeed.at(i));
+
+        //============ Amplifier ==============
+        auto decayIDStr = voiceIDStr + "decay";
+        auto decayName = "Decay: " + voiceIDStr;
+        m_VoiceDecay.emplace_back
+                (new AudioParameterFloat(decayIDStr, decayName, 0.01f, 1.0f, 0.1f));
+        addParameter(m_VoiceDecay.at(i));
     }
 }
 
@@ -163,9 +188,15 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
     for (int i = ER1_VOICE_COUNT; --i >= 0;)
     {
         auto& voice = m_Voices[i];
+
+        voice.oscillator.waveType = static_cast<meta::ER1::Oscillator::WaveType>(m_VoiceWaveType[i]->getIndex());
+        voice.oscillator.setFrequency(m_VoicePitch[i]->get());
+
 		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
         voice.setModulationSpeed(m_VoiceModSpeed[i]->get());
+
+        voice.pitch = m_VoicePitch[i]->get();
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();

@@ -61,9 +61,14 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
 private:
+    std::vector<juce::AudioParameterChoice*> m_VoiceWaveType;
+    std::vector<juce::AudioParameterFloat*> m_VoicePitch;
+
     std::vector<juce::AudioParameterChoice*> m_VoiceModType;
     std::vector<juce::AudioParameterFloat*> m_VoiceModDepth;
     std::vector<juce::AudioParameterFloat*> m_VoiceModSpeed;
+
+    std::vector<juce::AudioParameterFloat*> m_VoiceDecay;
 
     meta::ER1::Voice m_Voices[ER1_VOICE_COUNT];
     //==============================================================================

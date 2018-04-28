@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.62/x64" 1524665963
+<REAPER_PROJECT 0.1 "5.62/x64" 1524865939
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,7 +14,7 @@
   TIMEMODE 1 5 -1 30 0
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 8
+  CURSOR 1
   ZOOM 100 0 0
   VZOOMEX 6
   USE_REC_CFG 0
@@ -107,18 +107,66 @@
     MIDIOUT -1
     MAINSEND 1 0
     <FXCHAIN
-      WNDRECT 153 623 1127 713
+      WNDRECT 288 719 1127 713
       SHOW 1
       LASTSEL 0
       DOCKED 0
       BYPASS 0 0 0
       <VST "VSTi: ER-1 (Metaphase)" ER-1.dll 0 "" 1296388657
-        MVJFTe5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAIAAAAAAAAAAAAEAA=
-        776t3g3wrd4=
+        MVJFTe5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAEAA=
+        776t3g3wrd4AAAAAj8L1PM3MzD4AAEA/X3J5PSlcbz8=
         AAAQAAAA
       >
       FLOATPOS 0 0 0 0
       FXID {3B4E1234-BA71-4874-B96B-875D60E497BA}
+      <PARMENV 5 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.935 0
+      >
+      <PARMENV 4 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.06090009 0
+      >
+      <PARMENV 3 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.75 0
+      >
+      <PARMENV 2 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.415 0
+      >
+      <PARMENV 1 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.03 0
+      >
+      <PARMENV 0 0 1 0.5
+        ACT 1 -1
+        VIS 1 1 1
+        LANEHEIGHT 0 0
+        ARM 1
+        DEFSHAPE 0 -1 -1
+        PT 0 0.275 0
+      >
       WAK 0
     >
     <ITEM
