@@ -30,7 +30,7 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
       "installRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-DBUILD_TESTS=ON",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": ""
     },

@@ -43,7 +43,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto oscPitchIDStr = voiceIDStr + "osc_pitch";
         auto oscPitchName = "Oscillator Freq: " + voiceIDStr;
         m_VoicePitch.emplace_back
-                (new AudioParameterFloat(oscPitchIDStr, oscPitchName, 10.0f, 15000.0f, 250.0f));
+                (new AudioParameterFloat(oscPitchIDStr, oscPitchName, 30.0f, 8750.0f, 250.0f));
         addParameter(m_VoicePitch.at(i));
 
         //=========== Modulation =============
