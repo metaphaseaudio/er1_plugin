@@ -30,44 +30,44 @@ ER1AudioProcessor::ER1AudioProcessor()
                   )
 #endif
 {
-    for (int i = ER1_VOICE_COUNT; --i >= 0;)
+    for (int i = 0; i < ER1_VOICE_COUNT; i++)
     {
-        auto voiceIDStr = "voice_" + juce::String(i);
+        auto voiceIDStr = "Voice_" + juce::String(i);
         //=========== Oscillator =============
-        auto oscTypeIDStr = voiceIDStr + "osc_type";
-        auto oscTypeName = "Oscillator Type: " + voiceIDStr;
+        auto oscTypeIDStr = voiceIDStr + "_osc_type";
+        auto oscTypeName = voiceIDStr + " Oscillator Type";
         m_VoiceWaveType.emplace_back
                 (new AudioParameterChoice(oscTypeIDStr, oscTypeName, OscNames, 0));
         addParameter(m_VoiceWaveType.at(i));
 
-        auto oscPitchIDStr = voiceIDStr + "osc_pitch";
+        auto oscPitchIDStr = voiceIDStr + "_osc_pitch";
         auto oscPitchName = "Oscillator Freq: " + voiceIDStr;
         m_VoicePitch.emplace_back
                 (new AudioParameterFloat(oscPitchIDStr, oscPitchName, 30.0f, 8750.0f, 250.0f));
         addParameter(m_VoicePitch.at(i));
 
         //=========== Modulation =============
-        auto modTypeIDStr = voiceIDStr + "mod_type";
-        auto modTypeName = "Modulation Type: " + voiceIDStr;
+        auto modTypeIDStr = voiceIDStr + "_mod_type";
+        auto modTypeName = voiceIDStr + " Modulation Type";
         m_VoiceModType.emplace_back
                 (new AudioParameterChoice(modTypeIDStr, modTypeName, ModulationNames, 5));
         addParameter(m_VoiceModType.at(i));
 
-        auto modDepthIDStr = voiceIDStr + "mod_depth";
-        auto modDepthName = "Modulation Depth: " + voiceIDStr;
+        auto modDepthIDStr = voiceIDStr + "_mod_depth";
+        auto modDepthName = voiceIDStr + " Modulation Depth";
         m_VoiceModDepth.emplace_back
-                (new AudioParameterFloat(modDepthIDStr, modDepthName, -200.0f, 200.0f, 100.0f));
+                (new AudioParameterFloat(modDepthIDStr, modDepthName, -2048.0f, 2048.0f, 0.0f));
         addParameter(m_VoiceModDepth.at(i));
 
-        auto modSpeedIDStr = voiceIDStr + "mod_speed";
-        auto modSpeedName = "Modulation Speed: " + voiceIDStr;
+        auto modSpeedIDStr = voiceIDStr + "_mod_speed";
+        auto modSpeedName = voiceIDStr + " Modulation Speed";
         m_VoiceModSpeed.emplace_back
                 (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 100.0f, 0.1f));
         addParameter(m_VoiceModSpeed.at(i));
 
         //============ Amplifier ==============
-        auto decayIDStr = voiceIDStr + "decay";
-        auto decayName = "Decay: " + voiceIDStr;
+        auto decayIDStr = voiceIDStr + "_decay";
+        auto decayName = voiceIDStr + " Decay";
         m_VoiceDecay.emplace_back
                 (new AudioParameterFloat(decayIDStr, decayName, 0.01f, 1.0f, 0.1f));
         addParameter(m_VoiceDecay.at(i));
@@ -227,8 +227,10 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 
         if (m.isNoteOn()) 
 		{
-			m_Voices[0].reset(); 
-			m_Voices[0].start();
+			const int note = m.getNoteNumber() % ER1_VOICE_COUNT;
+			m_Voices[note].level = m.getFloatVelocity();
+			m_Voices[note].reset(); 
+			m_Voices[note].start();
 		}
 
 		samplesRendered += samplesToNextMessage;
