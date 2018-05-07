@@ -41,7 +41,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         addParameter(m_VoiceWaveType.at(i));
 
         auto oscPitchIDStr = voiceIDStr + "_osc_pitch";
-        auto oscPitchName = "Oscillator Freq: " + voiceIDStr;
+        auto oscPitchName = voiceIDStr + "Oscillator Freq";
         m_VoicePitch.emplace_back
                 (new AudioParameterFloat(oscPitchIDStr, oscPitchName, 30.0f, 8750.0f, 250.0f));
         addParameter(m_VoicePitch.at(i));
@@ -189,6 +189,9 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
     {
         auto& voice = m_Voices[i];
 
+		voice.pitch = m_VoicePitch[i]->get();
+		voice.envelope.setSpeed(m_VoiceDecay[i]->get());
+
         voice.oscillator.waveType = static_cast<meta::ER1::Oscillator::WaveType>(m_VoiceWaveType[i]->getIndex());
         voice.oscillator.setFrequency(m_VoicePitch[i]->get());
 
@@ -196,7 +199,6 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
         voice.setModulationSpeed(m_VoiceModSpeed[i]->get());
 
-        voice.pitch = m_VoicePitch[i]->get();
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();

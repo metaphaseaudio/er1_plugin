@@ -22,9 +22,9 @@ class ER1AudioProcessor
     : public juce::AudioProcessor
 {
 #ifdef _DEBUG
-	static constexpr int ER1_VOICE_COUNT = 4;
+	static constexpr int ER1_VOICE_COUNT = 1;
 #else
-    static constexpr int ER1_VOICE_COUNT = 32;
+    static constexpr int ER1_VOICE_COUNT = 64;
 #endif
 
 public:
