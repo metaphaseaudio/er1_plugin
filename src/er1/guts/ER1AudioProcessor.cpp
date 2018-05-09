@@ -62,7 +62,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto modSpeedIDStr = voiceIDStr + "_mod_speed";
         auto modSpeedName = voiceIDStr + " Modulation Speed";
         m_VoiceModSpeed.emplace_back
-                (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 100.0f, 0.1f));
+                (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 22000.0f, 0.1f));
         addParameter(m_VoiceModSpeed.at(i));
 
         //============ Amplifier ==============
@@ -122,6 +122,7 @@ int ER1AudioProcessor::getNumPrograms()
 
 int ER1AudioProcessor::getCurrentProgram()
 {
+    jlimit(1, 0, 20);
     return 0;
 }
 
