@@ -5,7 +5,7 @@ set(ER1_VERSION_MAJOR 1)
 set(ER1_VERSION_MINOR 0)
 set(VERSION ${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR})
 add_definitions(-DER1_VERSION="${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR}")
-include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CPP11Boilerplate.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CPP14Boilerplate.cmake)
 
 #------------------------------------------------------------------------------
 # Build the JUCE library
