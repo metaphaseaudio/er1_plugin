@@ -145,7 +145,7 @@ void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 	for (int i = ER1_VOICE_COUNT; --i >= 0;)
 	{
 		m_Voices[i].oscillator.waveType = meta::ER1::Oscillator::WaveType::SINE;
-        m_Voices[i].pitch = 250;
+        m_Voices[i].setPitch(250);
         m_Voices[i].level = 1.0f;
         m_Voices[i].setModulationType(meta::ER1::Voice::ModType::DECAY);
         m_Voices[i].setModulationSpeed(1.0f);
@@ -190,7 +190,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
     {
         auto& voice = m_Voices[i];
 
-		voice.pitch = m_VoicePitch[i]->get();
+		voice.setPitch(m_VoicePitch[i]->get());
 		voice.envelope.setSpeed(m_VoiceDecay[i]->get());
 
         voice.oscillator.waveType = static_cast<meta::ER1::Oscillator::WaveType>(m_VoiceWaveType[i]->getIndex());
@@ -199,7 +199,6 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
         voice.setModulationSpeed(m_VoiceModSpeed[i]->get());
-
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();

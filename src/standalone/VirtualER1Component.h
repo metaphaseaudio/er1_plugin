@@ -17,7 +17,13 @@ public:
     void resized() override;
 
 private:
-    juce::ScopedPointer<ER1LAF> m_Laf;
+
     ER1AudioProcessor processor;
+    juce::ScopedPointer<ER1LAF> m_Laf;
     juce::ScopedPointer<ER1AudioProcessorEditor> editor;
 };
+
+
+juce::ApplicationCommandManager& getCommandManager();
+juce::ApplicationProperties& getAppProperties();
+bool isOnTouchDevice();
