@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.80/x64" 1525789215
+<REAPER_PROJECT 0.1 "5.80/x64" 1526388705
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,8 +14,8 @@
   TIMEMODE 1 5 -1 30 0
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 265
-  ZOOM 0.59296280888382 0 0
+  CURSOR 1
+  ZOOM 278.8653204728983 134 0
   VZOOMEX 6
   USE_REC_CFG 0
   RECMODE 1
@@ -107,14 +107,14 @@
     MIDIOUT -1
     MAINSEND 1 0
     <FXCHAIN
-      WNDRECT 1969 315 1127 713
+      WNDRECT 1969 315 1127 271
       SHOW 1
       LASTSEL 0
       DOCKED 0
       BYPASS 0 0 0
       <VST "VSTi: ER-1 (Metaphase)" ER-1.dll 0 "" 1296388657
-        MVJFTe5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAEAA=
-        776t3g3wrd4AAAAAzcxMPZqZGT8AAIA/16NQPylcbz8=
+        MVJFTe5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAEIA=
+        776t3g3wrd4AAAAAuB6FPZqZGT8AAAA/AACAPzCWvD4=
         AAAQAAAA
       >
       FLOATPOS 0 0 0 0
@@ -126,6 +126,7 @@
         ARM 1
         DEFSHAPE 0 -1 -1
         PT 0 0.935 0
+        PT 1.5 0.085 0
       >
       <PARMENV 4 0 1 0.5
         ACT 1 -1
@@ -133,7 +134,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.815 0
+        PT 0 1 0
       >
       <PARMENV 3 0 1 0.5
         ACT 1 -1
@@ -141,7 +142,9 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 1 0
+        PT 0 0.5 0
+        PT 1.5 0.5 4 0 1
+        PT 3 1 4
       >
       <PARMENV 2 0 1 0.5
         ACT 1 -1
@@ -149,7 +152,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.655 0
+        PT 0 0.57 0
       >
       <PARMENV 1 0 1 0.5
         ACT 1 -1
@@ -157,7 +160,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.05 0
+        PT 0 0.065 0
       >
       <PARMENV 0 0 1 0.5
         ACT 1 -1
@@ -229,7 +232,7 @@
       FADEIN 1 0 0 1 0 0
       FADEOUT 1 0 0 1 0 0
       MUTE 0
-      SEL 0
+      SEL 1
       IGUID {4E2DB397-2BDD-4136-AFC2-18ACD303E066}
       IID 1
       NAME "untitled MIDI item"
@@ -270,7 +273,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 1
+    SEL 0
     REC 1 1024 1 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
