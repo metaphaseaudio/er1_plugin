@@ -1,4 +1,5 @@
 #include <meta/audio/SingletonSampleRate.h>
+#include <meta/util/math.h>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
 
@@ -62,7 +63,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto modSpeedIDStr = voiceIDStr + "_mod_speed";
         auto modSpeedName = voiceIDStr + " Modulation Speed";
         m_VoiceModSpeed.emplace_back
-                (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.01f, 22000.0f, 0.1f));
+                (new AudioParameterFloat(modSpeedIDStr, modSpeedName, 0.0f, 1.0f, 0.1f));
         addParameter(m_VoiceModSpeed.at(i));
 
         //============ Amplifier ==============
@@ -197,7 +198,8 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 
 		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
-        voice.setModulationSpeed(m_VoiceModSpeed[i]->get());
+        voice.setModulationSpeed
+            (meta::Interpolate<float>::parabolic(0.001f, 11000.0f, m_VoiceModSpeed[i]->get(), 5.0f));
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();
