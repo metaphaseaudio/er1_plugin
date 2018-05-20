@@ -193,13 +193,13 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 		voice.setPitch(m_VoicePitch[i]->get());
 		voice.envelope.setSpeed(m_VoiceDecay[i]->get());
 
-        voice.oscillator.waveType = static_cast<meta::ER1::Oscillator::WaveType>(m_VoiceWaveType[i]->getIndex());
+        voice.oscillator.waveType = static_cast<meta::ER1::Oscillator::WaveType>(m_VoiceWaveType[i]->getIndex() + 1);
         voice.oscillator.setFrequency(m_VoicePitch[i]->get());
 
 		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
         voice.setModulationSpeed
-            (meta::Interpolate<float>::parabolic(0.001f, 11000.0f, m_VoiceModSpeed[i]->get(), 5.0f));
+            (meta::Interpolate<float>::parabolic(0.0001f, 11000.0f, m_VoiceModSpeed[i]->get(), 5.0f));
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();
