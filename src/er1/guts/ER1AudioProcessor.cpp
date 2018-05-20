@@ -199,7 +199,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer &mid
 		voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(m_VoiceModType[i]->getIndex()));
         voice.setModulationDepth(m_VoiceModDepth[i]->get());
         voice.setModulationSpeed
-            (meta::Interpolate<float>::parabolic(0.0001f, 11000.0f, m_VoiceModSpeed[i]->get(), 5.0f));
+            (meta::Interpolate<float>::parabolic(0.1f, 11000.0f, m_VoiceModSpeed[i]->get(), 5.0f));
     }
 
     auto totalNumInputChannels = getTotalNumInputChannels();
