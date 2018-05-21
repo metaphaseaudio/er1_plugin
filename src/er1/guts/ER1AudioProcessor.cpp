@@ -115,29 +115,15 @@ double ER1AudioProcessor::getTailLengthSeconds() const
     return 0.0;
 }
 
-int ER1AudioProcessor::getNumPrograms()
-{
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-    // so this should be at least 1, even if you're not really implementing programs.
-}
+int ER1AudioProcessor::getNumPrograms() { return 1; }
 
-int ER1AudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
+int ER1AudioProcessor::getCurrentProgram() { return 0; }
 
-void ER1AudioProcessor::setCurrentProgram(int index)
-{
-}
+void ER1AudioProcessor::setCurrentProgram(int index) {}
 
-const String ER1AudioProcessor::getProgramName(int index)
-{
-    return {};
-}
+const String ER1AudioProcessor::getProgramName(int index) { return {}; }
 
-void ER1AudioProcessor::changeProgramName(int index, const String &newName)
-{
-}
+void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
