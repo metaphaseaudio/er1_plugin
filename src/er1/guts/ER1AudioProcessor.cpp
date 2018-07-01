@@ -56,7 +56,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto modDepthIDStr = voiceIDStr + "_mod_depth";
         auto modDepthName = voiceIDStr + " Modulation Depth";
         m_VoiceModDepth.emplace_back
-                (new AudioParameterFloat(modDepthIDStr, modDepthName, -2048.0f, 2048.0f, 0.0f));
+                (new AudioParameterFloat(modDepthIDStr, modDepthName, -11000.0f, 11000.0f, 0.0f));
         addParameter(m_VoiceModDepth.at(i));
 
         auto modSpeedIDStr = voiceIDStr + "_mod_speed";
@@ -122,7 +122,6 @@ int ER1AudioProcessor::getNumPrograms()
 
 int ER1AudioProcessor::getCurrentProgram()
 {
-    jlimit(1, 0, 20);
     return 0;
 }
 
