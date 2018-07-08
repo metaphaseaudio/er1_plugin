@@ -12,12 +12,12 @@
 
 #include <JuceHeader.h>
 #include "../gooey/widgets/DividerLine.h"
-#include "../gooey/osc_section/OscSectionComponent.h"
 #include "../guts/ER1AudioProcessor.h"
-#include "../gooey/sequencer/Sequencer.h"
+#include "../gooey/grid/Grid.h"
 #include "../gooey/left_box/Transport.h"
 #include "left_box/RedBox.h"
-#include "amp_section/AmpSectionComponent.h"
+#include "../gooey/sound_edit_box/SoundEditorWindow.h"
+#include "../gooey/grid/GridBankSelector.h"
 
 //==============================================================================
 /**
@@ -35,12 +35,10 @@ public:
 
 private:
     ER1AudioProcessor& processor;
-    RedBox m_RedBoxComponent;
-    AmpSectionComponent m_AmpSectionComponent;
-    DividerLine m_AmpOscDiv;
-    OscSectionComponent m_OscSectionComponent;
-    Transport m_TransportComponent;
-    Sequencer m_Sequencer;
+    juce::TabbedButtonBar m_Tabs;
+    SoundEditorWindow m_SoundEditorWindow;
+    Grid m_Grid;
+    GridBankSelector m_Bank;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor)
 };

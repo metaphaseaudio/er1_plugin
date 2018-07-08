@@ -4,7 +4,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <gooey/ER1LAF.h>
+#include <gooey/look_and_feel/ER1LAF.h>
 #include <guts/ER1AudioProcessor.h>
 #include <gooey/ER1AudioProcessorEditor.h>
 

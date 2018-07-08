@@ -58,6 +58,8 @@ public:
     public:
         ER1InterfaceWindow(juce::String name);
 
+        ~ER1InterfaceWindow();
+
         juce::StringArray getMenuBarNames() override;
         juce::PopupMenu getMenuForIndex (int topLevelMenuIndex, const juce::String& menuName) override;
         void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
