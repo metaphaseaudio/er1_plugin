@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.80/x64" 1526388705
+<REAPER_PROJECT 0.1 "5.80/x64" 1526924006
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,8 +14,8 @@
   TIMEMODE 1 5 -1 30 0
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 1
-  ZOOM 278.8653204728983 134 0
+  CURSOR 2
+  ZOOM 278.8653204728983 275 0
   VZOOMEX 6
   USE_REC_CFG 0
   RECMODE 1
@@ -55,8 +55,8 @@
   GLOBAL_AUTO -1
   TEMPO 120 4 4
   PLAYRATE 1 0 0.25 4
-  SELECTION 0 0
-  SELECTION2 0 0
+  SELECTION 2 2
+  SELECTION2 2 2
   MASTERAUTOMODE 0
   MASTERTRACKHEIGHT 0 0
   MASTERPEAKCOL 16576
@@ -95,8 +95,8 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
-    REC 1 4096 1 0 0 0 0
+    SEL 1
+    REC 0 4096 1 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0
     INQ 0 0 0 0.5 100 0 0 100
@@ -114,7 +114,7 @@
       BYPASS 0 0 0
       <VST "VSTi: ER-1 (Metaphase)" ER-1.dll 0 "" 1296388657
         MVJFTe5e7f4AAAAAAgAAAAEAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAEIA=
-        776t3g3wrd4AAAAAuB6FPZqZGT8AAAA/AACAPzCWvD4=
+        776t3g3wrd4AAAAAhetRPs3MzD64HsU+j8J1PHsUrj0=
         AAAQAAAA
       >
       FLOATPOS 0 0 0 0
@@ -134,7 +134,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 1 0
+        PT 0 0.015 0
       >
       <PARMENV 3 0 1 0.5
         ACT 1 -1
@@ -142,9 +142,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.5 0
-        PT 1.5 0.5 4 0 1
-        PT 3 1 4
+        PT 0 0.385 0
       >
       <PARMENV 2 0 1 0.5
         ACT 1 -1
@@ -152,7 +150,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.57 0
+        PT 0 0.42 0
       >
       <PARMENV 1 0 1 0.5
         ACT 1 -1
@@ -160,7 +158,7 @@
         LANEHEIGHT 0 0
         ARM 1
         DEFSHAPE 0 -1 -1
-        PT 0 0.065 0
+        PT 0 0.205 0
       >
       <PARMENV 0 0 1 0.5
         ACT 1 -1
@@ -232,7 +230,7 @@
       FADEIN 1 0 0 1 0 0
       FADEOUT 1 0 0 1 0 0
       MUTE 0
-      SEL 1
+      SEL 0
       IGUID {4E2DB397-2BDD-4136-AFC2-18ACD303E066}
       IID 1
       NAME "untitled MIDI item"
