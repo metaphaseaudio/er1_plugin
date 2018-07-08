@@ -29,6 +29,13 @@ VirtualER1App::ER1InterfaceWindow::ER1InterfaceWindow(juce::String name)
     setMenuBar(this);
 }
 
+
+VirtualER1App::ER1InterfaceWindow::~ER1InterfaceWindow()
+{
+    setMenuBar(nullptr);
+}
+
+
 juce::StringArray VirtualER1App::ER1InterfaceWindow::getMenuBarNames()
 { return {"File", "Options"}; }
 

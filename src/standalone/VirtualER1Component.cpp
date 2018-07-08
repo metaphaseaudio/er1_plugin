@@ -10,7 +10,7 @@ VirtualER1Component::VirtualER1Component()
     editor = new ER1AudioProcessorEditor(processor);
     setLookAndFeel(m_Laf);
     addAndMakeVisible(editor);
-    setBounds(0, 0, 900, 600);
+    setBounds(0, 0, 500, 600);
 }
 
 void VirtualER1Component::resized()

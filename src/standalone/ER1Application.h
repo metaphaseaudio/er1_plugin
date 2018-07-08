@@ -48,7 +48,6 @@ public:
     }
 
     void shutdown() override { mainWindow = nullptr; }
-    void systemRequestedQuit() override { quit(); }
     void anotherInstanceStarted(const juce::String& commandLine) override {}
 
     class ER1InterfaceWindow
@@ -58,6 +57,8 @@ public:
     {
     public:
         ER1InterfaceWindow(juce::String name);
+
+        ~ER1InterfaceWindow();
 
         juce::StringArray getMenuBarNames() override;
         juce::PopupMenu getMenuForIndex (int topLevelMenuIndex, const juce::String& menuName) override;
@@ -76,6 +77,14 @@ public:
         juce::AudioDeviceManager m_DeviceManager;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1InterfaceWindow)
     };
+
+    void systemRequestedQuit() override
+    {
+        if (mainWindow != nullptr)
+//            mainWindow->tryToQuitApplication();
+//        else
+            juce::JUCEApplicationBase::quit();
+    }
 
     juce::ApplicationCommandManager commandManager;
     juce::ScopedPointer<juce::ApplicationProperties> appProperties;
