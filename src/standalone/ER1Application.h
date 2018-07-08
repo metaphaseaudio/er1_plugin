@@ -79,8 +79,8 @@ public:
     void systemRequestedQuit() override
     {
         if (mainWindow != nullptr)
-            mainWindow->tryToQuitApplication();
-        else
+//            mainWindow->tryToQuitApplication();
+//        else
             juce::JUCEApplicationBase::quit();
     }
 
