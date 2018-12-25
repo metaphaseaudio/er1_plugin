@@ -9,6 +9,16 @@ class KorgButton
     : public juce::Button
 {
 public:
-    KorgButton(const juce::String& name);
-    virtual void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
+    KorgButton();
+    explicit KorgButton(const juce::String& name);
+    void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
+};
+
+class KorgToggleButton
+    : public juce::ToggleButton
+{
+public:
+    KorgToggleButton();
+    explicit KorgToggleButton(const juce::String& name);
+    void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 };

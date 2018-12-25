@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <meta/gooey/ConstexprColour.h>
 
 class ER1Colours
 {
 public:
     static const juce::Colour defaultBackground;
+    static const juce::Colour btnDwn, btnUp, btnUpOver, btnDwnOver;
 };

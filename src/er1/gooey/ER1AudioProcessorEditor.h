@@ -11,34 +11,41 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <meta/gooey/RadioButton.h>
 #include "../gooey/widgets/DividerLine.h"
 #include "../guts/ER1AudioProcessor.h"
-#include "../gooey/grid/Grid.h"
+#include "meta/gooey/ButtonGrid.h"
 #include "../gooey/left_box/Transport.h"
 #include "left_box/RedBox.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
-#include "../gooey/grid/GridBankSelector.h"
+#include "../gooey/grid/SequenceGrid.h"
+#include "../gooey/grid/PadGrid.h"
+#include "../gooey/grid/SoundGrid.h"
 
 //==============================================================================
 /**
 */
 class ER1AudioProcessorEditor
     : public juce::AudioProcessorEditor
+    , juce::ChangeListener
 {
 public:
-    ER1AudioProcessorEditor (ER1AudioProcessor&);
-    ~ER1AudioProcessorEditor();
+    explicit ER1AudioProcessorEditor(ER1AudioProcessor&);
+    ~ER1AudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 private:
-    ER1AudioProcessor& processor;
-    juce::TabbedButtonBar m_Tabs;
-    SoundEditorWindow m_SoundEditorWindow;
-    Grid m_Grid;
-    GridBankSelector m_Bank;
+    enum { SEQUENCE, PADS, SOUNDS };
 
+    ER1AudioProcessor& processor;
+    juce::TabbedComponent m_Tabs;
+    SoundEditorWindow m_SoundEditorWindow;
+    SequenceGrid m_Sequence;
+    PadGrid m_Pads;
+    SoundGrid m_Sounds;
+    meta::RadioButtonSet<KorgToggleButton, 4> m_Bank;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor)
 };

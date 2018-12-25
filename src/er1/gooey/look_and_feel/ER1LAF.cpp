@@ -3,6 +3,7 @@
 //
 
 #include "ER1LAF.h"
+#include "ER1Colours.h"
 
 using namespace juce;
 
@@ -48,4 +49,32 @@ void ER1LAF::drawRotarySlider
     g.setColour (slider.findColour (Slider::thumbColourId));
     auto line = Line<float>(center, thumbPoint);
     g.drawLine(line, 4);
+}
+
+void ER1LAF::drawKorgButton
+(juce::Graphics &g, KorgButton &button, bool isMouseOverButton, bool isButtonDown)
+{
+    auto bounds = button.getLocalBounds().toFloat().reduced(4);
+
+    auto dwnColour = isMouseOverButton ? ER1Colours::btnDwnOver : ER1Colours::btnDwn;
+    auto upColour = isMouseOverButton ? ER1Colours::btnUpOver : ER1Colours::btnUp;
+    g.setColour(isButtonDown ? dwnColour : upColour);
+    g.fillRoundedRectangle(bounds, 10);
+    g.setColour(juce::Colours::black);
+    g.drawRoundedRectangle(bounds, 10,2);
+}
+
+void
+ER1LAF::drawKorgToggleButton
+(juce::Graphics &g, KorgToggleButton &button, bool isMouseOverButton, bool isButtonDown)
+{
+    auto bounds = button.getLocalBounds().toFloat().reduced(4);
+    auto toggleDown = button.getToggleState();
+
+    auto dwnColour = isMouseOverButton ? ER1Colours::btnDwnOver : ER1Colours::btnDwn;
+    auto upColour = isMouseOverButton ? ER1Colours::btnUpOver : ER1Colours::btnUp;
+    g.setColour(isButtonDown || toggleDown ? dwnColour : upColour);
+    g.fillRoundedRectangle(bounds, 10);
+    g.setColour(juce::Colours::black);
+    g.drawRoundedRectangle(bounds, 10,2);
 }
