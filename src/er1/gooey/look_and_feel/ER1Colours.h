@@ -10,5 +10,6 @@ class ER1Colours
 {
 public:
     static const juce::Colour defaultBackground;
-    static const juce::Colour btnDwn, btnUp, btnUpOver, btnDwnOver;
+    static const juce::Colour korgRed;
+    static const juce::Colour padDwn, padUp, padUpOver, padDwnOver;
 };

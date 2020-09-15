@@ -3,11 +3,19 @@
 //
 #pragma once
 
-#include <meta/gooey/ButtonGrid.h>
-#include "../widgets/KorgButton.h"
+#include <meta/gooey/ComponentGrid.h>
+#include "../widgets/KorgPad.h"
 
 class PadGrid
-    : public meta::ButtonGrid<KorgButton, 4, 4>
+    : public meta::ComponentGrid<KorgPad, 4, 4>
 {
-    void gridButtonClicked(juce::Button* btn) override {};
+public:
+    explicit PadGrid(meta::MidiState& state)
+        : ComponentGrid(state)
+    {}
+
+    void setNoteForPad(size_t button_i, uint8_t midi_note) { m_Children.at(button_i)->note = midi_note; }
+    uint8_t getNoteForPad(size_t button_i) { return m_Children.at(button_i)->note; }
+
+private:
 };

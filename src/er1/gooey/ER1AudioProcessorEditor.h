@@ -21,6 +21,7 @@
 #include "../gooey/grid/SequenceGrid.h"
 #include "../gooey/grid/PadGrid.h"
 #include "../gooey/grid/SoundGrid.h"
+#include "look_and_feel/ER1LAF.h"
 
 //==============================================================================
 /**
@@ -37,15 +38,15 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
-private:
-    enum { SEQUENCE, PADS, SOUNDS };
 
+private:
+    enum { PADS, SOUNDS };
+
+    ER1LAF m_LAF;
     ER1AudioProcessor& processor;
     juce::TabbedComponent m_Tabs;
     SoundEditorWindow m_SoundEditorWindow;
-    SequenceGrid m_Sequence;
     PadGrid m_Pads;
-    SoundGrid m_Sounds;
     meta::RadioButtonSet<KorgToggleButton, 4> m_Bank;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

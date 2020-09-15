@@ -7,6 +7,14 @@
 
 using namespace juce;
 
+
+ER1LAF::ER1LAF()
+{
+    setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::red);
+    setColour(SelectorButton::ColourIds::selectUnlitColour, juce::Colours::darkgrey);
+}
+
+
 void ER1LAF::drawRotarySlider
 (juce::Graphics &g, int x, int y, int width, int height, float sliderPos,
  const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider &slider)
@@ -56,8 +64,8 @@ void ER1LAF::drawKorgButton
 {
     auto bounds = button.getLocalBounds().toFloat().reduced(4);
 
-    auto dwnColour = isMouseOverButton ? ER1Colours::btnDwnOver : ER1Colours::btnDwn;
-    auto upColour = isMouseOverButton ? ER1Colours::btnUpOver : ER1Colours::btnUp;
+    auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
+    auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
     g.setColour(isButtonDown ? dwnColour : upColour);
     g.fillRoundedRectangle(bounds, 10);
     g.setColour(juce::Colours::black);
@@ -71,10 +79,22 @@ ER1LAF::drawKorgToggleButton
     auto bounds = button.getLocalBounds().toFloat().reduced(4);
     auto toggleDown = button.getToggleState();
 
-    auto dwnColour = isMouseOverButton ? ER1Colours::btnDwnOver : ER1Colours::btnDwn;
-    auto upColour = isMouseOverButton ? ER1Colours::btnUpOver : ER1Colours::btnUp;
+    auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
+    auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
     g.setColour(isButtonDown || toggleDown ? dwnColour : upColour);
     g.fillRoundedRectangle(bounds, 10);
     g.setColour(juce::Colours::black);
     g.drawRoundedRectangle(bounds, 10,2);
 }
+
+void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown)
+{
+    auto bounds = pad.getLocalBounds().toFloat().reduced(4);
+    auto dwnColour = isPadLit ? ER1Colours::padDwnOver : ER1Colours::padDwn;
+    auto upColour = isPadLit ? ER1Colours::padUpOver : ER1Colours::padUp;
+    g.setColour(isPadDown ? dwnColour : upColour);
+    g.fillRoundedRectangle(bounds, 10);
+    g.setColour(juce::Colours::black);
+    g.drawRoundedRectangle(bounds, 10,2);
+}
+

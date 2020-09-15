@@ -14,6 +14,7 @@
 #include <er1_dsp/Oscillator.h>
 #include <er1_dsp/Envelope.h>
 #include <er1_dsp/Voice.h>
+#include <meta/midi/MidiState.h>
 
 //==============================================================================
 /**
@@ -65,6 +66,7 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
+    meta::MidiState& getMidiState() { return m_MidiState; }
 private:
     std::vector<juce::AudioParameterChoice*> m_VoiceWaveType;
     std::vector<juce::AudioParameterFloat*> m_VoicePitch;
@@ -75,6 +77,7 @@ private:
 
     std::vector<juce::AudioParameterFloat*> m_VoiceDecay;
 
+    meta::MidiState m_MidiState;
     meta::ER1::Voice m_Voices[ER1_VOICE_COUNT];
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)

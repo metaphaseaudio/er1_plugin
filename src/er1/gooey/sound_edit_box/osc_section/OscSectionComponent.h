@@ -24,11 +24,11 @@ public:
     void resized() override;
 
 private:
-    juce::Slider m_Pitch;
-    juce::Slider m_ModDepth;
-    juce::Slider m_ModSpeed;
-    juce::Slider m_ModType;
-    KorgButton m_OscType;
+    juce::Slider m_Pitch;    juce::Label m_PitchLabel;
+    juce::Slider m_ModDepth; juce::Label m_ModDepthLabel;
+    juce::Slider m_ModSpeed; juce::Label m_ModSpeedLabel;
+    juce::Slider m_ModType;  juce::Label m_ModTypeLabel;
+    KorgButton m_OscType;    juce::Label m_OscTypeLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscSectionComponent)
 };
