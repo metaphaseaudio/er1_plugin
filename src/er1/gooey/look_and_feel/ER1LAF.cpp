@@ -4,14 +4,21 @@
 
 #include "ER1LAF.h"
 #include "ER1Colours.h"
+#include "../sound_edit_box/osc_section/WaveSelectors.h"
+
 
 using namespace juce;
 
 
 ER1LAF::ER1LAF()
 {
-    setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::red);
+    setColour(ResizableWindow::ColourIds::backgroundColourId, ER1Colours::defaultBackground);
+
+    setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::pink);
     setColour(SelectorButton::ColourIds::selectUnlitColour, juce::Colours::darkgrey);
+
+    setColour(WaveformComponent::ColourIds::waveformFGColour, juce::Colours::black);
+    setColour(WaveformComponent::ColourIds::waveformBGColour, ER1Colours::defaultForeground);
 }
 
 

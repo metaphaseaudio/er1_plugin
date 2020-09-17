@@ -17,16 +17,16 @@ class AmpSectionComponent
 {
 public:
     AmpSectionComponent();
-    ~AmpSectionComponent();
+    ~AmpSectionComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    juce::Slider m_Decay;
-    juce::Slider m_Level;
-    juce::Slider m_Pan;
-    juce::Slider m_LowBoost;
+    juce::Slider m_Decay;    juce::Label m_DecayLabel;
+    juce::Slider m_Level;    juce::Label m_LevelLabel;
+    juce::Slider m_Pan;      juce::Label m_PanLabel;
+    juce::Slider m_LowBoost; juce::Label m_LowBoostLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AmpSectionComponent)
 };

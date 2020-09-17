@@ -15,8 +15,6 @@
 #include "../gooey/widgets/DividerLine.h"
 #include "../guts/ER1AudioProcessor.h"
 #include "meta/gooey/ButtonGrid.h"
-#include "../gooey/left_box/Transport.h"
-#include "left_box/RedBox.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
 #include "../gooey/grid/SequenceGrid.h"
 #include "../gooey/grid/PadGrid.h"

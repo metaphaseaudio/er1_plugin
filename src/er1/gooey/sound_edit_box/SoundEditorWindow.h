@@ -7,13 +7,18 @@
 #include <JuceHeader.h>
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
+#include "config_section/ConfigComponent.h"
 #include <meta/gooey/RadioGrid.h>
+
+
 
 class SoundEditorWindow
     : public juce::Component
     , juce::ChangeListener
 {
 public:
+
+
     SoundEditorWindow();
 
     void paint (juce::Graphics& g) override;
@@ -22,7 +27,8 @@ public:
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
+    ConfigComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
-    meta::RadioGrid<KorgToggleButton, 4, 4> m_PadGrid;
+    meta::RadioGrid<KorgToggleButton, 4, 4, 2> m_PadGrid;
 };

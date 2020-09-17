@@ -8,6 +8,7 @@
 SoundEditorWindow::SoundEditorWindow()
 {
     addAndMakeVisible(&m_PadGrid);
+    addAndMakeVisible(&m_VoiceSetup);
     addAndMakeVisible(&m_AmpSection);
     addAndMakeVisible(&m_OscSection);
     m_PadGrid.addChangeListener(this);
@@ -15,19 +16,27 @@ SoundEditorWindow::SoundEditorWindow()
 
 void SoundEditorWindow::resized()
 {
-    auto bounds = getLocalBounds().reduced(2);
-    auto upper_percentage = 0.4f;
+    auto bounds = getLocalBounds().reduced(5);
+    auto upper_percentage = 0.3f;
     auto upper_bounds = bounds.removeFromTop(bounds.getHeight() * upper_percentage);
-    m_PadGrid.setBounds(upper_bounds.removeFromLeft(upper_bounds.getWidth() * upper_percentage));
-    m_AmpSection.setBounds(upper_bounds.reduced(4));
-    m_OscSection.setBounds(bounds.reduced(4));
+    m_PadGrid.setBounds(upper_bounds.removeFromLeft(upper_bounds.getHeight()).reduced(2));
+    upper_bounds.removeFromLeft(5);
+    m_VoiceSetup.setBounds(upper_bounds);
+
+    bounds.removeFromTop(5);
+    m_OscSection.setBounds(bounds.removeFromTop(160));
+    m_AmpSection.setBounds(bounds);
 }
 
 void SoundEditorWindow::paint(juce::Graphics& g)
 {
-    g.fillAll(ER1Colours::defaultBackground);
-    auto bounds = getLocalBounds();
-    g.drawRect(bounds, 2);
+    auto bounds = getLocalBounds().reduced(5);
+    auto upper_percentage = 0.3f;
+    auto upper_bounds = bounds.removeFromTop(bounds.getHeight() * upper_percentage);
+    auto redBox = upper_bounds.removeFromLeft(upper_bounds.getHeight());
+
+    g.setColour(ER1Colours::korgRed);
+    g.fillRoundedRectangle(redBox.toFloat(), 5.0f);
 }
 
 

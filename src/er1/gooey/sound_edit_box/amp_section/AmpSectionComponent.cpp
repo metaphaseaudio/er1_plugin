@@ -9,24 +9,35 @@
 */
 
 #include "AmpSectionComponent.h"
+#include "../../look_and_feel/StandardShapes.h"
 
 using namespace juce;
 
 AmpSectionComponent::AmpSectionComponent()
-    : m_Decay("Decay")
-    , m_Level("Level")
-    , m_Pan("Pan")
-    , m_LowBoost("Low Boost")
+    : m_Decay("Decay"), m_DecayLabel("Decay Label", "Decay")
+    , m_Level("Level"), m_LevelLabel("Level Label", "Level")
+    , m_Pan("Pan"), m_PanLabel("Pan Label", "Pan")
+    , m_LowBoost("Low Boost"), m_LowBoostLabel("Low Boost Label", "Low Boost")
 {
     m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     m_Pan.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     m_LowBoost.setSliderStyle(juce::Slider::SliderStyle::Rotary);
 
-    addAndMakeVisible(m_Decay);
-    addAndMakeVisible(m_Level);
-    addAndMakeVisible(m_Pan);
-    addAndMakeVisible(m_LowBoost);
+    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+
+    m_DecayLabel.setJustificationType(juce::Justification::centred);
+    m_LevelLabel.setJustificationType(juce::Justification::centred);
+    m_PanLabel.setJustificationType(juce::Justification::centred);
+    m_LowBoostLabel.setJustificationType(juce::Justification::centred);
+
+    addAndMakeVisible(m_Decay);    addAndMakeVisible(m_DecayLabel);
+    addAndMakeVisible(m_Level);    addAndMakeVisible(m_LevelLabel);
+    addAndMakeVisible(m_Pan);      addAndMakeVisible(m_PanLabel);
+    addAndMakeVisible(m_LowBoost); addAndMakeVisible(m_LowBoostLabel);
 }
 
 AmpSectionComponent::~AmpSectionComponent() {}
@@ -44,25 +55,30 @@ void AmpSectionComponent::paint (Graphics& g)
 
 void AmpSectionComponent::resized()
 {
+    const auto labelHeight = 22;
+    const auto margin = 10;
+
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(22);
+    bounds.removeFromTop(labelHeight);
     bounds = bounds.reduced(2);
 
-    auto upperCtrls = bounds.removeFromTop(bounds.getHeight() / 2);
+    auto ctrlBounds = StandardShapes::largeDial;
+    auto labelBounds = bounds.removeFromTop(labelHeight).removeFromLeft(ctrlBounds.getWidth());
+    ctrlBounds.setPosition(bounds.getBottomLeft().x, labelBounds.getBottom());
 
-    auto decayBounds = upperCtrls.removeFromLeft(upperCtrls.getWidth() / 2);
-    auto levelBounds = upperCtrls;
+    m_DecayLabel.setBounds(labelBounds); m_Decay.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 
-    auto panBounds = bounds.removeFromLeft(bounds.getWidth() / 2);
-    auto boostBounds = bounds;
+    m_LevelLabel.setBounds(labelBounds); m_Level.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 
-    m_Decay.setBounds(decayBounds);
-    m_Level.setBounds(levelBounds);
-    m_Pan.setBounds(panBounds);
-    m_LowBoost.setBounds(boostBounds);
-    
-    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_PanLabel.setBounds(labelBounds); m_Pan.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+
+    m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 }

@@ -9,26 +9,47 @@
 */
 
 #include "OscSectionComponent.h"
+#include "../../look_and_feel/StandardShapes.h"
 
 using namespace juce;
 
 OscSectionComponent::OscSectionComponent()
-    : m_Pitch("Pitch"),        m_PitchLabel("Pitch Label", "Pitch Label")
+    : m_Pitch("Pitch"), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth("Mod Depth"), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
     , m_ModSpeed("Mod Speed"), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
-    , m_ModType("Mod Type"),   m_ModTypeLabel("Mod Type Label", "Mod Type")
-    , m_OscType("Osc Type"),   m_OscTypeLabel("Osc Type Label", "Osc Type")
+    , m_ModType(), m_ModTypeLabel("Mod Type Label", "Mod Type")
+    , m_OscType(), m_OscTypeLabel("Osc Type Label", "Osc Type")
 {
     m_Pitch.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_ModDepth.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     m_ModSpeed.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_ModType.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    m_ModDepth.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+
+    m_PitchLabel.setJustificationType(juce::Justification::centred);
+    m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
+    m_ModDepthLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(m_Pitch);    addAndMakeVisible(m_PitchLabel);
-    addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModSpeed); addAndMakeVisible(m_ModSpeedLabel);
+    addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
+
+    m_OscType.addItem("Sine", SINE);
+    m_OscType.addItem("Triangle", TRI);
+    m_OscType.addItem("Square", SQUARE);
+    m_OscType.setSelectedId(SINE, juce::NotificationType::dontSendNotification);
+    m_OscType.addListener(this);
+
+    m_ModType.addItem("Sine", SINE);
+    m_ModType.addItem("Triangle", TRI);
+    m_ModType.addItem("Square", SQUARE);
+    m_ModType.addItem("Random Step", STEP);
+    m_ModType.addItem("Random Noise", NOISE);
+    m_ModType.addItem("Sweep", SWEEP);
+    m_ModType.setSelectedId(SINE, juce::NotificationType::dontSendNotification);
+    m_ModType.addListener(this);
+
+
 }
 
 OscSectionComponent::~OscSectionComponent() {}
@@ -47,31 +68,42 @@ void OscSectionComponent::paint (Graphics& g)
 void OscSectionComponent::resized()
 {
     const auto labelHeight = 22;
+    const auto margin = 10;
+
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(22);
+    bounds.removeFromTop(labelHeight);
     bounds = bounds.reduced(2);
 
-    auto upperCtrls = bounds.removeFromTop(bounds.getHeight() / 2);
+    auto ctrlBounds = StandardShapes::largeDial;
+    auto selectorBounds = bounds.removeFromRight(bounds.getWidth() - ((ctrlBounds.getWidth() + margin) * 3));
 
-    auto ctrlThirds = bounds.getWidth() / 3;
-    auto pitchBounds = upperCtrls.removeFromLeft(ctrlThirds);
-    auto modDepthBounds = upperCtrls.removeFromLeft(ctrlThirds);
-    auto modSpeedBounds = upperCtrls;
+    selectorBounds.removeFromTop(margin);
+    m_OscTypeLabel.setBounds(selectorBounds.removeFromTop(labelHeight)); m_OscType.setBounds(selectorBounds.removeFromTop(labelHeight));
+    selectorBounds.removeFromTop(margin);
+    m_ModTypeLabel.setBounds(selectorBounds.removeFromTop(labelHeight)); m_ModType.setBounds(selectorBounds.removeFromTop(labelHeight));
 
-    auto modTypeBounds = bounds.removeFromRight(ctrlThirds);
+    auto labelBounds = bounds.removeFromTop(labelHeight).removeFromLeft(ctrlBounds.getWidth());
+    ctrlBounds.setPosition(bounds.getBottomLeft().x, labelBounds.getBottom());
 
-    auto widthVals = bounds.getWidth() / 3;
-    auto prevValBounds = bounds.removeFromLeft(widthVals);
-    auto oscTypeBounds = bounds.removeFromLeft(widthVals);
+    m_PitchLabel.setBounds(labelBounds); m_Pitch.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 
-    m_PitchLabel.setBounds(pitchBounds.removeFromTop(22)); m_Pitch.setBounds(pitchBounds);
-    m_ModDepthLabel.setBounds(modDepthBounds.removeFromTop(22)); m_ModDepth.setBounds(modDepthBounds);
-    m_ModSpeedLabel.setBounds(modSpeedBounds.removeFromTop(22)); m_ModSpeed.setBounds(modSpeedBounds);
-    m_ModTypeLabel.setBounds(modTypeBounds.removeFromTop(22)); m_ModType.setBounds(modTypeBounds);
-    m_OscTypeLabel.setBounds(oscTypeBounds.removeFromTop(22)); m_OscType.setBounds(oscTypeBounds);
+    m_ModSpeedLabel.setBounds(labelBounds); m_ModSpeed.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+
+    m_ModDepthLabel.setBounds(labelBounds); m_ModDepth.setBounds(ctrlBounds);
+    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+
     
     m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
     m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
     m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_ModType.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+}
+
+void OscSectionComponent::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged)
+{
+
 }

@@ -23,14 +23,15 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     , m_Pads(p.getMidiState())
 {
     setLookAndFeel(&m_LAF);
-    setSize(500, 600);
-    addAndMakeVisible(m_Tabs);
+    setSize(350, 550);
+    addAndMakeVisible(m_SoundEditorWindow);
     addAndMakeVisible(m_Bank);
-    m_Tabs.addTab("Sounds", juce::Colours::darkgrey, &m_SoundEditorWindow, false);
-    m_Tabs.addTab("Pads", juce::Colours::darkgrey, &m_Pads, false);
 }
 
-ER1AudioProcessorEditor::~ER1AudioProcessorEditor() {}
+ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
+{
+    setLookAndFeel(nullptr);
+}
 
 //==============================================================================
 void ER1AudioProcessorEditor::paint (Graphics& g)
@@ -44,15 +45,15 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 void ER1AudioProcessorEditor::resized()
 {
     // horizontal slicing
-    auto internalBounds = getLocalBounds().reduced(15);
+    auto internalBounds = getLocalBounds().reduced(5);
 
     internalBounds.removeFromTop(5);
-    auto btmCtrls = internalBounds.removeFromBottom(50);
+    auto btmCtrls = internalBounds.removeFromBottom(40);
     const auto bankBounds = btmCtrls.removeFromRight(int(jmin<float>(getWidth()/2.0f, 200)));
     const auto transportBounds = btmCtrls.removeFromRight(15);
     m_Bank.setBounds(bankBounds);
     internalBounds.removeFromBottom(5);
-    m_Tabs.setBounds(internalBounds);
+    m_SoundEditorWindow.setBounds(internalBounds);
 }
 
 void ER1AudioProcessorEditor::changeListenerCallback(ChangeBroadcaster *source)
