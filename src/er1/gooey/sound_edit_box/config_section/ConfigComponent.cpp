@@ -29,7 +29,6 @@ void ConfigComponent::paint(juce::Graphics& g)
 
 void ConfigComponent::resized()
 {
-
     auto bounds = getLocalBounds();
 
     // Ditch the header

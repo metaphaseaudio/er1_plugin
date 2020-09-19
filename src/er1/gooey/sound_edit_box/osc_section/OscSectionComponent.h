@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include "../../widgets/KorgButton.h"
 #include "WaveSelectors.h"
+#include <er1_dsp/Voice.h>
+
 
 class OscSectionComponent
     : public juce::Component
@@ -32,6 +34,7 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    void setVoice(meta::ER1::Voice* voice);
 
     void comboBoxChanged (juce::ComboBox* comboBoxThatHasChanged) override;
 private:

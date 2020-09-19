@@ -38,6 +38,10 @@ AmpSectionComponent::AmpSectionComponent()
     addAndMakeVisible(m_Level);    addAndMakeVisible(m_LevelLabel);
     addAndMakeVisible(m_Pan);      addAndMakeVisible(m_PanLabel);
     addAndMakeVisible(m_LowBoost); addAndMakeVisible(m_LowBoostLabel);
+
+    m_Pan.setRange(-1.0, 1.0);  m_Pan.setValue(0.0);
+    m_Level.setRange(0.0, 1.0); m_Level.setValue(1.0);
+    m_Decay.setRange(0.0, 1.0); m_Decay.setValue(0.5);
 }
 
 AmpSectionComponent::~AmpSectionComponent() {}
@@ -81,4 +85,9 @@ void AmpSectionComponent::resized()
     m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+}
+
+void AmpSectionComponent::setVoice(meta::ER1::Voice* voice)
+{
+
 }

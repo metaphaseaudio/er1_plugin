@@ -26,7 +26,6 @@
 */
 class ER1AudioProcessorEditor
     : public juce::AudioProcessorEditor
-    , juce::ChangeListener
 {
 public:
     explicit ER1AudioProcessorEditor(ER1AudioProcessor&);
@@ -35,16 +34,11 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
 private:
-    enum { PADS, SOUNDS };
 
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
-    juce::TabbedComponent m_Tabs;
     SoundEditorWindow m_SoundEditorWindow;
-    PadGrid m_Pads;
-    meta::RadioButtonSet<KorgToggleButton, 4> m_Bank;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

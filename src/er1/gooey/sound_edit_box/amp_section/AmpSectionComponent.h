@@ -11,6 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <er1_dsp/Voice.h>
+
 
 class AmpSectionComponent
     : public juce::Component
@@ -21,6 +23,7 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    void setVoice(meta::ER1::Voice* voice);
 
 private:
     juce::Slider m_Decay;    juce::Label m_DecayLabel;

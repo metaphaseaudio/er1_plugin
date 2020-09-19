@@ -9,6 +9,7 @@
 #include "amp_section/AmpSectionComponent.h"
 #include "config_section/ConfigComponent.h"
 #include <meta/gooey/RadioGrid.h>
+#include <er1_dsp/Voice.h>
 
 
 
@@ -17,9 +18,9 @@ class SoundEditorWindow
     , juce::ChangeListener
 {
 public:
-
-
     SoundEditorWindow();
+
+    void setVoice(meta::ER1::Voice* voice);
 
     void paint (juce::Graphics& g) override;
     void resized() override;

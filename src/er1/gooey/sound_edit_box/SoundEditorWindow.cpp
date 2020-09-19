@@ -44,3 +44,8 @@ void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
 
 }
+
+void SoundEditorWindow::setVoice(meta::ER1::Voice* voice)
+{
+
+}

@@ -43,13 +43,15 @@ OscSectionComponent::OscSectionComponent()
     m_ModType.addItem("Sine", SINE);
     m_ModType.addItem("Triangle", TRI);
     m_ModType.addItem("Square", SQUARE);
-    m_ModType.addItem("Random Step", STEP);
-    m_ModType.addItem("Random Noise", NOISE);
+    m_ModType.addItem("Step", STEP);
+    m_ModType.addItem("Noise", NOISE);
     m_ModType.addItem("Sweep", SWEEP);
     m_ModType.setSelectedId(SINE, juce::NotificationType::dontSendNotification);
     m_ModType.addListener(this);
 
-
+    m_Pitch.setRange(20, 10000),      m_Pitch.setValue(250);
+    m_ModDepth.setRange(-10.0, 10.0); m_ModDepth.setValue(0);
+    m_ModSpeed.setRange(1.0, 500.0);  m_ModSpeed.setValue(10);
 }
 
 OscSectionComponent::~OscSectionComponent() {}
@@ -104,6 +106,11 @@ void OscSectionComponent::resized()
 }
 
 void OscSectionComponent::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged)
+{
+
+}
+
+void OscSectionComponent::setVoice(meta::ER1::Voice* voice)
 {
 
 }
