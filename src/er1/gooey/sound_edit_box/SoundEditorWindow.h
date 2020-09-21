@@ -8,9 +8,10 @@
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
 #include "config_section/ConfigComponent.h"
+#include "../widgets/LCDReadout.h"
+#include "patch_selector/PatchSelector.h"
 #include <meta/gooey/RadioGrid.h>
 #include <er1_dsp/Voice.h>
-
 
 
 class SoundEditorWindow
@@ -22,7 +23,6 @@ public:
 
     void setVoice(meta::ER1::Voice* voice);
 
-    void paint (juce::Graphics& g) override;
     void resized() override;
 
 private:
@@ -31,5 +31,6 @@ private:
     ConfigComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
+    PatchSelector m_PatchSelector;
     meta::RadioGrid<KorgToggleButton, 4, 4, 2> m_PadGrid;
 };

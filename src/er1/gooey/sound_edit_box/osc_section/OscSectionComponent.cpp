@@ -10,6 +10,7 @@
 
 #include "OscSectionComponent.h"
 #include "../../look_and_feel/StandardShapes.h"
+#include "../../look_and_feel/ER1Colours.h"
 
 using namespace juce;
 
@@ -63,7 +64,8 @@ void OscSectionComponent::paint (Graphics& g)
     g.setColour(Colours::black);
     g.fillRect(header);
 
-    g.setColour(getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.setFont(g.getCurrentFont().boldened());
+    g.setColour(ER1Colours::defaultForeground);
     g.drawFittedText("OSCILLATOR", header, juce::Justification::centred, 1);
 }
 

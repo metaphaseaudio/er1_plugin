@@ -3,6 +3,8 @@
 //
 
 #include "ConfigComponent.h"
+#include "../../look_and_feel/ER1Colours.h"
+
 #define LABEL_HEIGHT 22
 
 
@@ -22,8 +24,9 @@ void ConfigComponent::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::black);
     g.fillRect(header);
-
-    g.setColour(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    juce::GenericAudioProcessorEditor
+    g.setFont(g.getCurrentFont().boldened());
+    g.setColour(ER1Colours::defaultForeground);
     g.drawFittedText("VOICE SETUP", header, juce::Justification::centred, 1);
 }
 

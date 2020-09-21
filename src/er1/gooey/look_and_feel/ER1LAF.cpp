@@ -5,6 +5,7 @@
 #include "ER1LAF.h"
 #include "ER1Colours.h"
 #include "../sound_edit_box/osc_section/WaveSelectors.h"
+#include "../widgets/LCDReadout.h"
 
 
 using namespace juce;
@@ -19,6 +20,11 @@ ER1LAF::ER1LAF()
 
     setColour(WaveformComponent::ColourIds::waveformFGColour, juce::Colours::black);
     setColour(WaveformComponent::ColourIds::waveformBGColour, ER1Colours::defaultForeground);
+
+    setColour(LCDReadout::ColourIds::bezelColour, ER1Colours::defaultForeground);
+    setColour(LCDReadout::ColourIds::lcdColour, ER1Colours::lcdRed);
+    setColour(LCDReadout::ColourIds::textColour, juce::Colours::red);
+
 }
 
 
@@ -69,39 +75,35 @@ void ER1LAF::drawRotarySlider
 void ER1LAF::drawKorgButton
 (juce::Graphics &g, KorgButton &button, bool isMouseOverButton, bool isButtonDown)
 {
-    auto bounds = button.getLocalBounds().toFloat().reduced(4);
-
     auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-    g.setColour(isButtonDown ? dwnColour : upColour);
-    g.fillRoundedRectangle(bounds, 10);
-    g.setColour(juce::Colours::black);
-    g.drawRoundedRectangle(bounds, 10,2);
+    drawPad(g, button, isButtonDown ? dwnColour : upColour);
 }
 
 void
 ER1LAF::drawKorgToggleButton
 (juce::Graphics &g, KorgToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
-    auto bounds = button.getLocalBounds().toFloat().reduced(4);
     auto toggleDown = button.getToggleState();
-
     auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-    g.setColour(isButtonDown || toggleDown ? dwnColour : upColour);
-    g.fillRoundedRectangle(bounds, 10);
-    g.setColour(juce::Colours::black);
-    g.drawRoundedRectangle(bounds, 10,2);
+    drawPad(g, button, toggleDown ? dwnColour : upColour);
 }
 
 void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown)
 {
-    auto bounds = pad.getLocalBounds().toFloat().reduced(4);
     auto dwnColour = isPadLit ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isPadLit ? ER1Colours::padUpOver : ER1Colours::padUp;
-    g.setColour(isPadDown ? dwnColour : upColour);
-    g.fillRoundedRectangle(bounds, 10);
+    drawPad(g, pad, isPadDown ? dwnColour : upColour);
+}
+
+void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& internalColour)
+{
+    auto bounds = area.getLocalBounds().reduced(2).toFloat();
+    g.setColour(internalColour);
+    auto curve = (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
+    g.fillRoundedRectangle(bounds, curve);
     g.setColour(juce::Colours::black);
-    g.drawRoundedRectangle(bounds, 10,2);
+    g.drawRoundedRectangle(bounds, curve, 2);
 }
 
