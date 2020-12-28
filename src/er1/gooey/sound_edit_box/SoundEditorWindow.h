@@ -9,7 +9,8 @@
 #include "amp_section/AmpSectionComponent.h"
 #include "config_section/ConfigComponent.h"
 #include "../widgets/LCDReadout.h"
-#include "patch_selector/PatchSelector.h"
+#include "../../guts/ER1AudioProcessor.h"
+#include "../../guts/juce_synth/ER1VoiceController.h"
 #include <meta/gooey/RadioGrid.h>
 #include <er1_dsp/Voice.h>
 
@@ -17,9 +18,10 @@
 class SoundEditorWindow
     : public juce::Component
     , juce::ChangeListener
+    , juce::Timer
 {
 public:
-    SoundEditorWindow();
+    SoundEditorWindow(ER1VoiceController& voice);
 
     void setVoice(meta::ER1::Voice* voice);
 
@@ -31,6 +33,4 @@ private:
     ConfigComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
-    PatchSelector m_PatchSelector;
-    meta::RadioGrid<KorgToggleButton, 4, 4, 2> m_PadGrid;
 };

@@ -14,21 +14,21 @@
 
 using namespace juce;
 
-AmpSectionComponent::AmpSectionComponent()
-    : m_Decay("Decay"), m_DecayLabel("Decay Label", "Decay")
-    , m_Level("Level"), m_LevelLabel("Level Label", "Level")
-    , m_Pan("Pan"), m_PanLabel("Pan Label", "Pan")
-    , m_LowBoost("Low Boost"), m_LowBoostLabel("Low Boost Label", "Low Boost")
+AmpSectionComponent::AmpSectionComponent(const AmpParameters& params)
+    : m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
+    , m_Level(params.level), m_LevelLabel("Level Label", "Level")
+    , m_Pan(params.pan), m_PanLabel("Pan Label", "Pan")
+    , m_LowBoost(params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
 {
-    m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_Pan.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_LowBoost.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-
-    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+//    m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_Pan.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_LowBoost.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+////
+////    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+////    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+////    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+////    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 
     m_DecayLabel.setJustificationType(juce::Justification::centred);
     m_LevelLabel.setJustificationType(juce::Justification::centred);

@@ -5,7 +5,15 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <meta/vst/TimedParameterListener.h>
 
 class KorgKnob
-    : juce::Component
-{};
+    : public juce::Slider
+    , juce::Slider::Listener
+    , meta::TimedParameterListener
+{
+public:
+    KorgKnob(juce::AudioParameterFloat& param);
+    void handleNewParameterValue() override;
+    void sliderValueChanged(juce::Slider* slider) override;
+};

@@ -4,8 +4,8 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "../../widgets/LCDReadout.h"
-#include "../../widgets/KorgButton.h"
+#include "../widgets/LCDReadout.h"
+#include "../widgets/KorgButton.h"
 
 
 class PatchSelector

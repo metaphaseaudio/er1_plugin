@@ -14,16 +14,16 @@
 
 using namespace juce;
 
-OscSectionComponent::OscSectionComponent()
-    : m_Pitch("Pitch"), m_PitchLabel("Pitch Label", "Pitch")
-    , m_ModDepth("Mod Depth"), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
-    , m_ModSpeed("Mod Speed"), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
+OscSectionComponent::OscSectionComponent(const OscParameters& params)
+    : m_Pitch(params.pitch), m_PitchLabel("Pitch Label", "Pitch")
+    , m_ModDepth(params.modDepth), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
+    , m_ModSpeed(params.modSpeed), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
     , m_ModType(), m_ModTypeLabel("Mod Type Label", "Mod Type")
     , m_OscType(), m_OscTypeLabel("Osc Type Label", "Osc Type")
 {
-    m_Pitch.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_ModSpeed.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    m_ModDepth.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_Pitch.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_ModSpeed.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+//    m_ModDepth.setSliderStyle(juce::Slider::SliderStyle::Rotary);
 
     m_PitchLabel.setJustificationType(juce::Justification::centred);
     m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
@@ -55,7 +55,6 @@ OscSectionComponent::OscSectionComponent()
     m_ModSpeed.setRange(1.0, 500.0);  m_ModSpeed.setValue(10);
 }
 
-OscSectionComponent::~OscSectionComponent() {}
 
 void OscSectionComponent::paint (Graphics& g)
 {

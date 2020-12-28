@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "../../widgets/KorgButton.h"
 #include "WaveSelectors.h"
+#include "../../widgets/KorgKnob.h"
 #include <er1_dsp/Voice.h>
 
 
@@ -29,18 +30,20 @@ public:
         NOISE,
         SWEEP
     };
-    OscSectionComponent();
-    ~OscSectionComponent() override;
+
+
+    OscSectionComponent(const OscParameters& params);
 
     void paint (juce::Graphics&) override;
     void resized() override;
     void setVoice(meta::ER1::Voice* voice);
 
     void comboBoxChanged (juce::ComboBox* comboBoxThatHasChanged) override;
+
 private:
-    juce::Slider m_Pitch;    juce::Label m_PitchLabel;
-    juce::Slider m_ModDepth; juce::Label m_ModDepthLabel;
-    juce::Slider m_ModSpeed; juce::Label m_ModSpeedLabel;
+    KorgKnob m_Pitch;    juce::Label m_PitchLabel;
+    KorgKnob m_ModDepth; juce::Label m_ModDepthLabel;
+    KorgKnob m_ModSpeed; juce::Label m_ModSpeedLabel;
 
     juce::ComboBox  m_ModType;  juce::Label m_ModTypeLabel;
     juce::ComboBox  m_OscType;  juce::Label m_OscTypeLabel;

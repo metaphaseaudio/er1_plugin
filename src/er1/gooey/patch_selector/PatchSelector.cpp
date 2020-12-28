@@ -3,7 +3,7 @@
 //
 
 #include "PatchSelector.h"
-#include "../../look_and_feel/ER1Colours.h"
+#include "../look_and_feel/ER1Colours.h"
 
 
 PatchSelector::PatchSelector()

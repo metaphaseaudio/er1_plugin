@@ -12,13 +12,14 @@
 
 #include <JuceHeader.h>
 #include <er1_dsp/Voice.h>
+#include "../../widgets/KorgKnob.h"
 
 
 class AmpSectionComponent
     : public juce::Component
 {
 public:
-    AmpSectionComponent();
+    AmpSectionComponent(const AmpParameters& params);
     ~AmpSectionComponent() override;
 
     void paint (juce::Graphics&) override;
@@ -26,10 +27,10 @@ public:
     void setVoice(meta::ER1::Voice* voice);
 
 private:
-    juce::Slider m_Decay;    juce::Label m_DecayLabel;
-    juce::Slider m_Level;    juce::Label m_LevelLabel;
-    juce::Slider m_Pan;      juce::Label m_PanLabel;
-    juce::Slider m_LowBoost; juce::Label m_LowBoostLabel;
+    KorgKnob m_Decay;    juce::Label m_DecayLabel;
+    KorgKnob m_Level;    juce::Label m_LevelLabel;
+    KorgKnob m_Pan;      juce::Label m_PanLabel;
+    KorgKnob m_LowBoost; juce::Label m_LowBoostLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AmpSectionComponent)
 };
