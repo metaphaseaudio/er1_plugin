@@ -21,7 +21,14 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 {
     setLookAndFeel(&m_LAF);
     setSize(360, 450);
-    addAndMakeVisible(m_SoundEditorWindow);
+
+    for (int i = 0; i < ER1AudioProcessor::ER1_VOICE_COUNT; i++)
+    {
+        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
+        addChildComponent(m_SoundEditorWindows.at(i).get());
+    }
+
+    getChildComponent(0)->setVisible(true);
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -42,5 +49,6 @@ void ER1AudioProcessorEditor::resized()
 {
     // horizontal slicing
     auto internalBounds = getLocalBounds().reduced(5);
-    m_SoundEditorWindow.setBounds(internalBounds);
+    for (auto& window : m_SoundEditorWindows)
+        { window->setBounds(internalBounds); }
 }

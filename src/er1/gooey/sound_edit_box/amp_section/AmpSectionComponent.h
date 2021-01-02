@@ -13,18 +13,18 @@
 #include <JuceHeader.h>
 #include <er1_dsp/Voice.h>
 #include "../../widgets/KorgKnob.h"
+#include "../../../guts/juce_synth/ER1Sound.h"
 
 
 class AmpSectionComponent
     : public juce::Component
 {
 public:
-    AmpSectionComponent(const AmpParameters& params);
+    explicit AmpSectionComponent(AmpParams& params);
     ~AmpSectionComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
-    void setVoice(meta::ER1::Voice* voice);
 
 private:
     KorgKnob m_Decay;    juce::Label m_DecayLabel;

@@ -39,6 +39,6 @@ private:
 
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
-    SoundEditorWindow m_SoundEditorWindow;
+    std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

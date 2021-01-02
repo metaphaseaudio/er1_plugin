@@ -6,7 +6,9 @@
 #include "../look_and_feel/ER1Colours.h"
 #include "../fonts/FontLCD.h"
 
-SoundEditorWindow::SoundEditorWindow(ER1VoiceController& voice)
+SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
+    : m_OscSection(dynamic_cast<ER1Sound*>(sound.get())->osc)
+    , m_AmpSection(dynamic_cast<ER1Sound*>(sound.get())->amp)
 {
     addAndMakeVisible(&m_VoiceSetup);
     addAndMakeVisible(&m_AmpSection);
@@ -27,11 +29,6 @@ void SoundEditorWindow::resized()
 }
 
 void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
-{
-
-}
-
-void SoundEditorWindow::setVoice(meta::ER1::Voice* voice)
 {
 
 }

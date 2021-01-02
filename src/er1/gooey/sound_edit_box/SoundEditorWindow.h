@@ -10,7 +10,7 @@
 #include "config_section/ConfigComponent.h"
 #include "../widgets/LCDReadout.h"
 #include "../../guts/ER1AudioProcessor.h"
-#include "../../guts/juce_synth/ER1VoiceController.h"
+#include "../../guts/juce_synth/ER1Sound.h"
 #include <meta/gooey/RadioGrid.h>
 #include <er1_dsp/Voice.h>
 
@@ -18,13 +18,9 @@
 class SoundEditorWindow
     : public juce::Component
     , juce::ChangeListener
-    , juce::Timer
 {
 public:
-    SoundEditorWindow(ER1VoiceController& voice);
-
-    void setVoice(meta::ER1::Voice* voice);
-
+    SoundEditorWindow(ER1Sound::Ptr sound);
     void resized() override;
 
 private:

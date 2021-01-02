@@ -14,11 +14,11 @@
 
 using namespace juce;
 
-AmpSectionComponent::AmpSectionComponent(const AmpParameters& params)
-    : m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
-    , m_Level(params.level), m_LevelLabel("Level Label", "Level")
-    , m_Pan(params.pan), m_PanLabel("Pan Label", "Pan")
-    , m_LowBoost(params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
+AmpSectionComponent::AmpSectionComponent(AmpParams& params)
+    : m_Decay(*params.decay), m_DecayLabel("Decay Label", "Decay")
+    , m_Level(*params.level), m_LevelLabel("Level Label", "Level")
+    , m_Pan(*params.pan), m_PanLabel("Pan Label", "Pan")
+    , m_LowBoost(*params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
 {
 //    m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
 //    m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
@@ -87,9 +87,4 @@ void AmpSectionComponent::resized()
     m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
-}
-
-void AmpSectionComponent::setVoice(meta::ER1::Voice* voice)
-{
-
 }

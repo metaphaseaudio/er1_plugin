@@ -11,9 +11,10 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../../widgets/KorgButton.h"
 #include "WaveSelectors.h"
+#include "../../widgets/KorgButton.h"
 #include "../../widgets/KorgKnob.h"
+#include "../../../guts/juce_synth/ER1Sound.h"
 #include <er1_dsp/Voice.h>
 
 
@@ -32,7 +33,7 @@ public:
     };
 
 
-    OscSectionComponent(const OscParameters& params);
+    OscSectionComponent(OscParams& params);
 
     void paint (juce::Graphics&) override;
     void resized() override;
