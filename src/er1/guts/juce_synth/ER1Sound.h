@@ -12,9 +12,7 @@ class ER1Sound
     : public juce::SynthesiserSound
 {
 public:
-
     ER1Sound(OscParams osc, AmpParams amp, int midiNoteNumber, int midiChannel=0);
-
     bool appliesToNote (int midiNoteNumber) override { return midiNoteNumber == m_Note; };
     bool appliesToChannel (int midiChannel) override { return midiChannel == m_Chan; };
 

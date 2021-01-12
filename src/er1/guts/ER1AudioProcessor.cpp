@@ -31,6 +31,7 @@ ER1AudioProcessor::ER1AudioProcessor()
                   )
 #endif
 {
+    m_Synth.setCurrentPlaybackSampleRate(48000);
     for (int i = 0; i < ER1_VOICE_COUNT; i++)
     {
         // Create params
@@ -124,6 +125,7 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+    m_Synth.setCurrentPlaybackSampleRate(sampleRate);
 //	for (int i = ER1_VOICE_COUNT; --i >= 0;)
 //	{
 //		m_Voices[i].oscillator.waveType = meta::ER1::Oscillator::WaveType::SINE;

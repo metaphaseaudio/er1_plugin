@@ -16,4 +16,10 @@ public:
     KorgKnob(juce::AudioParameterFloat& param);
     void handleNewParameterValue() override;
     void sliderValueChanged(juce::Slider* slider) override;
+
+private:
+    void sliderStartedDragging();
+    void sliderStoppedDragging();
+
+    bool isDragging = false;
 };
