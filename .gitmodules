@@ -10,3 +10,6 @@
 [submodule "src/shared/metaphase_core"]
 	path = src/shared/metaphase_core
 	url = https://github.com/metaphaseaudio/metaphase_core.git
+[submodule "src/shared/vst3sdk"]
+	path = src/shared/vst3sdk
+	url = https://github.com/steinbergmedia/vst3sdk.git

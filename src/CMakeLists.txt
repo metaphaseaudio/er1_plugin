@@ -8,28 +8,13 @@ add_definitions(-DER1_VERSION="${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR}")
 include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CPP14Boilerplate.cmake)
 
 #------------------------------------------------------------------------------
+# Build the VST SDK
+#------------------------------------------------------------------------------
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/shared/vst3sdk)
+#------------------------------------------------------------------------------
 # Build the JUCE library
 #------------------------------------------------------------------------------
-set(JUCE_APP_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/juce_includes/AppConfig.h)
-set(JUCE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/shared/JUCE)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/juce_includes)
-
-set(JUCE_ENABLE_PLUGIN_VST ON)
-set(JUCE_ENABLE_AUDIO_BASICS ON)
-set(JUCE_ENABLE_AUDIO_FORMATS ON)
-set(JUCE_ENABLE_AUDIO_PROCESSORS ON)
-set(JUCE_ENABLE_AUDIO_DEVICES ON)
-set(JUCE_ENABLE_AUDIO_UTILS ON)
-set(JUCE_ENABLE_CRYPTOGRAPHY ON)
-set(JUCE_ENABLE_DATA_STRUCTURES ON)
-set(JUCE_ENABLE_DSP ON)
-set(JUCE_ENABLE_EVENTS ON)
-set(JUCE_ENABLE_GRAPHICS ON)
-set(JUCE_ENABLE_GUI_BASICS ON)
-set(JUCE_ENABLE_GUI_EXTRA ON)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CompileJUCE.cmake)
-
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/shared/JUCE)
 #------------------------------------------------------------------------------
 # Build Metaphase Shared Libraries
 #------------------------------------------------------------------------------
@@ -39,35 +24,39 @@ add_subdirectory(shared/er1_dsp)
 #------------------------------------------------------------------------------
 # Build ER1
 #------------------------------------------------------------------------------
+juce_add_plugin(ER-1
+        VERSION 1.0
+        COMPANY_NAME Metaphase
+        IS_SYNTH TRUE
+        NEEDS_MIDI_INPUT TRUE
+        VST_NUM_MIDI_INS 1
+        PLUGIN_MANUFACTURER_CODE Mtap
+        PLUGIN_CODE MER1
+        COPY_PLUGIN_AFTER_BUILD TRUE
+        FORMATS VST3 Standalone
+        PRODUCT_NAME "ER-1")
+
+juce_generate_juce_header(ER-1)
+
 FILE(GLOB_RECURSE ER1_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/er1/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/er1/*.h)
 LIST(SORT ER1_SOURCE)
 
-add_library(er1lib STATIC ${ER1_SOURCE})
-set_target_properties(er1lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_include_directories(er1lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/er1)
+target_sources(ER-1 PRIVATE ${ER1_SOURCE})
+target_compile_definitions(ER-1
+        PUBLIC
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0)
 
-# This corresponds with the VST plug-in itself.
-add_library(ER-1 MODULE ${JUCE_PLUGIN_SOURCE})
-
-set(ER1_SOURCE
-    ${ER1_SOURCE}
-    ${JUCE_PLUGIN_SOURCE})
-
-set(ER1_LIBS
-    ${JUCE_LIBS}
-    ${META_SHARED_LIBS}
-    juce
-    er1dsp
-    metaphase_core)
-
-target_link_libraries(er1lib ${ER1_LIBS} )
-target_link_libraries(ER-1 er1lib)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/standalone)
-
-if(CMAKE_THREAD_LIBS_INIT)
-    target_link_libraries(ER-1 ${CMAKE_THREAD_LIBS_INIT})
-endif()
+target_link_libraries(ER-1
+        PRIVATE
+            juce::juce_audio_utils
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_lto_flags
+            juce::juce_recommended_warning_flags
+            er1dsp
+            metaphase_core)
 
 option(BUILD_TESTS "BUILD_TESTS" OFF)
 if (BUILD_TESTS)

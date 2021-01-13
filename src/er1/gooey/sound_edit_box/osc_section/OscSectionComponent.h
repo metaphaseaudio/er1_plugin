@@ -33,11 +33,10 @@ public:
     };
 
 
-    OscSectionComponent(OscParams& params);
+    explicit OscSectionComponent(OscParams& params);
 
     void paint (juce::Graphics&) override;
     void resized() override;
-    void setVoice(meta::ER1::Voice* voice);
 
     void comboBoxChanged (juce::ComboBox* comboBoxThatHasChanged) override;
 

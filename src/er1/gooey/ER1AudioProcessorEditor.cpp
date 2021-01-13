@@ -22,13 +22,12 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     setLookAndFeel(&m_LAF);
     setSize(360, 450);
 
-    for (int i = 0; i < ER1AudioProcessor::ER1_VOICE_COUNT; i++)
+    for (int i = 0; i < ER1AudioProcessor::ER1_SOUND_COUNT; i++)
     {
         m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
         window->setBounds(getLocalBounds().reduced(5));
         addChildComponent(window);
-
     }
 
     getChildComponent(0)->setVisible(true);

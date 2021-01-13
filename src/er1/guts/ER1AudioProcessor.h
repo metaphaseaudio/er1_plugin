@@ -26,9 +26,11 @@ class ER1AudioProcessor
 {
 public:
 #ifdef _DEBUG
-    static constexpr int ER1_VOICE_COUNT = 1;
+    static constexpr int ER1_SOUND_COUNT = 1;
+    static constexpr int ER1_MAX_POLYPHONY = 1;
 #else
-    static constexpr int ER1_VOICE_COUNT = 64;
+    static constexpr int ER1_SOUND_COUNT = 64;
+    static constexpr int ER1_MAX_POLYPHONY = 32;
 #endif
     //==============================================================================
     ER1AudioProcessor();
@@ -68,11 +70,11 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     meta::MidiState& getMidiState() { return m_MidiState; }
-    ER1Sound* getSound(int i) { return dynamic_cast<ER1Sound*>(m_Synth.getSound(i)); }
+    ER1Sound::Ptr getSound(int i) { return m_Synth.getSound(i); }
 
 private:
     meta::MidiState m_MidiState;
-
+    juce::Random rnd;
     juce::Synthesiser m_Synth;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     //==============================================================================

@@ -10,8 +10,8 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat& param)
     , meta::TimedParameterListener(param)
 {
     auto interval = std::abs(param.range.start - param.range.end) / 100.0f;
-    setRange(juce::Range<float>(param.range.start, param.range.end), interval);
-    addListener(this);
+    setRange(juce::Range<double>(param.range.start, param.range.end), interval);
+    param.addListener(this);
 
     onDragStart   = [this]() { sliderStartedDragging(); };
     onDragEnd     = [this]() { sliderStoppedDragging(); };

@@ -20,15 +20,6 @@ AmpSectionComponent::AmpSectionComponent(AmpParams& params)
     , m_Pan(*params.pan), m_PanLabel("Pan Label", "Pan")
     , m_LowBoost(*params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
 {
-//    m_Decay.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-//    m_Level.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-//    m_Pan.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-//    m_LowBoost.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-////
-////    m_Decay.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-////    m_Level.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-////    m_Pan.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-////    m_LowBoost.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 
     m_DecayLabel.setJustificationType(juce::Justification::centred);
     m_LevelLabel.setJustificationType(juce::Justification::centred);
@@ -39,10 +30,6 @@ AmpSectionComponent::AmpSectionComponent(AmpParams& params)
     addAndMakeVisible(m_Level);    addAndMakeVisible(m_LevelLabel);
     addAndMakeVisible(m_Pan);      addAndMakeVisible(m_PanLabel);
     addAndMakeVisible(m_LowBoost); addAndMakeVisible(m_LowBoostLabel);
-
-    m_Pan.setRange(-1.0, 1.0);  m_Pan.setValue(0.0);
-    m_Level.setRange(0.0, 1.0); m_Level.setValue(1.0);
-    m_Decay.setRange(0.0, 1.0); m_Decay.setValue(0.5);
 }
 
 AmpSectionComponent::~AmpSectionComponent() {}
