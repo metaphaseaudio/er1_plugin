@@ -30,21 +30,6 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
-
-    m_OscType.addItem("Sine", SINE);
-    m_OscType.addItem("Triangle", TRI);
-    m_OscType.addItem("Square", SQUARE);
-    m_OscType.setSelectedId(SINE, juce::NotificationType::dontSendNotification);
-    m_OscType.addListener(this);
-
-    m_ModType.addItem("Sine", SINE);
-    m_ModType.addItem("Triangle", TRI);
-    m_ModType.addItem("Square", SQUARE);
-    m_ModType.addItem("Step", STEP);
-    m_ModType.addItem("Noise", NOISE);
-    m_ModType.addItem("Sweep", SWEEP);
-    m_ModType.setSelectedId(SINE, juce::NotificationType::dontSendNotification);
-    m_ModType.addListener(this);
 }
 
 
@@ -97,9 +82,3 @@ void OscSectionComponent::resized()
     m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
     m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 }
-
-void OscSectionComponent::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged)
-{
-
-}
-

@@ -17,6 +17,7 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat& param)
     onDragEnd     = [this]() { sliderStoppedDragging(); };
 }
 
+
 void KorgKnob::handleNewParameterValue()
 {
     if (! isDragging)
@@ -25,7 +26,6 @@ void KorgKnob::handleNewParameterValue()
         repaint();
     }
 }
-
 
 
 void KorgKnob::sliderValueChanged(juce::Slider* slider)

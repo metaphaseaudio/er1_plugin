@@ -31,18 +31,18 @@ ER1AudioProcessor::ER1AudioProcessor()
                   )
 #endif
 {
-    m_Synth.setCurrentPlaybackSampleRate(48000);
-    meta::SingletonSampleRate<float>::setValue(48000);
+    m_Synth.setCurrentPlaybackSampleRate(44100);
+    meta::SingletonSampleRate<float>::setValue(44100);
     for (int i = 0; i < ER1_SOUND_COUNT; i++)
     {
         // Create params
         auto voiceIDStr = "voice_" + juce::String(i);
 
         auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
-        auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 5);
-        auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 30.0f, 8750.0f, 250.0f);
-        auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1500.0f, 1.5f);
-        auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -11000.0f, 11000.0f, 200.0f);
+        auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
+        auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 30.0f, 4000.0f, 250.0f);
+        auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 500.0f, 1.5f);
+        auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1100.0f, 1100.0f, 200.0f);
 
         auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
         auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
