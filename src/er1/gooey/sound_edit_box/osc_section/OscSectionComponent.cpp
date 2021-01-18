@@ -77,7 +77,6 @@ void OscSectionComponent::resized()
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 
-    
     m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
     m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
     m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);

@@ -20,7 +20,7 @@ class SoundEditorWindow
     , juce::ChangeListener
 {
 public:
-    SoundEditorWindow(ER1Sound::Ptr sound);
+    explicit SoundEditorWindow(ER1Sound::Ptr sound);
     void resized() override;
 
 private:
@@ -29,4 +29,6 @@ private:
     ConfigComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundEditorWindow);
 };

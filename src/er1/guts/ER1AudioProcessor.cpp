@@ -65,7 +65,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         OscParams osc = {oscType, modType, pitch, modSpeed, modDepth};
         AmpParams amp = {decay, level, pan, lowBoost};
 
-        m_Sounds.add(new ER1Sound(osc, amp, i, 1));
+        m_Sounds.add(new ER1Sound(osc, amp, i));
         auto sound = m_Sounds.getLast();
         m_Synth.addSound(sound);
     }
