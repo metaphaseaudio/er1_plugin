@@ -43,20 +43,22 @@ LIST(SORT ER1_SOURCE)
 
 target_sources(ER-1 PRIVATE ${ER1_SOURCE})
 target_compile_definitions(ER-1
-        PUBLIC
+    PUBLIC
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
-        JUCE_VST3_CAN_REPLACE_VST2=0)
+        JUCE_VST3_CAN_REPLACE_VST2=0
+)
 
 target_link_libraries(ER-1
-        PRIVATE
-            juce::juce_audio_utils
-        PUBLIC
-            juce::juce_recommended_config_flags
-            juce::juce_recommended_lto_flags
-            juce::juce_recommended_warning_flags
-            er1dsp
-            metaphase_core)
+    PRIVATE
+        juce::juce_audio_utils
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
+    PUBLIC
+        er1dsp
+        metaphase_core
+)
 
 option(BUILD_TESTS "BUILD_TESTS" OFF)
 if (BUILD_TESTS)
