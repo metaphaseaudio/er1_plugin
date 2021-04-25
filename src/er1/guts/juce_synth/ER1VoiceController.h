@@ -12,6 +12,9 @@ class ER1Voice
     : public juce::SynthesiserVoice
 {
 public:
+    ER1Voice();
+
+    void setCurrentPlaybackSampleRate (double newRate) override;
     bool canPlaySound(juce::SynthesiserSound*) override { return true; }
     void startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) override;
     void stopNote(float velocity, bool allowTailOff) override;
