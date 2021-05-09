@@ -15,9 +15,9 @@
 using namespace juce;
 
 OscSectionComponent::OscSectionComponent(OscParams& params)
-    : m_Pitch(*params.pitch), m_PitchLabel("Pitch Label", "Pitch")
+    : m_Pitch(*params.pitch, 10000), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth(*params.modDepth), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
-    , m_ModSpeed(*params.modSpeed), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
+    , m_ModSpeed(*params.modSpeed, 8000), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
     , m_ModType(*params.modType), m_ModTypeLabel("Mod Type Label", "Mod Type")
     , m_OscType(*params.oscType), m_OscTypeLabel("Osc Type Label", "Osc Type")
 {
@@ -25,7 +25,9 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
     m_ModDepthLabel.setJustificationType(juce::Justification::centred);
 
+    m_Pitch.setSkewFactor(0.2);
     addAndMakeVisible(m_Pitch);    addAndMakeVisible(m_PitchLabel);
+    m_ModSpeed.setSkewFactor(0.2);
     addAndMakeVisible(m_ModSpeed); addAndMakeVisible(m_ModSpeedLabel);
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);

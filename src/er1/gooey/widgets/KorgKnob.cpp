@@ -5,18 +5,18 @@
 #include "KorgKnob.h"
 #include <meta/util/range.h>
 
-KorgKnob::KorgKnob(juce::AudioParameterFloat& param)
+KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxBelow)
     , meta::TimedParameterListener(param)
 {
-    auto interval = std::abs(param.range.start - param.range.end) / 100.0f;
+    auto interval = std::abs(param.range.start - param.range.end) / granularity;
     setRange(juce::Range<double>(param.range.start, param.range.end), interval);
     param.addListener(this);
     addListener(this);
+
     onDragStart   = [this]() { sliderStartedDragging(); };
     onDragEnd     = [this]() { sliderStoppedDragging(); };
 }
-
 
 void KorgKnob::handleNewParameterValue()
 {
