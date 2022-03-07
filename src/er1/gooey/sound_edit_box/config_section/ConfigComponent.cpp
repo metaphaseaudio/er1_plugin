@@ -24,7 +24,6 @@ void ConfigComponent::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::black);
     g.fillRect(header);
-    juce::GenericAudioProcessorEditor;
     g.setFont(g.getCurrentFont().boldened());
     g.setColour(ER1Colours::defaultForeground);
     g.drawFittedText("VOICE SETUP", header, juce::Justification::centred, 1);

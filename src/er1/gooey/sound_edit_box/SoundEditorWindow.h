@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
 #include "config_section/ConfigComponent.h"

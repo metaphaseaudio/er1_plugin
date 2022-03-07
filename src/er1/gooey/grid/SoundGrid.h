@@ -10,5 +10,5 @@
 class SoundGrid
     : public meta::RadioGrid<KorgToggleButton, 1, 16>
 {
-    void gridButtonClicked(juce::Button* btn) override {};
+    void gridButtonClicked(juce::Button*) override {};
 };

@@ -5,7 +5,7 @@
 #pragma once
 #include "bin_data/FontDSEG7.h"
 #include "bin_data/FontDSEG14.h"
-#include <JuceHeader.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 
 namespace FontLCD

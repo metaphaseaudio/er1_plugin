@@ -17,7 +17,7 @@ public:
 
 private:
     void timerCallback() override;
-    void gridButtonClicked(juce::Button* btn) override {}
+    void gridButtonClicked(juce::Button*) override {}
 
     int m_BPM;
 };

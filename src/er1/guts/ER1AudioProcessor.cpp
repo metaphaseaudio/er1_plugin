@@ -73,7 +73,6 @@ ER1AudioProcessor::ER1AudioProcessor()
     for (auto i = 0; i < ER1_MAX_POLYPHONY; i++) { m_Synth.addVoice(new ER1Voice()); }
 }
 
-ER1AudioProcessor::~ER1AudioProcessor() {}
 
 //==============================================================================
 const String ER1AudioProcessor::getName() const

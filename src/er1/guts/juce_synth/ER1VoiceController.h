@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include <JuceHeader.h>
+#include <juce_audio_basics/juce_audio_basics.h>
 #include <er1_dsp/Voice.h>
 #include "ER1Sound.h"
 

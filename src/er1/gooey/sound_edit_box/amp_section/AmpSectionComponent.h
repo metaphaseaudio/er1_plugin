@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 #include <er1_dsp/Voice.h>
 #include "../../widgets/KorgKnob.h"
 #include "../../../guts/juce_synth/ER1Sound.h"

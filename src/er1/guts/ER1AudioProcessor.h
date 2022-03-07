@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 #include <er1_dsp/Oscillator.h>
 #include <er1_dsp/Envelope.h>
 #include <er1_dsp/Voice.h>
@@ -34,7 +34,7 @@ public:
 #endif
     //==============================================================================
     ER1AudioProcessor();
-    ~ER1AudioProcessor();
+    ~ER1AudioProcessor() override = default;
 
     //==============================================================================
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;

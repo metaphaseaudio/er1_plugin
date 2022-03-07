@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include <JuceHeader.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 #include "../widgets/KorgButton.h"
 #include "../widgets/KorgPad.h"
 #include "../widgets/SelectorButton.h"
