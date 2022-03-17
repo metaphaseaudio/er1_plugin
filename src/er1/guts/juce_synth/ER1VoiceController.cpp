@@ -63,3 +63,11 @@ void ER1Voice::setCurrentPlaybackSampleRate(double newRate)
     m_Voice.setSampleRate(newRate);
 }
 
+bool ER1Voice::canPlaySound(juce::SynthesiserSound* sound)
+{
+    const auto ref_count = sound->getReferenceCount();
+    if (ref_count > 2 && sound != static_cast<juce::SynthesiserSound*>(getCurrentlyPlayingSound()))
+        { return false; }
+    return true;
+}
+

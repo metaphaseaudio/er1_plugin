@@ -19,6 +19,7 @@ public:
     AmpParams amp;
     OscParams osc;
 
+
 private:
     int m_Note, m_Chan;
 };

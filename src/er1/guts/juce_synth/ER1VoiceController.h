@@ -15,7 +15,7 @@ public:
     ER1Voice();
 
     void setCurrentPlaybackSampleRate (double newRate) override;
-    bool canPlaySound(juce::SynthesiserSound*) override { return true; }
+    bool canPlaySound(juce::SynthesiserSound* sound) override;
     void startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) override;
     void stopNote(float velocity, bool allowTailOff) override;
     void pitchWheelMoved(int newPitchWheelValue) override {};

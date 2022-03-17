@@ -27,7 +27,7 @@ class ER1AudioProcessor
 public:
 #ifdef _DEBUG
     static constexpr int ER1_SOUND_COUNT = 1;
-    static constexpr int ER1_MAX_POLYPHONY = 1;
+    static constexpr int ER1_MAX_POLYPHONY = 16;
 #else
     static constexpr int ER1_SOUND_COUNT = 64;
     static constexpr int ER1_MAX_POLYPHONY = 32;
