@@ -126,19 +126,6 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     m_Synth.setCurrentPlaybackSampleRate(sampleRate);
-    meta::SingletonSampleRate<float>::setValue(sampleRate);
-
-//	for (int i = ER1_SOUND_COUNT; --i >= 0;)
-//	{
-//		m_Voices[i].oscillator.waveType = meta::ER1::Oscillator::WaveType::SINE;
-//        m_Voices[i].setPitch(250);
-//        m_Voices[i].level = 1.0f;
-//        m_Voices[i].setModulationType(meta::ER1::Voice::ModType::DECAY);
-//        m_Voices[i].setModulationSpeed(1.0f);
-//        m_Voices[i].setModulationDepth(100.0f);
-//        m_Voices[i].envelope.setSpeed(0.1f);
-//		m_Voices[i].reset();
-//	}
 }
 
 void ER1AudioProcessor::releaseResources() {}
