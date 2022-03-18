@@ -10,9 +10,9 @@ ER1Voice::ER1Voice()
 
 void ER1Voice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
-    auto* voice_params = static_cast<ER1Sound*> (getCurrentlyPlayingSound().get());
-    m_Voice.setWaveType(static_cast<meta::ER1::WaveShape>(meta::ER1::WaveShape::TRIANGLE)); //voice_params->osc.oscType->getIndex() + 1));
-    m_Voice.setModulationType(meta::ER1::Voice::ModType::DECAY);//static_cast<meta::ER1::Voice::ModType>(voice_params->osc.modType->getIndex()));
+    auto* voice_params = static_cast<ER1Sound*>(getCurrentlyPlayingSound().get());
+    m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(voice_params->osc.oscType->getIndex()));
+    m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(voice_params->osc.modType->getIndex()));
     m_Voice.setModulationSpeed(voice_params->osc.modSpeed->get());
     m_Voice.setModulationDepth(voice_params->osc.modDepth->get());
     m_Voice.setPitch(voice_params->osc.pitch->get());
@@ -37,8 +37,8 @@ void ER1Voice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int start
     if (auto* voice_params = static_cast<ER1Sound*> (getCurrentlyPlayingSound().get()))
     {
         // Plus one here to align with the options
-//        m_Voice.setWaveType(static_cast<meta::ER1::Oscillator::WaveType>(voice_params->osc.oscType->getIndex() + 1));
-//        m_Voice.setModulationType(static_cast<meta::ER1::Voice::ModType>(voice_params->osc.modType->getIndex()));
+        m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(voice_params->osc.oscType->getIndex()));
+        m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(voice_params->osc.modType->getIndex()));
         m_Voice.setModulationSpeed(voice_params->osc.modSpeed->get());
         m_Voice.setModulationDepth(voice_params->osc.modDepth->get());
         m_Voice.setPitch(voice_params->osc.pitch->get());

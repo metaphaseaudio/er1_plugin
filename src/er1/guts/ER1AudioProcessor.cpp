@@ -8,12 +8,18 @@ static juce::StringArray OscNames =
         {
             "Sine"
             , "Triangle"
+            , "Square"
+            , "Saw"
+            , "Inverse Saw"
         };
+
 static juce::StringArray ModulationNames =
         {
-            "Saw"
-            , "Square"
+            "Sine"
             , "Triangle"
+            , "Square"
+            , "Saw"
+            , "Inverse Saw"
             , "SAH"
             , "Noise"
             , "Decay"
