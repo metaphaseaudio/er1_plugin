@@ -36,7 +36,7 @@ public:
     void resized() override;
 
 private:
-
+    LCDReadout m_VoiceSelector;
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;

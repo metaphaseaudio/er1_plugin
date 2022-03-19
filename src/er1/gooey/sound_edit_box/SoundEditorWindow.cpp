@@ -19,8 +19,7 @@ void SoundEditorWindow::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
     auto upper_bounds = bounds.removeFromTop(80);
-    upper_bounds.removeFromLeft(150);
-    upper_bounds.removeFromLeft(5);
+    upper_bounds.removeFromLeft(155);
     m_VoiceSetup.setBounds(upper_bounds);
 
     bounds.removeFromTop(5);
