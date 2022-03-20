@@ -7,7 +7,8 @@
 #include "../fonts/FontLCD.h"
 
 SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
-    : m_OscSection(dynamic_cast<ER1Sound*>(sound.get())->osc)
+    : m_VoiceSetup(dynamic_cast<ER1Sound*>(sound.get())->config)
+    , m_OscSection(dynamic_cast<ER1Sound*>(sound.get())->osc)
     , m_AmpSection(dynamic_cast<ER1Sound*>(sound.get())->amp)
 {
     addAndMakeVisible(&m_VoiceSetup);
@@ -19,8 +20,8 @@ void SoundEditorWindow::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
     auto upper_bounds = bounds.removeFromTop(80);
-    upper_bounds.removeFromLeft(155);
-    m_VoiceSetup.setBounds(upper_bounds);
+    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(150));
+    upper_bounds.removeFromLeft(5);
 
     bounds.removeFromTop(5);
     m_OscSection.setBounds(bounds.removeFromTop(160));

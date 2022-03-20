@@ -5,7 +5,7 @@
 #include "ER1LAF.h"
 #include "ER1Colours.h"
 #include "../sound_edit_box/osc_section/WaveSelectors.h"
-#include "../widgets/LCDReadout.h"
+#include "../widgets/LCDText.h"
 
 
 using namespace juce;
@@ -21,9 +21,9 @@ ER1LAF::ER1LAF()
     setColour(WaveformComponent::ColourIds::waveformFGColour, juce::Colours::black);
     setColour(WaveformComponent::ColourIds::waveformBGColour, ER1Colours::defaultForeground);
 
-    setColour(LCDReadout::ColourIds::bezelColour, ER1Colours::defaultForeground);
-    setColour(LCDReadout::ColourIds::lcdColour, ER1Colours::lcdRed);
-    setColour(LCDReadout::ColourIds::textColour, juce::Colours::red);
+    setColour(LCDText::ColourIds::bezelColour, ER1Colours::defaultForeground);
+    setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
+    setColour(LCDText::ColourIds::textColour, juce::Colours::red);
 
 }
 

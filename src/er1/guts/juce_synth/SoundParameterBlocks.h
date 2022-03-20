@@ -5,6 +5,12 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 
+struct ConfigParams
+{
+    std::string name;
+    unsigned int note;
+    unsigned int chan;
+};
 
 struct OscParams
 {
@@ -23,4 +29,8 @@ struct AmpParams
     juce::AudioParameterFloat* lowBoost;
 };
 
-
+struct DelayParams
+{
+    juce::AudioParameterFloat* time;
+    juce::AudioParameterFloat* depth;
+};

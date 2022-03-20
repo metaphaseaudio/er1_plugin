@@ -4,7 +4,7 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "../widgets/LCDReadout.h"
+#include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
 
 
@@ -21,7 +21,7 @@ public:
 
 private:
     void buttonClicked(juce::Button* btn) override;
-    LCDReadout m_LCD;
+//    LCDText m_LCD;
     juce::Label m_LCDLabel, m_LockMidiLabel;
     KorgToggleButton m_LockMidi;
 };

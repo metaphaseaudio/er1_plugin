@@ -18,7 +18,6 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_VoiceSelector(2, 50)
 {
     setLookAndFeel(&m_LAF);
     setSize(360, 450);
@@ -31,9 +30,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
         addChildComponent(window);
     }
 
-    addAndMakeVisible(m_VoiceSelector);
     getChildComponent(0)->setVisible(true);
-    m_VoiceSelector.setText("01");
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -56,6 +53,4 @@ void ER1AudioProcessorEditor::resized()
     auto internalBounds = getLocalBounds().reduced(5);
     for (auto& window : m_SoundEditorWindows)
         { window->setBounds(internalBounds); }
-    auto top = internalBounds.removeFromTop(80);
-    m_VoiceSelector.setBounds(top.removeFromLeft(100).reduced(3));
 }

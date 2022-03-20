@@ -7,12 +7,11 @@
 
 
 PatchSelector::PatchSelector()
-    : m_LCD(4, 20)
-    , m_LCDLabel("LCD Label", "Patch Num:")
+    : m_LCDLabel("LCD Label", "Patch Num:")
     , m_LockMidiLabel("Lock Midi Label", "Change on midi")
 {
-    m_LCD.setText("ER-1");
-    addAndMakeVisible(m_LCD);
+//    m_LCD.setText("ER-1");
+//    addAndMakeVisible(m_LCD);
     addAndMakeVisible(m_LCDLabel);
     addAndMakeVisible(m_LockMidi);
     addAndMakeVisible(m_LockMidiLabel);
@@ -24,7 +23,7 @@ void PatchSelector::resized()
     auto bounds = getLocalBounds();
     auto lcdLabal = bounds.removeFromTop(45);
     m_LCDLabel.setBounds(lcdLabal.removeFromLeft(45));
-    m_LCD.setBounds(lcdLabal.reduced(5));
+//    m_LCD.setBounds(lcdLabal.reduced(5));
     auto lockMidi = bounds.removeFromTop(30);
     m_LockMidi.setBounds(lockMidi.removeFromLeft(30).reduced(3));
     m_LockMidiLabel.setBounds(lockMidi);

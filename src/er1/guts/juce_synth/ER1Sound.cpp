@@ -21,9 +21,11 @@ static juce::StringArray ModulationNames =
 };
 
 
-ER1Sound::ER1Sound(OscParams osc, AmpParams amp, int midiNoteNumber, int midiChannel)
-    : amp(amp)
+ER1Sound::ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel)
+    : config{"New Sound", midiNoteNumber, midiChannel}
+    , amp(amp)
     , osc(osc)
+    , delay(delay)
     , m_Chan(midiChannel)
     , m_Note(midiNoteNumber)
 {}

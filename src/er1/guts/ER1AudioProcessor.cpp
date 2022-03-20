@@ -55,6 +55,9 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
         auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
+        auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
+        auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+
         // Add params to processor
         addParameter(oscType);
         addParameter(pitch);
@@ -67,11 +70,15 @@ ER1AudioProcessor::ER1AudioProcessor()
         addParameter(decay);
         addParameter(lowBoost);
 
+        addParameter(time);
+        addParameter(depth);
+
         // Add Sound
         OscParams osc = {oscType, modType, pitch, modSpeed, modDepth};
         AmpParams amp = {decay, level, pan, lowBoost};
+        DelayParams delay = {time, depth};
 
-        m_Sounds.add(new ER1Sound(osc, amp, i));
+        m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
         auto sound = m_Sounds.getLast();
         m_Synth.addSound(sound);
     }
@@ -180,11 +187,56 @@ AudioProcessorEditor *ER1AudioProcessor::createEditor()
 
 //==============================================================================
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
-{}
+{
+    MemoryOutputStream stream(destData, true);
+
+    for (const auto sound : m_Sounds)
+    {
+        stream.writeString(sound->config.name);
+        stream.writeInt(sound->config.note);
+        stream.writeInt(sound->config.chan);
+        stream.writeFloat(*sound->osc.pitch);
+        stream.writeInt(*sound->osc.oscType);
+        stream.writeInt(*sound->osc.modType);
+        stream.writeFloat(*sound->osc.modSpeed);
+        stream.writeFloat(*sound->osc.modDepth);
+
+        stream.writeFloat(*sound->amp.decay);
+        stream.writeFloat(*sound->amp.level);
+        stream.writeFloat(*sound->amp.pan);
+        stream.writeFloat(*sound->amp.lowBoost);
+
+        stream.writeFloat(*sound->delay.time);
+        stream.writeFloat(*sound->delay.depth);
+    }
+}
+
 
 void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
-{}
+{
+    MemoryInputStream stream (data, static_cast<size_t> (sizeInBytes), false);
 
+    for (const auto sound : m_Sounds)
+    {
+        sound->config.name = stream.readString().toStdString();
+        sound->config.note = stream.readInt();
+        sound->config.chan = stream.readInt();
+        sound->osc.pitch->setValueNotifyingHost(stream.readFloat());
+        sound->osc.oscType->setValueNotifyingHost(stream.readInt());
+        sound->osc.modType->setValueNotifyingHost(stream.readInt());
+        sound->osc.modSpeed->setValueNotifyingHost(stream.readFloat());
+        sound->osc.modDepth->setValueNotifyingHost(stream.readFloat());
+
+        sound->amp.decay->setValueNotifyingHost(stream.readFloat());
+        sound->amp.level->setValueNotifyingHost(stream.readFloat());
+        sound->amp.pan->setValueNotifyingHost(stream.readFloat());
+        sound->amp.lowBoost->setValueNotifyingHost(stream.readFloat());
+
+        sound->delay.time->setValueNotifyingHost(stream.readFloat());
+        sound->delay.depth->setValueNotifyingHost(stream.readFloat());
+
+    }
+}
 
 //==============================================================================
 // This creates new instances of the plugin..

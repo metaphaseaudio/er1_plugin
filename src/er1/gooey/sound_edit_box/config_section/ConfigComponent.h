@@ -4,13 +4,15 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
+#include "../../widgets/LCDText.h"
+#include "../../../guts/juce_synth/SoundParameterBlocks.h"
 
 class ConfigComponent
     : public juce::Component
     , juce::TextEditor::Listener
 {
 public:
-    ConfigComponent();
+    ConfigComponent(ConfigParams& config);
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -22,8 +24,9 @@ private:
     /** Called when the text editor loses focus. */
     void textEditorFocusLost(juce::TextEditor&) override;
 
-    juce::Label m_MidiNoteLabel;
-    juce::TextEditor m_MidiNote;
+    ConfigParams& r_Config;
+    LCDText m_Name, m_MidiNoteLabel, m_MidiChanLabel;
+    juce::TextEditor m_MidiNote, m_MidiChan;
 };
 
 

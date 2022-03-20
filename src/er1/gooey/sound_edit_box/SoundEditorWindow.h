@@ -8,7 +8,7 @@
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
 #include "config_section/ConfigComponent.h"
-#include "../widgets/LCDReadout.h"
+#include "../widgets/LCDText.h"
 #include "../../guts/ER1AudioProcessor.h"
 #include "../../guts/juce_synth/ER1Sound.h"
 #include <meta/gooey/RadioGrid.h>

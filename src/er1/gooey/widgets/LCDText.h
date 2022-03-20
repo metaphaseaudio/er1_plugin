@@ -5,8 +5,8 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 
-class LCDReadout
-    : public juce::Component
+class LCDText
+    : public juce::Label
 {
 public:
     enum ColourIds
@@ -26,18 +26,25 @@ public:
         boldItalic
     };
 
-    LCDReadout(size_t char_count, size_t font_size, FontOption font=standard, float contrast=0.2, float brightness=1.0, size_t bezelPx=2);
+    LCDText(const std::string& componentName, const std::string& text="");
+
+//    void setCharCount(int n);
+    void setFontSize(int n);
+//    void setFontOption(FontOption font);
+//    void setContrast(float contrast);
+//    void setBrightness(float brightness);
+
     void setText(const std::string& value);
     void paint (juce::Graphics& g) override;
     void resized() override;
 
 private:
-    static const juce::Font& getFont(FontOption option);
+    static const juce::Font& getNewFont(FontOption option);
 
-    int m_CharCount, m_BezelThickness;
+    int m_CharCount;
     float m_Contrast, m_Brightness;
     FontOption m_Font;
-    juce::Label m_LCD, m_LCDdark;
+    juce::Label m_LCDdark;
 };
 
 
