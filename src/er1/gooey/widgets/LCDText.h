@@ -26,7 +26,7 @@ public:
         boldItalic
     };
 
-    LCDText(const std::string& componentName, const std::string& text="");
+    LCDText(const std::string& componentName, const std::string& text, int max_chars, float rotate_speed=0.5);
 
 //    void setCharCount(int n);
     void setFontSize(int n);
@@ -34,17 +34,17 @@ public:
 //    void setContrast(float contrast);
 //    void setBrightness(float brightness);
 
-    void setText(const std::string& value);
-    void paint (juce::Graphics& g) override;
-    void resized() override;
+    void paint(juce::Graphics& g) override;
+    void setText(std::string& text, juce::NotificationType notify);
 
 private:
+    static std::string reformat(const std::string& x);
     static const juce::Font& getNewFont(FontOption option);
 
-    int m_CharCount;
-    float m_Contrast, m_Brightness;
+    std::string m_Text;
+    int m_MaxChars;
+    float m_Contrast, m_Brightness, m_RotateSpeed;
     FontOption m_Font;
-    juce::Label m_LCDdark;
 };
 
 

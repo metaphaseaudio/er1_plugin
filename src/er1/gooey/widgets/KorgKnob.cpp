@@ -11,6 +11,7 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
 {
     auto interval = std::abs(param.range.start - param.range.end) / granularity;
     setRange(juce::Range<double>(param.range.start, param.range.end), interval);
+    setValue(param, juce::NotificationType::dontSendNotification);
     param.addListener(this);
     addListener(this);
 
@@ -20,7 +21,7 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
 
 void KorgKnob::handleNewParameterValue()
 {
-    if (! isDragging)
+    if (!isDragging)
     {
         setValue(getParameter().getValue(), juce::NotificationType::dontSendNotification);
         repaint();
@@ -37,12 +38,12 @@ void KorgKnob::sliderValueChanged(juce::Slider* slider)
 
     if (getParameter().getValue() != new_value)
     {
-        if (! isDragging)
+        if (!isDragging)
             getParameter().beginChangeGesture();
 
         getParameter().setValueNotifyingHost(new_value);
 
-        if (! isDragging)
+        if (!isDragging)
             getParameter().endChangeGesture();
     }
 }

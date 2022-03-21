@@ -10,9 +10,9 @@
 
 ConfigComponent::ConfigComponent(ConfigParams& config)
     : r_Config(config)
-    , m_Name("Sound name")
-    , m_MidiNote("Midi note"), m_MidiNoteLabel("Midi note label", "note:")
-    , m_MidiChan("Midi chan"), m_MidiChanLabel("Midi chan label", "chan:")
+    , m_Name("Sound name", "", 9)
+    , m_MidiNote("Midi note"), m_MidiNoteLabel("Midi note label", "note:", 5)
+    , m_MidiChan("Midi chan"), m_MidiChanLabel("Midi chan label", "chan:", 5)
 {
     m_MidiNote.setInputRestrictions(3, "0123456789");
     m_MidiChan.setInputRestrictions(3, "0123456789");
@@ -26,7 +26,7 @@ ConfigComponent::ConfigComponent(ConfigParams& config)
     m_Name.setFontSize(18);
     m_MidiChanLabel.setFontSize(12); m_MidiNoteLabel.setFontSize(12);
 
-    m_Name.setText(config.name);
+    m_Name.setText(config.name, juce::NotificationType::dontSendNotification);
     m_MidiChan.setText(juce::String(r_Config.chan), false);
     m_MidiNote.setText(juce::String(r_Config.note), false);
 }
@@ -41,19 +41,19 @@ void ConfigComponent::paint(juce::Graphics& g)
 
 void ConfigComponent::resized()
 {
-    auto bounds = getLocalBounds().reduced(8);
+    auto bounds = getLocalBounds().reduced(5);
 
-    m_Name.setBounds(bounds.removeFromTop(22));
+    m_Name.setBounds(bounds.removeFromTop(24));
     bounds.removeFromTop(2);
     auto note_row = bounds.removeFromTop(LABEL_HEIGHT);
-    m_MidiNoteLabel.setBounds(note_row.removeFromLeft(m_MidiNoteLabel.getFont().getStringWidth(m_MidiNoteLabel.getText())));
+    m_MidiNoteLabel.setBounds(note_row.removeFromLeft(2 + m_MidiNoteLabel.getFont().getStringWidth(m_MidiNoteLabel.getText())));
     note_row.removeFromLeft(5);
     m_MidiNote.setBounds(note_row);
 
     bounds.removeFromTop(2);
 
     auto chan_row = bounds.removeFromTop(LABEL_HEIGHT);
-    m_MidiChanLabel.setBounds(chan_row.removeFromLeft(m_MidiChanLabel.getFont().getStringWidth(m_MidiChanLabel.getText())));
+    m_MidiChanLabel.setBounds(chan_row.removeFromLeft(2 + m_MidiChanLabel.getFont().getStringWidth(m_MidiChanLabel.getText())));
     chan_row.removeFromLeft(5);
     m_MidiChan.setBounds(chan_row);
 }

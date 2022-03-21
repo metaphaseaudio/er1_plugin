@@ -26,6 +26,4 @@ ER1Sound::ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int
     , amp(amp)
     , osc(osc)
     , delay(delay)
-    , m_Chan(midiChannel)
-    , m_Note(midiNoteNumber)
 {}

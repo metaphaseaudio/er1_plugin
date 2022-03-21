@@ -195,6 +195,7 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
         stream.writeString(sound->config.name);
         stream.writeInt(sound->config.note);
         stream.writeInt(sound->config.chan);
+
         stream.writeFloat(*sound->osc.pitch);
         stream.writeInt(*sound->osc.oscType);
         stream.writeInt(*sound->osc.modType);
@@ -221,6 +222,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         sound->config.name = stream.readString().toStdString();
         sound->config.note = stream.readInt();
         sound->config.chan = stream.readInt();
+
         sound->osc.pitch->setValueNotifyingHost(stream.readFloat());
         sound->osc.oscType->setValueNotifyingHost(stream.readInt());
         sound->osc.modType->setValueNotifyingHost(stream.readInt());

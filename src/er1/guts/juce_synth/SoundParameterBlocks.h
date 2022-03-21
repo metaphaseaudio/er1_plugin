@@ -8,8 +8,8 @@
 struct ConfigParams
 {
     std::string name;
-    unsigned int note;
-    unsigned int chan;
+    std::atomic<unsigned int> note;
+    std::atomic<unsigned int> chan;
 };
 
 struct OscParams

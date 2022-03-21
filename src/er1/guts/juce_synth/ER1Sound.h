@@ -13,8 +13,8 @@ class ER1Sound
 {
 public:
     ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel=1);
-    bool appliesToNote (int midiNoteNumber) override { return midiNoteNumber == m_Note; };
-    bool appliesToChannel (int midiChannel) override { return midiChannel == m_Chan; };
+    bool appliesToNote (int midiNoteNumber) override { return midiNoteNumber == config.note; };
+    bool appliesToChannel (int midiChannel) override { return midiChannel == config.chan; };
 
     ConfigParams config;
     AmpParams amp;
@@ -22,7 +22,6 @@ public:
     DelayParams delay;
 
 private:
-    int m_Note, m_Chan;
 };
 
 
