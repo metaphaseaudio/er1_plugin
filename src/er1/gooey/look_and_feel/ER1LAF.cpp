@@ -24,7 +24,6 @@ ER1LAF::ER1LAF()
     setColour(LCDText::ColourIds::bezelColour, ER1Colours::defaultForeground);
     setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
     setColour(LCDText::ColourIds::textColour, juce::Colours::red);
-
 }
 
 
@@ -43,6 +42,14 @@ void ER1LAF::drawRotarySlider
     Point<float> center(bounds.getCentreX(), bounds.getCentreY());
     auto knobBounds = Rectangle<float>(radius * 1.3f, radius * 1.3f).withCentre(center);
 
+    auto shadow_centre = juce::Point<int>(x, y);
+    shadow_centre.addXY(2, 2);
+    auto shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
+    juce::Path circle_path;
+    circle_path.addEllipse(knobBounds);
+    shadow.drawForPath(g, circle_path);
+
+    g.setColour(fill);
     g.fillEllipse(knobBounds);
 
     if (radius > 0.0)
