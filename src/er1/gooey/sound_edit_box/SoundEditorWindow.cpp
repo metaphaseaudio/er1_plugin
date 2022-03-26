@@ -10,18 +10,21 @@ SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
     : m_VoiceSetup(dynamic_cast<ER1Sound*>(sound.get())->config)
     , m_OscSection(dynamic_cast<ER1Sound*>(sound.get())->osc)
     , m_AmpSection(dynamic_cast<ER1Sound*>(sound.get())->amp)
+    , m_DelaySection(dynamic_cast<ER1Sound*>(sound.get())->delay)
 {
     addAndMakeVisible(&m_VoiceSetup);
     addAndMakeVisible(&m_AmpSection);
     addAndMakeVisible(&m_OscSection);
+    addAndMakeVisible(&m_DelaySection);
 }
 
 void SoundEditorWindow::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
-    auto upper_bounds = bounds.removeFromTop(80);
-    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(150));
+    auto upper_bounds = bounds.removeFromTop(120);
+    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(160));
     upper_bounds.removeFromLeft(5);
+    m_DelaySection.setBounds(upper_bounds);
 
     bounds.removeFromTop(5);
     m_OscSection.setBounds(bounds.removeFromTop(160));

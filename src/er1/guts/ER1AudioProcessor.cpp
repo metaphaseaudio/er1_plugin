@@ -5,25 +5,25 @@
 
 using namespace juce;
 static juce::StringArray OscNames =
-        {
-            "Sine"
-            , "Triangle"
-            , "Square"
-            , "Saw"
-            , "Inverse Saw"
-        };
+{
+    "Sine"
+    , "Triangle"
+    , "Square"
+    , "Saw"
+    , "Inverse Saw"
+};
 
 static juce::StringArray ModulationNames =
-        {
-            "Sine"
-            , "Triangle"
-            , "Square"
-            , "Saw"
-            , "Inverse Saw"
-            , "SAH"
-            , "Noise"
-            , "Decay"
-        };
+{
+    "Sine"
+    , "Triangle"
+    , "Square"
+    , "Saw"
+    , "Inverse Saw"
+    , "SAH"
+    , "Noise"
+    , "Decay"
+};
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -55,8 +55,8 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
         auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-        auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
-        auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+        auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+        auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 1.0f, 0.0f);
 
         // Add params to processor
         addParameter(oscType);
@@ -120,19 +120,11 @@ bool ER1AudioProcessor::isMidiEffect() const
 #endif
 }
 
-double ER1AudioProcessor::getTailLengthSeconds() const
-{
-    return 0.0;
-}
-
+double ER1AudioProcessor::getTailLengthSeconds() const { return 0.0; }
 int ER1AudioProcessor::getNumPrograms() { return 1; }
-
 int ER1AudioProcessor::getCurrentProgram() { return 0; }
-
 void ER1AudioProcessor::setCurrentProgram(int index) {}
-
 const String ER1AudioProcessor::getProgramName(int index) { return {}; }
-
 void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 
 //==============================================================================
@@ -236,7 +228,6 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
         sound->delay.time->setValueNotifyingHost(stream.readFloat());
         sound->delay.depth->setValueNotifyingHost(stream.readFloat());
-
     }
 }
 

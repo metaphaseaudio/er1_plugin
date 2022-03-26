@@ -18,6 +18,10 @@ void ER1Voice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSo
     m_Voice.setPitch(voice_params->osc.pitch->get());
     m_Voice.level = voice_params->amp.level->get();
     m_Voice.setDecay(voice_params->amp.decay->get());
+    m_Voice.setTempoSync(true);
+    m_Voice.setTempo(120);
+    m_Voice.setDelayTime(voice_params->delay.time->get());
+    m_Voice.setDelayDepth(voice_params->delay.depth->get());
 
     m_Voice.reset();
     m_Voice.start();
@@ -45,6 +49,10 @@ void ER1Voice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int start
         m_Voice.level = voice_params->amp.level->get();
         m_Voice.pan = voice_params->amp.pan->get();
         m_Voice.setDecay(voice_params->amp.decay->get());
+        m_Voice.setTempoSync(true);
+        m_Voice.setTempo(120);
+        m_Voice.setDelayTime(voice_params->delay.time->get());
+        m_Voice.setDelayDepth(voice_params->delay.depth->get());
 
         m_Voice.processBlock(
             outputBuffer.getArrayOfWritePointers()
