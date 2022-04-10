@@ -59,9 +59,6 @@ void ER1Voice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int start
             , numSamples
             , startSample
         );
-
-        if (m_Voice.hasEnded())
-            { stopNote (0.0f, false); }
     }
 }
 
