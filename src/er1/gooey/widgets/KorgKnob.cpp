@@ -23,7 +23,8 @@ void KorgKnob::handleNewParameterValue()
 {
     if (!isDragging)
     {
-        setValue(getParameter().getValue(), juce::NotificationType::dontSendNotification);
+        const auto value = getParameter().getValue();
+        setValue(meta::remap_range(getRange(), juce::Range<double>(0.0, 1.0), value), juce::NotificationType::dontSendNotification);
         repaint();
     }
 }

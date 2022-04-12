@@ -16,6 +16,8 @@ public:
     bool appliesToNote (int midiNoteNumber) override { return midiNoteNumber == config.note; };
     bool appliesToChannel (int midiChannel) override { return midiChannel == config.chan; };
 
+    void printStatus();
+
     ConfigParams config;
     AmpParams amp;
     OscParams osc;

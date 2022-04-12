@@ -181,7 +181,6 @@ AudioProcessorEditor *ER1AudioProcessor::createEditor()
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
-
     for (const auto sound : m_Sounds)
     {
         stream.writeString(sound->config.name);
@@ -208,26 +207,25 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
     MemoryInputStream stream (data, static_cast<size_t> (sizeInBytes), false);
-
-    for (const auto sound : m_Sounds)
+    for (auto& sound : m_Sounds)
     {
         sound->config.name = stream.readString().toStdString();
         sound->config.note = stream.readInt();
         sound->config.chan = stream.readInt();
 
-        sound->osc.pitch->setValueNotifyingHost(stream.readFloat());
-        sound->osc.oscType->setValueNotifyingHost(stream.readInt());
-        sound->osc.modType->setValueNotifyingHost(stream.readInt());
-        sound->osc.modSpeed->setValueNotifyingHost(stream.readFloat());
-        sound->osc.modDepth->setValueNotifyingHost(stream.readFloat());
+        *sound->osc.pitch = stream.readFloat();
+        *sound->osc.oscType = stream.readInt();
+        *sound->osc.modType = stream.readInt();
+        *sound->osc.modSpeed = stream.readFloat();
+        *sound->osc.modDepth = stream.readFloat();
 
-        sound->amp.decay->setValueNotifyingHost(stream.readFloat());
-        sound->amp.level->setValueNotifyingHost(stream.readFloat());
-        sound->amp.pan->setValueNotifyingHost(stream.readFloat());
-        sound->amp.lowBoost->setValueNotifyingHost(stream.readFloat());
+        *sound->amp.decay = stream.readFloat();
+        *sound->amp.level = stream.readFloat();
+        *sound->amp.pan = stream.readFloat();
+        *sound->amp.lowBoost = stream.readFloat();
 
-        sound->delay.time->setValueNotifyingHost(stream.readFloat());
-        sound->delay.depth->setValueNotifyingHost(stream.readFloat());
+        *sound->delay.time = stream.readFloat();
+        *sound->delay.depth = stream.readFloat();
     }
 }
 

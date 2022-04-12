@@ -27,3 +27,24 @@ ER1Sound::ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int
     , osc(osc)
     , delay(delay)
 {}
+
+void ER1Sound::printStatus()
+{
+    std::cout << config.name << std::endl;
+    std::cout << "Shape: " << osc.oscType->getCurrentValueAsText() << std::endl;
+    std::cout << "Pitch: " << osc.pitch->getCurrentValueAsText() << std::endl;
+    std::cout << "Mod Type: " << osc.modType->getCurrentValueAsText() << std::endl;
+    std::cout << "Mod Speed: " << osc.modSpeed->getCurrentValueAsText() << std::endl;
+    std::cout << "Mod Depth: " << osc.modDepth->getCurrentValueAsText() << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "Decay: " << amp.decay->getCurrentValueAsText() << std::endl;
+    std::cout << "Level: " << amp.level->getCurrentValueAsText() << std::endl;
+    std::cout << "Pan: " << amp.pan->getCurrentValueAsText() << std::endl;
+    std::cout << "Boost: " << amp.lowBoost->getCurrentValueAsText() << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "Delay Depth: " << delay.depth->getCurrentValueAsText() << std::endl;
+    std::cout << "Delay Time: " << delay.time->getCurrentValueAsText() << std::endl;
+    std::cout << std::endl;
+}

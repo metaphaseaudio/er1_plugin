@@ -15,7 +15,7 @@
 using namespace juce;
 
 OscSectionComponent::OscSectionComponent(OscParams& params)
-    : m_Pitch(*params.pitch, 10000), m_PitchLabel("Pitch Label", "Pitch")
+    : m_Pitch(*params.pitch), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth(*params.modDepth), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
     , m_ModSpeed(*params.modSpeed, 8000), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
     , m_ModType(*params.modType), m_ModTypeLabel("Mod Type Label", "Mod Type")
