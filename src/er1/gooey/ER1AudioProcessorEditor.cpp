@@ -20,7 +20,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     , processor(p)
 {
     setLookAndFeel(&m_LAF);
-    setSize(360, 450);
+    setSize(650, 401);
 
     for (int i = 0; i < ER1AudioProcessor::ER1_SOUND_COUNT; i++)
     {

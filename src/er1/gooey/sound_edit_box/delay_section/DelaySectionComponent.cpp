@@ -21,9 +21,11 @@ DelaySectionComponent::DelaySectionComponent(DelayParams& params)
 
     m_DepthLabel.setJustificationType(juce::Justification::centred);
     m_TimeLabel.setJustificationType(juce::Justification::centred);
+    m_SyncLabel.setJustificationType(juce::Justification::centred);
 
-    addAndMakeVisible(m_Depth);    addAndMakeVisible(m_DepthLabel);
-    addAndMakeVisible(m_Time);    addAndMakeVisible(m_TimeLabel);
+    addAndMakeVisible(m_Depth); addAndMakeVisible(m_DepthLabel);
+    addAndMakeVisible(m_Time); addAndMakeVisible(m_TimeLabel);
+    addAndMakeVisible(m_Sync); addAndMakeVisible(m_SyncLabel);
 }
 
 DelaySectionComponent::~DelaySectionComponent() {}

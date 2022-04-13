@@ -13,6 +13,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <er1_dsp/Voice.h>
 #include "../../widgets/KorgKnob.h"
+#include "../../widgets/KorgButton.h"
 #include "../../../guts/juce_synth/ER1Sound.h"
 
 
@@ -29,6 +30,7 @@ public:
 private:
     KorgKnob m_Time;  juce::Label m_TimeLabel;
     KorgKnob m_Depth; juce::Label m_DepthLabel;
+    KorgButton m_Sync; juce::Label m_SyncLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelaySectionComponent)
 };

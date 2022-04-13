@@ -32,6 +32,10 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
+
+    m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+    m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 }
 
 
@@ -59,9 +63,8 @@ void OscSectionComponent::resized()
     auto ctrlBounds = StandardShapes::largeDial;
     auto selectorBounds = bounds.removeFromRight(bounds.getWidth() - ((ctrlBounds.getWidth() + margin) * 3));
 
-    selectorBounds.removeFromTop(margin);
     m_OscTypeLabel.setBounds(selectorBounds.removeFromTop(labelHeight)); m_OscType.setBounds(selectorBounds.removeFromTop(labelHeight));
-    selectorBounds.removeFromTop(margin);
+    selectorBounds.removeFromTop(5);
     m_ModTypeLabel.setBounds(selectorBounds.removeFromTop(labelHeight)); m_ModType.setBounds(selectorBounds.removeFromTop(labelHeight));
 
     auto labelBounds = bounds.removeFromTop(labelHeight).removeFromLeft(ctrlBounds.getWidth());
@@ -78,8 +81,4 @@ void OscSectionComponent::resized()
     m_ModDepthLabel.setBounds(labelBounds); m_ModDepth.setBounds(ctrlBounds);
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
-
-    m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 }

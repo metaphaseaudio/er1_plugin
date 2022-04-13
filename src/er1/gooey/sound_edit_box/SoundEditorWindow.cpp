@@ -22,13 +22,15 @@ void SoundEditorWindow::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
     auto upper_bounds = bounds.removeFromTop(120);
-    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(160));
+    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(244));
     upper_bounds.removeFromLeft(5);
-    m_DelaySection.setBounds(upper_bounds);
+    m_OscSection.setBounds(upper_bounds);
 
     bounds.removeFromTop(5);
-    m_OscSection.setBounds(bounds.removeFromTop(160));
-    m_AmpSection.setBounds(bounds);
+    auto secondRow = bounds.removeFromTop(160);
+    m_AmpSection.setBounds(secondRow.removeFromLeft(395));
+    secondRow.removeFromLeft(5);
+    m_DelaySection.setBounds(secondRow);
 }
 
 void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
