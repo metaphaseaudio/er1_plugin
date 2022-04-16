@@ -11,7 +11,6 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "WaveSelectors.h"
 #include "../../widgets/KorgButton.h"
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgComboBox.h"

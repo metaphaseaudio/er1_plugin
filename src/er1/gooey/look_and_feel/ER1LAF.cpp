@@ -4,7 +4,6 @@
 
 #include "ER1LAF.h"
 #include "ER1Colours.h"
-#include "../sound_edit_box/osc_section/WaveSelectors.h"
 #include "../widgets/LCDText.h"
 
 
@@ -18,9 +17,6 @@ ER1LAF::ER1LAF()
 
     setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::pink);
     setColour(SelectorButton::ColourIds::selectUnlitColour, juce::Colours::darkgrey);
-
-    setColour(WaveformComponent::ColourIds::waveformFGColour, juce::Colours::black);
-    setColour(WaveformComponent::ColourIds::waveformBGColour, ER1Colours::defaultForeground);
 
     setColour(LCDText::ColourIds::bezelColour, ER1Colours::defaultForeground);
     setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
@@ -45,10 +41,10 @@ void ER1LAF::drawRotarySlider
 
     auto shadow_centre = juce::Point<int>(x, y);
     shadow_centre.addXY(2, 2);
-    auto shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
+    auto circleShadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
     juce::Path circle_path;
     circle_path.addEllipse(knobBounds);
-    shadow.drawForPath(g, circle_path);
+    circleShadow.drawForPath(g, circle_path);
 
     g.setColour(fill);
     g.fillEllipse(knobBounds);
@@ -71,12 +67,19 @@ void ER1LAF::drawRotarySlider
 
     g.setColour(outline);
 
-    auto thumbWidth = 8.0f * 2.0f;
     const auto halfPi = MathConstants<float>::halfPi;
     Point<float> thumbPoint(center.x + (radius / 1.25f) * std::cos(toAngle - halfPi)
                           , center.y + (radius / 1.25f) * std::sin(toAngle - halfPi));
-    g.setColour (slider.findColour (Slider::thumbColourId));
     auto line = Line<float>(center, thumbPoint);
+
+    shadow_centre = juce::Point<int>(x, y);
+    shadow_centre.addXY(2, 2);
+    auto lineShadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
+    juce::Path line_path;
+    line_path.addLineSegment(line, 4);
+    lineShadow.drawForPath(g, line_path);
+
+    g.setColour(slider.findColour(Slider::thumbColourId));
     g.drawLine(line, 4);
 }
 
