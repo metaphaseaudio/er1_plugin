@@ -33,9 +33,9 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
 
-    m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
-    m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+//    m_Pitch.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+//    m_ModDepth.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
+//    m_ModSpeed.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 50, 22);
 }
 
 

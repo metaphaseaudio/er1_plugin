@@ -10,6 +10,7 @@
 
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
+#include "BGImage.h"
 
 
 using namespace juce;
@@ -45,6 +46,9 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 	const auto bezel = getLocalBounds().reduced(5);
 	g.setColour(juce::Colours::silver);
 	g.fillRect(bezel);
+
+    Image bg = ImageCache::getFromMemory(BGImage::brushed_steel_png, BGImage::brushed_steel_pngSize);
+    g.drawImage(bg, bezel.toFloat());
 }
 
 void ER1AudioProcessorEditor::resized()

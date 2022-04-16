@@ -13,7 +13,7 @@ class KorgKnob
     , meta::TimedParameterListener
 {
 public:
-    KorgKnob(juce::AudioParameterFloat& param, float granularity=1000.0f);
+    explicit KorgKnob(juce::AudioParameterFloat& param, float granularity=1000.0f);
     void handleNewParameterValue() override;
     void sliderValueChanged(juce::Slider* slider) override;
 

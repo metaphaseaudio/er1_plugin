@@ -13,6 +13,7 @@ using namespace juce;
 
 ER1LAF::ER1LAF()
 {
+    setColour(juce::Label::textColourId, juce::Colours::black);
     setColour(ResizableWindow::ColourIds::backgroundColourId, ER1Colours::defaultBackground);
 
     setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::pink);
@@ -106,11 +107,35 @@ void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool 
 
 void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& internalColour)
 {
-    auto bounds = area.getLocalBounds().reduced(2).toFloat();
-    g.setColour(internalColour);
+    auto bounds = area.getLocalBounds().reduced(5).toFloat();
+    auto calcCurve = [](const juce::Rectangle<float>& area, int x) {
+        return (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
+    };
     auto curve = (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
-    g.fillRoundedRectangle(bounds, curve);
-    g.setColour(juce::Colours::black);
-    g.drawRoundedRectangle(bounds, curve, 2);
+
+    // Border
+    g.setColour(juce::Colours::darkgrey);
+    g.fillRoundedRectangle(bounds, calcCurve(area.getLocalBounds().toFloat(), 5));
+
+
+    // Shadow
+    auto shadow_centre = area.getLocalBounds().getTopLeft();
+    shadow_centre.addXY(1, 1);
+    auto shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 1, shadow_centre.toInt());
+    juce::Path button_path;
+    button_path.addRoundedRectangle(bounds, curve);
+    shadow.drawForPath(g, button_path);
+
+    // Fill
+    bounds = bounds.reduced(2);
+    g.setColour(internalColour);
+    g.fillRoundedRectangle(bounds, calcCurve(bounds, 5));
+
+    // Highlight
+    auto highlightBounds = bounds.reduced(2);
+    g.setColour(internalColour.withMultipliedLightness(1.05));
+    highlightBounds.setX(highlightBounds.getX() - 0.5);
+    highlightBounds.setY(highlightBounds.getY() - 0.5);
+    g.fillRoundedRectangle(highlightBounds, calcCurve(highlightBounds, 5));
 }
 

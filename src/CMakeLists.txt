@@ -5,6 +5,7 @@ set(ER1_VERSION_MAJOR 1)
 set(ER1_VERSION_MINOR 0)
 set(VERSION ${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR})
 add_definitions(-DER1_VERSION="${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR}")
+set(JUCE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/shared/JUCE)
 include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CPP17Boilerplate.cmake)
 
 #-----------------------------------------------------------------------------

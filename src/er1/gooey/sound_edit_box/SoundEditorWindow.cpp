@@ -13,9 +13,10 @@ SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
     , m_DelaySection(dynamic_cast<ER1Sound*>(sound.get())->delay)
 {
     addAndMakeVisible(&m_VoiceSetup);
-    addAndMakeVisible(&m_AmpSection);
     addAndMakeVisible(&m_OscSection);
+    addAndMakeVisible(&m_AmpSection);
     addAndMakeVisible(&m_DelaySection);
+    addAndMakeVisible(&m_Divider);
 }
 
 void SoundEditorWindow::resized()
@@ -27,10 +28,13 @@ void SoundEditorWindow::resized()
     m_OscSection.setBounds(upper_bounds);
 
     bounds.removeFromTop(5);
-    auto secondRow = bounds.removeFromTop(160);
+    auto secondRow = bounds.removeFromTop(120);
     m_AmpSection.setBounds(secondRow.removeFromLeft(395));
     secondRow.removeFromLeft(5);
     m_DelaySection.setBounds(secondRow);
+
+    bounds.removeFromTop(5);
+    m_Divider.setBounds(bounds.removeFromTop(5));
 }
 
 void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)

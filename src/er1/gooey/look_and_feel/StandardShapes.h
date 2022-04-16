@@ -9,6 +9,8 @@
 struct StandardShapes
 {
     static const juce::Rectangle<int> smallDial, largeDial;
+    static const juce::Rectangle<int> smallSquareButton;
+    static const juce::Rectangle<int> smallRectButton;
 };
 
 

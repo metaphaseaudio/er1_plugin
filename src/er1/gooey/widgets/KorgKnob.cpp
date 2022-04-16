@@ -6,7 +6,7 @@
 #include <meta/util/range.h>
 
 KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
-    : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxBelow)
+    : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
     auto interval = std::abs(param.range.start - param.range.end) / granularity;

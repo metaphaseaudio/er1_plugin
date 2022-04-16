@@ -57,6 +57,7 @@ ER1AudioProcessor::ER1AudioProcessor()
 
         auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
         auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+        auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
 
         // Add params to processor
         addParameter(oscType);
@@ -72,11 +73,12 @@ ER1AudioProcessor::ER1AudioProcessor()
 
         addParameter(time);
         addParameter(depth);
+        addParameter(sync);
 
         // Add Sound
         OscParams osc = {oscType, modType, pitch, modSpeed, modDepth};
         AmpParams amp = {decay, level, pan, lowBoost};
-        DelayParams delay = {time, depth};
+        DelayParams delay = {time, depth, sync};
 
         m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
         auto sound = m_Sounds.getLast();
@@ -200,6 +202,7 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 
         stream.writeFloat(*sound->delay.time);
         stream.writeFloat(*sound->delay.depth);
+        stream.writeBool(*sound->delay.sync);
     }
 }
 
@@ -226,6 +229,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
         *sound->delay.time = stream.readFloat();
         *sound->delay.depth = stream.readFloat();
+        *sound->delay.sync = stream.readBool();
     }
 }
 

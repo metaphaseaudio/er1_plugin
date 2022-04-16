@@ -33,4 +33,5 @@ struct DelayParams
 {
     juce::AudioParameterFloat* time;
     juce::AudioParameterFloat* depth;
+    juce::AudioParameterBool* sync;
 };
