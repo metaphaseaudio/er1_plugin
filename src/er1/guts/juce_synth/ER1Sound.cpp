@@ -31,6 +31,8 @@ ER1Sound::ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int
 void ER1Sound::printStatus()
 {
     std::cout << config.name << std::endl;
+    std::cout << "Note: " << config.note << std::endl;
+    std::cout << "Chan: " << config.chan << std::endl;
     std::cout << "Shape: " << osc.oscType->getCurrentValueAsText() << std::endl;
     std::cout << "Pitch: " << osc.pitch->getCurrentValueAsText() << std::endl;
     std::cout << "Mod Type: " << osc.modType->getCurrentValueAsText() << std::endl;
@@ -46,5 +48,6 @@ void ER1Sound::printStatus()
 
     std::cout << "Delay Depth: " << delay.depth->getCurrentValueAsText() << std::endl;
     std::cout << "Delay Time: " << delay.time->getCurrentValueAsText() << std::endl;
+    std::cout << "Delay Sync: " << delay.sync->getCurrentValueAsText() << std::endl;
     std::cout << std::endl;
 }

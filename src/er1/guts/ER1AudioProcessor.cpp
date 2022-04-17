@@ -10,7 +10,7 @@ static juce::StringArray OscNames =
     , "Triangle"
     , "Square"
     , "Saw"
-    , "Inverse Saw"
+    , "Inv Saw"
 };
 
 static juce::StringArray ModulationNames =
@@ -19,7 +19,7 @@ static juce::StringArray ModulationNames =
     , "Triangle"
     , "Square"
     , "Saw"
-    , "Inverse Saw"
+    , "Inv Saw"
     , "SAH"
     , "Noise"
     , "Decay"
@@ -230,6 +230,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         *sound->delay.time = stream.readFloat();
         *sound->delay.depth = stream.readFloat();
         *sound->delay.sync = stream.readBool();
+//        sound->printStatus();
     }
 }
 

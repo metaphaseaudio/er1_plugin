@@ -7,6 +7,7 @@
 
 class LCDText
     : public juce::Label
+    , juce::Timer
 {
 public:
     enum ColourIds
@@ -26,19 +27,19 @@ public:
         boldItalic
     };
 
-    LCDText(const std::string& componentName, const std::string& text, int max_chars, float rotate_speed=0.5);
+    LCDText(const std::string& componentName, const juce::String& text, int max_chars, float rotate_speed=0.5);
 
-//    void setCharCount(int n);
     void setFontSize(int n);
-//    void setFontOption(FontOption font);
-//    void setContrast(float contrast);
-//    void setBrightness(float brightness);
+
+    void setContrast(float contrast);
+    void setBrightness(float brightness);
 
     void paint(juce::Graphics& g) override;
-    void setText(std::string& text, juce::NotificationType notify);
+    void setText(const std::string& text, juce::NotificationType notify);
+    void timerCallback() override;
 
 private:
-    static std::string reformat(const std::string& x);
+    static juce::String reformat(const juce::String& x);
     static const juce::Font& getNewFont(FontOption option);
 
     std::string m_Text;

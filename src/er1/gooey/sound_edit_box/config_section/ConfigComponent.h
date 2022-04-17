@@ -9,7 +9,6 @@
 
 class ConfigComponent
     : public juce::Component
-    , juce::TextEditor::Listener
 {
 public:
     ConfigComponent(ConfigParams& config);
@@ -18,15 +17,9 @@ public:
     void resized() override;
 
 private:
-    /** Called when the user presses the return key. */
-    void textEditorReturnKeyPressed(juce::TextEditor&) override;
-
-    /** Called when the text editor loses focus. */
-    void textEditorFocusLost(juce::TextEditor&) override;
-
     ConfigParams& r_Config;
-    LCDText m_Name, m_MidiNoteLabel, m_MidiChanLabel;
-    juce::TextEditor m_MidiNote, m_MidiChan;
+    LCDText m_Name, m_MidiNote, m_MidiChan;
+    LCDText /*m_NameLabel,*/ m_MidiNoteLabel, m_MidiChanLabel;
 };
 
 

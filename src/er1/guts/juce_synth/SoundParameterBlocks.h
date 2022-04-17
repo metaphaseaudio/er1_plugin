@@ -7,9 +7,9 @@
 
 struct ConfigParams
 {
-    std::string name;
-    std::atomic<unsigned int> note;
-    std::atomic<unsigned int> chan;
+    std::string name = "New Sound";
+    std::atomic<unsigned int> note = 1;
+    std::atomic<unsigned int> chan = 1;
 };
 
 struct OscParams

@@ -5,7 +5,10 @@
 #include "LCDText.h"
 #include "../fonts/FontLCD.h"
 
-LCDText::LCDText(const std::string& componentName, const std::string& text, int max_chars, float rotate_speed)
+static const auto colonString = L".\ue010";
+
+
+LCDText::LCDText(const std::string& componentName, const juce::String& text, int max_chars, float rotate_speed)
     : Label(componentName, LCDText::reformat(text))
     , m_MaxChars(max_chars > 0 ? max_chars : text.length())
     , m_RotateSpeed(rotate_speed)
@@ -13,20 +16,21 @@ LCDText::LCDText(const std::string& componentName, const std::string& text, int 
     , m_Contrast(0.2)
     , m_Brightness(1.0)
 {
-    setFont(LCDText::getNewFont(m_Font));
+    setFont(LCDText::getNewFont(m_Font).withHorizontalScale(1.05));
     setJustificationType(juce::Justification::centred);
 }
 
 void LCDText::paint(juce::Graphics& g)
 {
     const auto textColour =  getLookAndFeel().findColour(ColourIds::textColour);
+    const auto text = getText();
     setColour(juce::Label::ColourIds::textColourId, textColour);
     setColour(juce::Label::ColourIds::textWhenEditingColourId, textColour);
-//    m_LCDdark.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);//textColour.withAlpha(m_Contrast));
 
     // Draw background
-    std::string fill;
-    for (auto i = m_MaxChars; --i >= 0;) { fill += "~"; }
+    juce::String fill;
+    for (auto i = m_MaxChars; --i >= 0;)
+        { fill += juce::String(juce::CharPointer_UTF16(L"\uE012")); }
 
     juce::Path textPath;
     juce::GlyphArrangement glyphs;
@@ -41,9 +45,10 @@ void LCDText::paint(juce::Graphics& g)
 
     glyphs.createPath(textPath);
     g.setColour(textColour.withAlpha(m_Contrast));
+//    g.setColour(juce::Colours::greenyellow);
     g.fillPath(textPath);
 
-    auto shadow = juce::DropShadow(textColour, std::floor(getFont().getHeightInPoints() * 0.1), getLocalBounds().getTopLeft());
+//    auto shadow = juce::DropShadow(textColour, std::floor(getFont().getHeightInPoints() * 0.1), getLocalBounds().getTopLeft());
 //    shadow.drawForPath(g, textPath);
     Label::paint(g);
 }
@@ -52,7 +57,7 @@ const juce::Font& LCDText::getNewFont(LCDText::FontOption option)
 {
     switch (option)
     {
-        case standard: return FontLCD::ClassicRegular14();
+        case standard: return FontLCD::ClassicBold16();
         case italic: return FontLCD::ClassicItalic14();
         case light: return FontLCD::ClassicLight14();
         case lightItalic: return FontLCD::ClassicLightItalic14();
@@ -63,19 +68,26 @@ const juce::Font& LCDText::getNewFont(LCDText::FontOption option)
 
 
 void LCDText::setFontSize(int n)
-{
-    setFont(getFont().withPointHeight(n));
-}
+    { setFont(getFont().withPointHeight(n)); }
 
-std::string LCDText::reformat(const std::string& x)
+void LCDText::setText(const std::string& text, juce::NotificationType notify)
+    { Label::setText(text, notify); }
+
+void LCDText::timerCallback(){}
+
+void LCDText::setContrast(float contrast) {}
+
+void LCDText::setBrightness(float brightness) {}
+
+juce::String LCDText::reformat(const juce::String& x)
 {
-    std::string rv = x;
-    std::replace(rv.begin(), rv.end(), ' ', '!');
+    juce::String rv;
+
+    for (auto c : x)
+    {
+        if (c == ':') { rv += juce::String(juce::CharPointer_UTF16(colonString)); }
+        else { rv += c; }
+    }
+
     return rv;
 }
-
-void LCDText::setText(std::string& text, juce::NotificationType notify)
-{
-    Label::setText(reformat(text), notify);
-}
-

@@ -5,6 +5,7 @@
 #pragma once
 #include "bin_data/FontDSEG7.h"
 #include "bin_data/FontDSEG14.h"
+#include "bin_data/Segment16C.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 
@@ -19,7 +20,6 @@ namespace FontLCD
 
     static const juce::Font& ClassicBoldItalic7()
     {
-
         static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(DSEG7ClassicBoldItalic_ttf, DSEG7ClassicBoldItalic_ttfSize)));
         return font;
     }
@@ -27,7 +27,6 @@ namespace FontLCD
 
     static const juce::Font& ClassicItalic7()
     {
-
         static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(DSEG7ClassicItalic_ttf, DSEG7ClassicItalic_ttfSize)));
         return font;
     }
@@ -93,6 +92,19 @@ namespace FontLCD
     static const juce::Font& ClassicRegular14()
     {
         static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(DSEG14ClassicRegular_ttf, DSEG14ClassicRegular_ttfSize)));
+        return font;
+    }
+
+
+    static const juce::Font& ClassicRegular16()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Segment16C_Regular_ttf, Segment16C_Regular_ttfSize)));
+        return font;
+    }
+
+    static const juce::Font& ClassicBold16()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Segment16C_Bold_ttf, Segment16C_Bold_ttfSize)));
         return font;
     }
 }
