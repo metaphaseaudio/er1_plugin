@@ -42,7 +42,7 @@ void PatchSelector::resized()
         selectorBtnBounds = selectorBtnBounds.withX(selectorBtnBounds.getTopRight().x);
     }
 
-    for (int i = 0; i < m_RingButtons.size() - 2; i++)
+    for (int i = 0; i < m_RingButtons.size(); i++)
     {
         const auto b = i * 2;
         const auto left = m_Buttons[b].getRight();
@@ -54,7 +54,24 @@ void PatchSelector::resized()
     }
 }
 
-void PatchSelector::paint(juce::Graphics& g) {}
+void PatchSelector::paint(juce::Graphics& g)
+{
+    auto bounds = getLocalBounds().removeFromBottom(18);
+    const auto offset = (getWidth() - StandardShapes::smallRectButton.getWidth() * m_Buttons.size()) / 2.0f;
+    bounds = bounds.withX(bounds.getX() + offset + 5);
+
+    auto analogBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 10) - 10);
+    g.fillRect(analogBounds);
+    bounds.removeFromLeft(10);
+
+    auto audioBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 2) - 10);
+    g.fillRect(audioBounds);
+    bounds.removeFromLeft(10);
+
+    auto pcmBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 4) - 10);
+    g.fillRect(pcmBounds);
+
+}
 
 
 void PatchSelector::buttonClicked(juce::Button* btn)

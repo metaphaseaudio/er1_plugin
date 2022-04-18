@@ -23,7 +23,7 @@ private:
     void buttonClicked(juce::Button* btn) override;
 
     std::array<KorgToggleButton, 16> m_Buttons;
-    std::array<KorgToggleButton, 8> m_RingButtons;
+    std::array<KorgToggleButton, 5> m_RingButtons;
 };
 
 
