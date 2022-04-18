@@ -4,6 +4,7 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <meta/gooey/RadioButton.h>
 #include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
 
@@ -17,13 +18,12 @@ public:
     void resized() override;
     void paint(juce::Graphics& g) override;
 
-    bool shouldChangeOnMidi() const;
 
 private:
     void buttonClicked(juce::Button* btn) override;
-//    LCDText m_LCD;
-    juce::Label m_LCDLabel, m_LockMidiLabel;
-    KorgToggleButton m_LockMidi;
+
+    std::array<KorgToggleButton, 16> m_Buttons;
+    std::array<KorgToggleButton, 8> m_RingButtons;
 };
 
 

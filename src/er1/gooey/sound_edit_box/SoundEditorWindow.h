@@ -32,8 +32,6 @@ private:
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
     DelaySectionComponent m_DelaySection;
-    DividerLine m_Divider;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundEditorWindow);
 };

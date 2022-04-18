@@ -31,6 +31,8 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
         addChildComponent(window);
     }
 
+    addAndMakeVisible(m_PatchSelector);
+    addAndMakeVisible(m_Divider);
     getChildComponent(0)->setVisible(true);
 }
 
@@ -54,7 +56,14 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 void ER1AudioProcessorEditor::resized()
 {
     // horizontal slicing
-    auto internalBounds = getLocalBounds().reduced(5);
+    auto bounds = getLocalBounds().reduced(5);
+
+    const auto internalBounds = bounds.removeFromTop(245);
+
     for (auto& window : m_SoundEditorWindows)
         { window->setBounds(internalBounds); }
+
+    bounds.removeFromTop(5);
+    m_Divider.setBounds(bounds.removeFromTop(5));
+    m_PatchSelector.setBounds(bounds);
 }

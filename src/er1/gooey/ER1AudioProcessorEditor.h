@@ -11,14 +11,10 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
-#include <meta/gooey/RadioButton.h>
 #include "../gooey/widgets/DividerLine.h"
 #include "../guts/ER1AudioProcessor.h"
-#include "meta/gooey/ButtonGrid.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
-#include "../gooey/grid/SequenceGrid.h"
-#include "../gooey/grid/PadGrid.h"
-#include "../gooey/grid/SoundGrid.h"
+#include "../gooey/patch_selector/PatchSelector.h"
 #include "look_and_feel/ER1LAF.h"
 
 //==============================================================================
@@ -39,5 +35,7 @@ private:
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
+    DividerLine m_Divider;
+    PatchSelector m_PatchSelector;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

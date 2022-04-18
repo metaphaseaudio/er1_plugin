@@ -15,7 +15,6 @@ SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
     addAndMakeVisible(&m_OscSection);
     addAndMakeVisible(&m_AmpSection);
     addAndMakeVisible(&m_DelaySection);
-    addAndMakeVisible(&m_Divider);
 }
 
 void SoundEditorWindow::resized()
@@ -31,9 +30,6 @@ void SoundEditorWindow::resized()
     m_AmpSection.setBounds(secondRow.removeFromLeft(340));
     secondRow.removeFromLeft(5);
     m_DelaySection.setBounds(secondRow);
-
-    bounds.removeFromTop(5);
-    m_Divider.setBounds(bounds.removeFromTop(5));
 }
 
 void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
