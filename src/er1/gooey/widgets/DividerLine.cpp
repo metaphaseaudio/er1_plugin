@@ -6,7 +6,7 @@
 
 void DividerLine::paint(juce::Graphics &g)
 {
-    const auto bounds = getBounds();
+    const auto bounds = getLocalBounds();
     const auto width = bounds.getWidth();
     const auto height = bounds.getHeight();
 

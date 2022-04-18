@@ -19,7 +19,7 @@ SoundEditorWindow::SoundEditorWindow(ER1Sound::Ptr sound)
 
 void SoundEditorWindow::resized()
 {
-    auto bounds = getLocalBounds().reduced(5);
+    auto bounds = getLocalBounds();
     auto upper_bounds = bounds.removeFromTop(120);
     m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(220));
     upper_bounds.removeFromLeft(5);

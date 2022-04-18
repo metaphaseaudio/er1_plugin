@@ -21,19 +21,19 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     , processor(p)
 {
     setLookAndFeel(&m_LAF);
-    setSize(600, 380);
 
     for (int i = 0; i < ER1AudioProcessor::ER1_SOUND_COUNT; i++)
     {
         m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
-        window->setBounds(getLocalBounds().reduced(5));
         addChildComponent(window);
     }
 
     addAndMakeVisible(m_PatchSelector);
     addAndMakeVisible(m_Divider);
     getChildComponent(0)->setVisible(true);
+
+    setSize(600, 380);
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -45,7 +45,7 @@ ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 void ER1AudioProcessorEditor::paint (Graphics& g)
 {
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
-	const auto bezel = getLocalBounds().reduced(5);
+	const auto bezel = getLocalBounds().reduced(3);
 	g.setColour(juce::Colours::silver);
 	g.fillRect(bezel);
 
@@ -55,8 +55,7 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 
 void ER1AudioProcessorEditor::resized()
 {
-    // horizontal slicing
-    auto bounds = getLocalBounds().reduced(5);
+    auto bounds = getLocalBounds().reduced(7);
 
     const auto internalBounds = bounds.removeFromTop(245);
 
