@@ -22,6 +22,7 @@
 */
 class ER1AudioProcessorEditor
     : public juce::AudioProcessorEditor
+    , juce::ChangeListener
 {
 public:
     explicit ER1AudioProcessorEditor(ER1AudioProcessor&);
@@ -32,6 +33,8 @@ public:
     void resized() override;
 
 private:
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;

@@ -26,7 +26,7 @@ class ER1AudioProcessor
 {
 public:
 #ifdef _DEBUG
-    static constexpr int ER1_SOUND_COUNT = 1;
+    static constexpr int ER1_SOUND_COUNT = 10;
     static constexpr int ER1_MAX_POLYPHONY = 16;
 #else
     static constexpr int ER1_SOUND_COUNT = 64;
@@ -71,6 +71,7 @@ public:
 
     meta::MidiState& getMidiState() { return m_MidiState; }
     ER1Sound::Ptr getSound(int i) { return m_Synth.getSound(i); }
+    juce::ReferenceCountedArray<ER1Sound>& getAllSounds() { return m_Sounds; }
 
 private:
     meta::MidiState m_MidiState;

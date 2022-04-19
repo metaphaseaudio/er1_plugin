@@ -7,21 +7,21 @@
 #include <meta/gooey/RadioButton.h>
 #include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
-
+#include "../../guts/juce_synth/ER1Sound.h"
 
 class PatchSelector
     : public juce::Component
-    , juce::Button::Listener
+    , public juce::ChangeBroadcaster
 {
 public:
-    PatchSelector();
+    explicit PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds);
+
+    int getSelected() const;
+
     void resized() override;
     void paint(juce::Graphics& g) override;
 
-
 private:
-    void buttonClicked(juce::Button* btn) override;
-
     std::array<KorgToggleButton, 16> m_Buttons;
     std::array<KorgToggleButton, 5> m_RingButtons;
 };

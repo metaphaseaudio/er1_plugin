@@ -19,6 +19,7 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
+    , m_PatchSelector(p.getAllSounds())
 {
     setLookAndFeel(&m_LAF);
 
@@ -32,7 +33,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     addAndMakeVisible(m_PatchSelector);
     addAndMakeVisible(m_Divider);
     getChildComponent(0)->setVisible(true);
-
+    m_PatchSelector.addChangeListener(this);
     setSize(600, 380);
 }
 
@@ -65,4 +66,15 @@ void ER1AudioProcessorEditor::resized()
     bounds.removeFromTop(5);
     m_Divider.setBounds(bounds.removeFromTop(5));
     m_PatchSelector.setBounds(bounds);
+}
+
+void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == &m_PatchSelector)
+    {
+        for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
+        const auto selected = m_PatchSelector.getSelected();
+        if (selected >= ER1AudioProcessor::ER1_SOUND_COUNT) { return; }  // TODO: handle the non-analog channels
+        m_SoundEditorWindows[m_PatchSelector.getSelected()]->setVisible(true);
+    }
 }

@@ -3,23 +3,22 @@
 //
 
 #include "PatchSelector.h"
-#include "../look_and_feel/ER1Colours.h"
 #include "../look_and_feel/StandardShapes.h"
 
 
-PatchSelector::PatchSelector()
+PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
 {
     for (auto& btn : m_Buttons)
     {
         addAndMakeVisible(btn);
         btn.setRadioGroupId(1);
-        btn.addListener(this);
+        btn.onClick = [&]() { sendChangeMessage(); };
     }
 
     for (auto& btn : m_RingButtons)
     {
         addAndMakeVisible(btn);
-        btn.addListener(this);
+        btn.onClick = [&]() {};
     }
 
     m_Buttons[0].setToggleState(true, juce::sendNotification);
@@ -70,11 +69,14 @@ void PatchSelector::paint(juce::Graphics& g)
 
     auto pcmBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 4) - 10);
     g.fillRect(pcmBounds);
-
 }
 
-
-void PatchSelector::buttonClicked(juce::Button* btn)
+int PatchSelector::getSelected() const
 {
-
+    for (const auto& i_btn : meta::enumerate(m_Buttons)) {
+        if (std::get<1>(i_btn).getToggleState())
+            { return std::get<0>(i_btn); }
+    }
+    return -1;
 }
+
