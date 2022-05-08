@@ -1,4 +1,3 @@
-#include <meta/audio/SingletonSampleRate.h>
 #include <meta/util/math.h>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
@@ -27,7 +26,7 @@ static juce::StringArray ModulationNames =
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-: AudioProcessor (BusesProperties()
+    : AudioProcessor (BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
                   .withInput  ("Input",  AudioChannelSet::stereo(), true)
@@ -37,8 +36,7 @@ ER1AudioProcessor::ER1AudioProcessor()
                   )
 #endif
 {
-    m_Synth.setCurrentPlaybackSampleRate(44100);
-    meta::SingletonSampleRate<float>::setValue(44100);
+    m_Synth.setSampleRate(44100);
     for (int i = 0; i < ER1_SOUND_COUNT; i++)
     {
         // Create params
@@ -82,10 +80,9 @@ ER1AudioProcessor::ER1AudioProcessor()
 
         m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
         auto sound = m_Sounds.getLast();
+        sound->config.name = voiceIDStr.toStdString();
         m_Synth.addSound(sound);
     }
-
-    for (auto i = 0; i < ER1_MAX_POLYPHONY; i++) { m_Synth.addVoice(new ER1Voice()); }
 }
 
 
@@ -132,7 +129,7 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    m_Synth.setCurrentPlaybackSampleRate(sampleRate);
+    m_Synth.setSampleRate(sampleRate);
 }
 
 void ER1AudioProcessor::releaseResources() {}
@@ -165,7 +162,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 {
     ScopedNoDenormals noDenormals;
     buffer.clear();
-    m_Synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    m_Synth.processBlock(buffer, midiMessages);
 }
 
 //==============================================================================

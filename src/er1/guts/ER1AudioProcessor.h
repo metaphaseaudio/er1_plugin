@@ -15,6 +15,7 @@
 #include <er1_dsp/Envelope.h>
 #include <er1_dsp/Voice.h>
 #include <meta/midi/MidiState.h>
+#include "juce_synth/ER1Synth.h"
 #include "juce_synth/ER1Sound.h"
 #include "juce_synth/ER1VoiceController.h"
 
@@ -26,8 +27,7 @@ class ER1AudioProcessor
 {
 public:
 #ifdef _DEBUG
-    static constexpr int ER1_SOUND_COUNT = 10;
-    static constexpr int ER1_MAX_POLYPHONY = 16;
+    static constexpr int ER1_SOUND_COUNT = 3;
 #else
     static constexpr int ER1_SOUND_COUNT = 64;
     static constexpr int ER1_MAX_POLYPHONY = 32;
@@ -70,14 +70,13 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     meta::MidiState& getMidiState() { return m_MidiState; }
-    ER1Sound::Ptr getSound(int i) { return m_Synth.getSound(i); }
+    ER1Sound::Ptr getSound(int i) { return m_Sounds[i]; }
     juce::ReferenceCountedArray<ER1Sound>& getAllSounds() { return m_Sounds; }
 
 private:
     meta::MidiState m_MidiState;
-    juce::Random rnd;
-    juce::Synthesiser m_Synth;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
+    ER1Synth m_Synth;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };

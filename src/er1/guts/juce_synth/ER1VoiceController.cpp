@@ -4,77 +4,44 @@
 
 #include "ER1VoiceController.h"
 
-ER1Voice::ER1Voice()
-    : m_Voice(getSampleRate())
+ER1Voice::ER1Voice(ER1Sound::Ptr sound)
+    : m_Sound(sound)
+    , m_Voice(48000 * meta::ER1::MainOscillator::OverSample)
 {}
 
-void ER1Voice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
+void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition)
 {
-    auto* voice_params = static_cast<ER1Sound*>(getCurrentlyPlayingSound().get());
-    m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(voice_params->osc.oscType->getIndex()));
-    m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(voice_params->osc.modType->getIndex()));
-    m_Voice.setModulationSpeed(voice_params->osc.modSpeed->get());
-    m_Voice.setModulationDepth(voice_params->osc.modDepth->get());
-    m_Voice.setPitch(voice_params->osc.pitch->get());
-    m_Voice.level = voice_params->amp.level->get();
-    m_Voice.setDecay(voice_params->amp.decay->get());
-    m_Voice.setTempoSync(true);
-    m_Voice.setTempo(120);
-    m_Voice.setDelayTime(voice_params->delay.time->get());
-    m_Voice.setDelayDepth(voice_params->delay.depth->get());
-    m_Voice.setTempoSync(voice_params->delay.sync->get());
-
     m_Voice.reset();
     m_Voice.start();
 }
 
-void ER1Voice::stopNote(float velocity, bool allowTailOff)
+void ER1Voice::renderNextBlock(juce::AudioBuffer<float>& inputBuffer, int startSample, int numSamples)
 {
-    if (!allowTailOff)
-    {
-        clearCurrentNote();
-        m_Voice.reset();
-    }
+    m_Voice.processBlock(
+        inputBuffer.getArrayOfWritePointers()
+        , numSamples
+        , startSample
+    );
 }
 
-void ER1Voice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
-{
-    if (auto* voice_params = static_cast<ER1Sound*> (getCurrentlyPlayingSound().get()))
-    {
-        // Plus one here to align with the options
-        m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(voice_params->osc.oscType->getIndex()));
-        m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(voice_params->osc.modType->getIndex()));
-        m_Voice.setModulationSpeed(voice_params->osc.modSpeed->get());
-        m_Voice.setModulationDepth(voice_params->osc.modDepth->get());
-        m_Voice.setPitch(voice_params->osc.pitch->get());
-        m_Voice.level = voice_params->amp.level->get();
-        m_Voice.pan = voice_params->amp.pan->get();
-        m_Voice.setDecay(voice_params->amp.decay->get());
-        m_Voice.setTempoSync(true);
-        m_Voice.setTempo(120);
-        m_Voice.setDelayTime(voice_params->delay.time->get());
-        m_Voice.setDelayDepth(voice_params->delay.depth->get());
-        m_Voice.setTempoSync(voice_params->delay.sync->get());
+void ER1Voice::setSampleRate(double newRate)
+    { m_Voice.setSampleRate(newRate); }
 
-        m_Voice.processBlock(
-            outputBuffer.getArrayOfWritePointers()
-            , numSamples
-            , startSample
-        );
-    }
-}
-
-void ER1Voice::setCurrentPlaybackSampleRate(double newRate)
+void ER1Voice::updateParams()
 {
-    SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);
-    m_Voice.setSampleRate(newRate);
-}
-
-bool ER1Voice::canPlaySound(juce::SynthesiserSound* sound)
-{
-    const auto ref_count = sound->getReferenceCount();
-    if (ref_count > 2 && sound != static_cast<juce::SynthesiserSound*>(getCurrentlyPlayingSound()))
-        { return false; }
-    return true;
+    // Plus one here to align with the options
+    m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(m_Sound->osc.oscType->getIndex()));
+    m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(m_Sound->osc.modType->getIndex()));
+    m_Voice.setModulationSpeed(m_Sound->osc.modSpeed->get());
+    m_Voice.setModulationDepth(m_Sound->osc.modDepth->get());
+    m_Voice.setPitch(m_Sound->osc.pitch->get());
+    m_Voice.level = m_Sound->amp.level->get();
+    m_Voice.pan = m_Sound->amp.pan->get();
+    m_Voice.setDecay(m_Sound->amp.decay->get());
+    m_Voice.setTempoSync(true);
+    m_Voice.setTempo(120);
+    m_Voice.setDelayTime(m_Sound->delay.time->get());
+    m_Voice.setDelayDepth(m_Sound->delay.depth->get());
+    m_Voice.setTempoSync(m_Sound->delay.sync->get());
 }
 

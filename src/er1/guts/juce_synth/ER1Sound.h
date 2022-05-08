@@ -9,12 +9,13 @@
 #include "SoundParameterBlocks.h"
 
 class ER1Sound
-    : public juce::SynthesiserSound
+    : public juce::ReferenceCountedObject
 {
 public:
+    using Ptr = juce::ReferenceCountedObjectPtr<ER1Sound>;
     ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel=1);
-    bool appliesToNote (int midiNoteNumber) override { return midiNoteNumber == config.note; };
-    bool appliesToChannel (int midiChannel) override { return midiChannel == config.chan; };
+    bool appliesToNote (int midiNoteNumber) const { return midiNoteNumber == config.note; };
+    bool appliesToChannel (int midiChannel) const { return midiChannel == config.chan; };
 
     void printStatus();
 

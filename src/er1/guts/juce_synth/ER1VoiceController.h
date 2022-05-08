@@ -9,21 +9,19 @@
 
 
 class ER1Voice
-    : public juce::SynthesiserVoice
 {
 public:
-    ER1Voice();
-
-    void setCurrentPlaybackSampleRate (double newRate) override;
-    bool canPlaySound(juce::SynthesiserSound* sound) override;
-    void startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) override;
-    void stopNote(float velocity, bool allowTailOff) override;
-    void pitchWheelMoved(int newPitchWheelValue) override {};
-    void controllerMoved(int controllerNumber, int newControllerValue) override {};
-    void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
+    ER1Voice(ER1Sound::Ptr sound);
+    void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
+    void updateParams();
+    void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples);
+    void setSampleRate(double sr);
 
 private:
+    ER1Sound::Ptr m_Sound;
     meta::ER1::Voice m_Voice;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ER1Voice);
 };
 
 
