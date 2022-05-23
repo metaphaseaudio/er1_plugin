@@ -29,8 +29,7 @@ public:
 #ifdef _DEBUG
     static constexpr int ER1_SOUND_COUNT = 3;
 #else
-    static constexpr int ER1_SOUND_COUNT = 64;
-    static constexpr int ER1_MAX_POLYPHONY = 32;
+    static constexpr int ER1_SOUND_COUNT = 10;
 #endif
     //==============================================================================
     ER1AudioProcessor();
@@ -77,6 +76,8 @@ private:
     meta::MidiState m_MidiState;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     ER1Synth m_Synth;
+    juce::AudioBuffer<float> m_OversampleBuffer;
+    meta::ER1::Downsampler m_Downsampler;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };

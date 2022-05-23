@@ -20,8 +20,6 @@ private:
     int m_CurrentPitchPosition;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     std::vector<std::unique_ptr<ER1Voice>> m_Voices;
-
-    meta::ER1::Downsampler m_Downsampler;
 };
 
 

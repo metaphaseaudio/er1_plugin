@@ -35,6 +35,7 @@ ER1AudioProcessor::ER1AudioProcessor()
 #endif
                   )
 #endif
+    , m_Downsampler(44100)
 {
     m_Synth.setSampleRate(44100);
     for (int i = 0; i < ER1_SOUND_COUNT; i++)
@@ -130,6 +131,8 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     m_Synth.setSampleRate(sampleRate);
+    m_Downsampler.set_sample_rate(sampleRate);
+    m_OversampleBuffer.setSize(2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
 }
 
 void ER1AudioProcessor::releaseResources() {}
@@ -162,7 +165,10 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 {
     ScopedNoDenormals noDenormals;
     buffer.clear();
-    m_Synth.processBlock(buffer, midiMessages);
+    // TODO: set up "oversampled" input
+    m_OversampleBuffer.clear();
+    m_Synth.processBlock(m_OversampleBuffer, midiMessages);
+    m_Downsampler.downsampleBuffer(m_OversampleBuffer, buffer);
 }
 
 //==============================================================================
