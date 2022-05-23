@@ -5,9 +5,7 @@
 #include "ER1Synth.h"
 #include "meta/dsp/OversampledBuffer.h"
 
-ER1Synth::ER1Synth()
-    : m_Downsampler(48000)
-{}
+ER1Synth::ER1Synth(){}
 
 
 void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi)
@@ -44,7 +42,6 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
 
 void ER1Synth::setSampleRate(double sr)
 {
-    m_Downsampler.set_sample_rate(sr);
     for (auto& voice : m_Voices)
         { voice->setSampleRate(sr * meta::ER1::Downsampler::OverSample); }
 }
