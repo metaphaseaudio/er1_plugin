@@ -8,8 +8,9 @@
 ER1Synth::ER1Synth(){}
 
 
-void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi)
+void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi, int nSamps)
 {
+    nSamps *= meta::ER1::MainOscillator::OverSample;
     int startSample = 0;
     for (const auto event : midi)
     {
@@ -36,7 +37,7 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     for (auto& voice : m_Voices)
     {
         voice->updateParams();
-        voice->renderNextBlock(audioOut, startSample, audioOut.getNumSamples() - startSample);
+        voice->renderNextBlock(audioOut, startSample, nSamps - startSample);
     }
 }
 

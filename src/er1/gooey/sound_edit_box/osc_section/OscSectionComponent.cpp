@@ -25,9 +25,9 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
     m_ModDepthLabel.setJustificationType(juce::Justification::centred);
 
-    m_Pitch.setSkewFactor(0.2);
+//    m_Pitch.setSkewFactor(0.2);
     addAndMakeVisible(m_Pitch);    addAndMakeVisible(m_PitchLabel);
-    m_ModSpeed.setSkewFactor(0.2);
+//    m_ModSpeed.setSkewFactor(0.2);
     addAndMakeVisible(m_ModSpeed); addAndMakeVisible(m_ModSpeedLabel);
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);

@@ -45,9 +45,9 @@ ER1AudioProcessor::ER1AudioProcessor()
 
         auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
         auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
-        auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 30.0f, 4000.0f, 250.0f);
-        auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 500.0f, 0.5f);
-        auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1100.0f, 1100.0f, 200.0f);
+        auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 20.0f, 12000.0f, 250.0f);
+        auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
+        auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1100.0f, 1100.0f, 0.0f);
 
         auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
         auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
@@ -167,7 +167,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
     buffer.clear();
     // TODO: set up "oversampled" input
     m_OversampleBuffer.clear();
-    m_Synth.processBlock(m_OversampleBuffer, midiMessages);
+    m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
     m_Downsampler.downsampleBuffer(m_OversampleBuffer, buffer);
 }
 

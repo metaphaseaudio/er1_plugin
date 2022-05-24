@@ -27,7 +27,7 @@ class ER1AudioProcessor
 {
 public:
 #ifdef _DEBUG
-    static constexpr int ER1_SOUND_COUNT = 3;
+    static constexpr int ER1_SOUND_COUNT = 5;
 #else
     static constexpr int ER1_SOUND_COUNT = 10;
 #endif

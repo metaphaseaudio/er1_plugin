@@ -24,7 +24,7 @@ void KorgKnob::handleNewParameterValue()
     if (!isDragging)
     {
         const auto value = getParameter().getValue();
-        setValue(meta::remap_range(getRange(), juce::Range<double>(0.0, 1.0), value), juce::NotificationType::dontSendNotification);
+        setValue(meta::remap_range(getRange().getStart(), getRange().getEnd(), 0.0, 1.0, value), juce::NotificationType::dontSendNotification);
         repaint();
     }
 }
@@ -34,8 +34,7 @@ void KorgKnob::sliderValueChanged(juce::Slider* slider)
 {
     if (slider != this) { return; }
 
-    const auto normalized_range = juce::Range<double>(0.0f, 1.f);
-    const auto new_value = meta::remap_range(normalized_range, getRange(), static_cast<double>(getValue()));
+    const auto new_value = meta::remap_range(0.0f, 1.f, getRange().getStart(), getRange().getEnd(), static_cast<double>(getValue()));
 
     if (getParameter().getValue() != new_value)
     {
