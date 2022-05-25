@@ -34,7 +34,7 @@ void ER1Voice::updateParams()
     m_Voice.setModulationShape(static_cast<meta::ER1::Voice::ModShape>(m_Sound->osc.modType->getIndex()));
     m_Voice.setModulationSpeed(m_Sound->osc.modSpeed->get());
     m_Voice.setModulationDepth(m_Sound->osc.modDepth->get());
-    m_Voice.setPitch(m_Sound->osc.pitch->get());
+    m_Voice.setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, m_Sound->osc.pitch->get(), 4));
     m_Voice.level = m_Sound->amp.level->get();
     m_Voice.pan = m_Sound->amp.pan->get();
     m_Voice.setDecay(m_Sound->amp.decay->get());
