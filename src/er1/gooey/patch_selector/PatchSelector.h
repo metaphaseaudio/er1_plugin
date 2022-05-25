@@ -14,14 +14,15 @@ class PatchSelector
     , public juce::ChangeBroadcaster
 {
 public:
-    explicit PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds);
-
-    int getSelected() const;
+    PatchSelector();
 
     void resized() override;
     void paint(juce::Graphics& g) override;
 
+    int getSelected() const;
+
 private:
+    int selected = 0;
     std::array<KorgToggleButton, 16> m_Buttons;
     std::array<KorgToggleButton, 5> m_RingButtons;
 };

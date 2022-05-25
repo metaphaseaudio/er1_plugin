@@ -70,12 +70,15 @@ public:
 
     meta::MidiState& getMidiState() { return m_MidiState; }
     ER1Sound::Ptr getSound(int i) { return m_Sounds[i]; }
+    void triggerVoice(int num);
     juce::ReferenceCountedArray<ER1Sound>& getAllSounds() { return m_Sounds; }
 
 private:
     meta::MidiState m_MidiState;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     ER1Synth m_Synth;
+
+    std::vector<juce::MidiMessage> m_QueuedMessages;
     juce::AudioBuffer<float> m_OversampleBuffer;
     meta::ER1::Downsampler m_Downsampler;
     //==============================================================================

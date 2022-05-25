@@ -165,10 +165,18 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 {
     ScopedNoDenormals noDenormals;
     buffer.clear();
-    // TODO: set up "oversampled" input
+
+    while (!m_QueuedMessages.empty())
+    {
+        midiMessages.addEvent(m_QueuedMessages.back(), 0);
+        m_QueuedMessages.pop_back();
+    }
+
+    // TODO: set up "oversampled" audio input
     m_OversampleBuffer.clear();
     m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
     m_Downsampler.downsampleBuffer(m_OversampleBuffer, buffer);
+    midiMessages.clear();
 }
 
 //==============================================================================
@@ -235,6 +243,13 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         *sound->delay.sync = stream.readBool();
 //        sound->printStatus();
     }
+}
+
+void ER1AudioProcessor::triggerVoice(int voice)
+{
+    const auto& chan = m_Sounds[voice]->config.chan;
+    const auto& note = m_Sounds[voice]->config.note;
+    m_QueuedMessages.push_back(juce::MidiMessage::noteOn(chan, note, 1.0f));
 }
 
 //==============================================================================

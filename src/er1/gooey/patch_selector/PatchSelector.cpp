@@ -6,10 +6,11 @@
 #include "../look_and_feel/StandardShapes.h"
 
 
-PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
+PatchSelector::PatchSelector()
 {
-    for (auto& btn : m_Buttons)
+    for (int i = 0; i < m_Buttons.size(); i++)
     {
+        auto& btn = m_Buttons[i];
         addAndMakeVisible(btn);
         btn.setRadioGroupId(1);
         btn.onClick = [&]() { sendChangeMessage(); };

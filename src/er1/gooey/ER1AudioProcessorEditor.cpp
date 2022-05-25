@@ -19,7 +19,7 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_PatchSelector(p.getAllSounds())
+    , m_PatchSelector()
 {
     setLookAndFeel(&m_LAF);
 
@@ -76,5 +76,6 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         const auto selected = m_PatchSelector.getSelected();
         if (selected >= ER1AudioProcessor::ER1_SOUND_COUNT) { return; }  // TODO: handle the non-analog channels
         m_SoundEditorWindows[m_PatchSelector.getSelected()]->setVisible(true);
+        processor.triggerVoice(selected);
     }
 }
