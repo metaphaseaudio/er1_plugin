@@ -14,7 +14,7 @@
 #include "../../guts/ER1AudioProcessor.h"
 #include "../../guts/juce_synth/ER1Sound.h"
 #include <meta/gooey/RadioGrid.h>
-#include <er1_dsp/Voice.h>
+#include <er1_dsp/AnalogVoice.h>
 
 
 class SoundEditorWindow

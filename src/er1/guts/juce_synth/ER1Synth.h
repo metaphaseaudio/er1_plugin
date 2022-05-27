@@ -12,12 +12,15 @@ class ER1Synth
 {
 public:
     ER1Synth();
-    void processBlock(juce::AudioBuffer<float>& audio, juce::MidiBuffer midi, int nSamps);
-    void setSampleRate(double sampleRate);
     void addSound(ER1Sound::Ptr& sound);
+    void prepareToPlay(double sampleRate, int blockSize);
+    void processBlock(juce::AudioBuffer<float>& audio, juce::MidiBuffer midi, int nSamps);
 
 private:
+    juce::AudioBuffer<float> m_Tmp;
+
     int m_CurrentPitchPosition;
+
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     std::vector<std::unique_ptr<ER1Voice>> m_Voices;
 };

@@ -13,7 +13,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <er1_dsp/Oscillator.h>
 #include <er1_dsp/Envelope.h>
-#include <er1_dsp/Voice.h>
+#include <er1_dsp/AnalogVoice.h>
 #include <meta/midi/MidiState.h>
 #include "juce_synth/ER1Synth.h"
 #include "juce_synth/ER1Sound.h"

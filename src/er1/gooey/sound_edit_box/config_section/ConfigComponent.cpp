@@ -11,7 +11,7 @@
 
 ConfigComponent::ConfigComponent(ConfigParams& config)
     : r_Config(config)
-    , m_Name("Sound name", "", 9)//, m_NameLabel("Voice label", "", 5)
+    , m_Name("Sound name", "", 9)
     , m_MidiNote("Midi note", "1", 3), m_MidiNoteLabel("Midi note label", "Note:", 4)
     , m_MidiChan("Midi chan", "1", 2), m_MidiChanLabel("Midi chan label", "Chan:", 4)
 {

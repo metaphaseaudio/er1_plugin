@@ -5,7 +5,7 @@
 #pragma once
 
 #include <juce_audio_basics/juce_audio_basics.h>
-#include <er1_dsp/Voice.h>
+#include <er1_dsp/AnalogVoice.h>
 #include "SoundParameterBlocks.h"
 
 class ER1Sound
@@ -23,8 +23,7 @@ public:
     AmpParams amp;
     OscParams osc;
     DelayParams delay;
-
-private:
+    std::atomic<bool> enableRing = false;
 };
 
 

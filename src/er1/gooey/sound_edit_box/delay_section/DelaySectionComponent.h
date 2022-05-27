@@ -11,7 +11,7 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <er1_dsp/Voice.h>
+#include <er1_dsp/AnalogVoice.h>
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgButton.h"
 #include "../../../guts/juce_synth/ER1Sound.h"

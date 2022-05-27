@@ -15,7 +15,7 @@
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgComboBox.h"
 #include "../../../guts/juce_synth/ER1Sound.h"
-#include <er1_dsp/Voice.h>
+#include <er1_dsp/AnalogVoice.h>
 
 
 class OscSectionComponent

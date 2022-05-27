@@ -37,7 +37,6 @@ ER1AudioProcessor::ER1AudioProcessor()
 #endif
     , m_Downsampler(44100)
 {
-    m_Synth.setSampleRate(44100);
     for (int i = 0; i < ER1_SOUND_COUNT; i++)
     {
         // Create params
@@ -130,8 +129,8 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    m_Synth.setSampleRate(sampleRate);
     m_Downsampler.set_sample_rate(sampleRate);
+    m_Synth.prepareToPlay(sampleRate, samplesPerBlock * meta::ER1::Downsampler::OverSample);
     m_OversampleBuffer.setSize(2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
 }
 
