@@ -64,6 +64,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         addParameter(modType);
         addParameter(modSpeed);
         addParameter(modDepth);
+        if (ring != nullptr) { addParameter(ring); }
 
         addParameter(level);
         addParameter(pan);
@@ -205,6 +206,7 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
         stream.writeInt(*sound->osc.modType);
         stream.writeFloat(*sound->osc.modSpeed);
         stream.writeFloat(*sound->osc.modDepth);
+        stream.writeBool(sound->isRingModCarrier() ? *sound->osc.enableRing : false);
 
         stream.writeFloat(*sound->amp.decay);
         stream.writeFloat(*sound->amp.level);
@@ -232,6 +234,10 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         *sound->osc.modType = stream.readInt();
         *sound->osc.modSpeed = stream.readFloat();
         *sound->osc.modDepth = stream.readFloat();
+
+        const auto ring_state = stream.readBool();
+        if (sound->isRingModCarrier())
+            { *sound->osc.enableRing = ring_state; }
 
         *sound->amp.decay = stream.readFloat();
         *sound->amp.level = stream.readFloat();
