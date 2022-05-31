@@ -5,23 +5,22 @@
 #include "PatchSelector.h"
 #include "../look_and_feel/StandardShapes.h"
 
+static constexpr int ringButtonCount = 5;
 
 PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
 {
-    for (int i = 0; i < m_Buttons.size(); i++)
+    for (auto& btn : m_Buttons)
     {
-        auto& btn = m_Buttons[i];
         addAndMakeVisible(btn);
         btn.setRadioGroupId(1);
         btn.onClick = [&]() { sendChangeMessage(); };
     }
 
-    for (int i = 0; i < m_RingButtons.size(); i ++)
+    for (int i = 0; i < ringButtonCount; i ++)
     {
-        auto& btn = m_RingButtons[i];
-        btn.setToggleable(true);
-        addAndMakeVisible(btn);
-        btn.onClick = [i, &btn, &sounds]() { sounds[(i * 2) + 1]->osc.enableRing->setValueNotifyingHost(btn.getToggleState()); };
+        if ((i * 2 + 1) >= sounds.size()) { continue; }
+        auto& btn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(*sounds[(i * 2) + 1]->osc.enableRing));
+        addAndMakeVisible(*btn);
     }
 
     m_Buttons[0].setToggleState(true, juce::sendNotification);
@@ -52,7 +51,7 @@ void PatchSelector::resized()
         const auto mid = left + ((right - left) / 2);
 
         ringCtrlBounds.setCentre(mid, ringCtrlBounds.getCentreY());
-        m_RingButtons[i].setBounds(ringCtrlBounds);
+        m_RingButtons[i]->setBounds(ringCtrlBounds);
     }
 }
 

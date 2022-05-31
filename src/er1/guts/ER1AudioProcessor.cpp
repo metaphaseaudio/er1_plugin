@@ -236,7 +236,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         *sound->osc.modDepth = stream.readFloat();
 
         const auto ring_state = stream.readBool();
-        if (sound->isRingModCarrier())
+        if (sound->osc.enableRing != nullptr)
             { *sound->osc.enableRing = ring_state; }
 
         *sound->amp.decay = stream.readFloat();
