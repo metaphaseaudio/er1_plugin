@@ -12,13 +12,15 @@
 class ER1Voice
 {
 public:
-    ER1Voice(ER1Sound::Ptr sound);
+    explicit ER1Voice(ER1Sound::Ptr sound);
     void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
     void updateParams();
     void setSampleRate(double sr);
 
-    void processVoice(float* outData, const float* lastData, int samps, int offset) { m_Voice.processBlock(outData, lastData, samps, offset); }
-    void processChannel(const float* inData, float** outData, int samps, int offset) { m_Channel.processBlock(inData, outData, samps, offset); }
+    void processVoice(float* outData, const float* lastData, int samps, int offset)
+        { m_Voice.processBlock(outData, lastData, samps, offset); };
+    void processChannel(const float* inData, float** outData, int samps, int offset)
+        { m_Channel.processBlock(inData, outData, samps, offset); }
 
 private:
     ER1Sound::Ptr m_Sound;
