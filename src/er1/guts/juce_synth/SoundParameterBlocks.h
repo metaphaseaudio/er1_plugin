@@ -19,6 +19,7 @@ struct OscParams
     juce::AudioParameterFloat* pitch;
     juce::AudioParameterFloat* modSpeed;
     juce::AudioParameterFloat* modDepth;
+    juce::AudioParameterBool* enableRing;
 };
 
 struct AmpParams

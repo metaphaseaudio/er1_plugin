@@ -24,13 +24,12 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
         for (int i = 0; i < m_Voices.size(); i++)
         {
             auto& voice = m_Voices[i];
-
-            const auto* ringData = m_Sounds[i]->enableRing ? m_Tmp.getReadPointer(0) : nullptr;
+            const auto& sound = m_Sounds[i];
+            const auto is_ring_modulator = i + 1 < m_Sounds.size() && m_Sounds[i + 1]->isRingModCarrier();
+            const auto* ringData = sound->isRingModCarrier() ? m_Tmp.getReadPointer(0) : nullptr;
+            auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
             voice->processVoice(m_Tmp.getWritePointer(0), ringData, toRender, startSample);
-            voice->processChannel(m_Tmp.getReadPointer(0), audioOut.getArrayOfWritePointers(), toRender, startSample);
-
-
-            const auto& sound =  m_Sounds[i];
+            voice->processChannel(m_Tmp.getReadPointer(0), outData, toRender, startSample);
 
             if (msg.isNoteOn())
             {
@@ -48,10 +47,11 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     for (int i = 0; i < m_Voices.size(); i++)
     {
         auto& voice = m_Voices[i];
-        const auto* ringData = m_Sounds[i]->enableRing ? m_Tmp.getReadPointer(0) : nullptr;
+        const auto* ringData = m_Sounds[i]->isRingModCarrier() ? m_Tmp.getReadPointer(0) : nullptr;
+        auto outData = i + 1 < m_Sounds.size() && !m_Sounds[i + 1]->isRingModCarrier() ? audioOut.getArrayOfWritePointers() : nullptr;
         voice->updateParams();
         voice->processVoice(m_Tmp.getWritePointer(0), ringData, toRender, startSample);
-        voice->processChannel(m_Tmp.getReadPointer(0), audioOut.getArrayOfWritePointers(), toRender, startSample);
+        voice->processChannel(m_Tmp.getReadPointer(0), outData, toRender, startSample);
     }
 }
 

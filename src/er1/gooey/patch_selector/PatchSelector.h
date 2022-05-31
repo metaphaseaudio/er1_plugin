@@ -14,7 +14,7 @@ class PatchSelector
     , public juce::ChangeBroadcaster
 {
 public:
-    PatchSelector();
+    explicit PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds);
 
     void resized() override;
     void paint(juce::Graphics& g) override;

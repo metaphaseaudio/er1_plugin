@@ -47,6 +47,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, -0.2f);
         auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
         auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
+        auto* ring = (1 + i) % 2 == 0 ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
         auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
         auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
@@ -74,7 +75,7 @@ ER1AudioProcessor::ER1AudioProcessor()
         addParameter(sync);
 
         // Add Sound
-        OscParams osc = {oscType, modType, pitch, modSpeed, modDepth};
+        OscParams osc = {oscType, modType, pitch, modSpeed, modDepth, ring};
         AmpParams amp = {decay, level, pan, lowBoost};
         DelayParams delay = {time, depth, sync};
 

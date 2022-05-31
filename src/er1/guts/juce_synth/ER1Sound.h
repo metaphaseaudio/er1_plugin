@@ -16,14 +16,15 @@ public:
     ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel=1);
     bool appliesToNote (int midiNoteNumber) const { return midiNoteNumber == config.note; };
     bool appliesToChannel (int midiChannel) const { return midiChannel == config.chan; };
-
+    bool isRingModCarrier() const { return osc.enableRing != nullptr && osc.enableRing->get(); }
     void printStatus();
 
     ConfigParams config;
     AmpParams amp;
     OscParams osc;
     DelayParams delay;
-    std::atomic<bool> enableRing = false;
+
+
 };
 
 

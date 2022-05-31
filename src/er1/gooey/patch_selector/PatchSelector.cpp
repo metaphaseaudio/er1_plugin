@@ -6,7 +6,7 @@
 #include "../look_and_feel/StandardShapes.h"
 
 
-PatchSelector::PatchSelector()
+PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
 {
     for (int i = 0; i < m_Buttons.size(); i++)
     {
@@ -16,10 +16,12 @@ PatchSelector::PatchSelector()
         btn.onClick = [&]() { sendChangeMessage(); };
     }
 
-    for (auto& btn : m_RingButtons)
+    for (int i = 0; i < m_RingButtons.size(); i ++)
     {
+        auto& btn = m_RingButtons[i];
+        btn.setToggleable(true);
         addAndMakeVisible(btn);
-        btn.onClick = [&]() {};
+        btn.onClick = [i, &btn, &sounds]() { sounds[(i * 2) + 1]->osc.enableRing->setValueNotifyingHost(btn.getToggleState()); };
     }
 
     m_Buttons[0].setToggleState(true, juce::sendNotification);

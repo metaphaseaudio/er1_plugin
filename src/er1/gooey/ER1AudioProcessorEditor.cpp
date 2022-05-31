@@ -19,7 +19,7 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_PatchSelector()
+    , m_PatchSelector(p.getAllSounds())
 {
     setLookAndFeel(&m_LAF);
 
