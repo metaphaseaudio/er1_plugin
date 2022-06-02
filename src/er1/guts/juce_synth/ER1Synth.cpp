@@ -63,10 +63,6 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     }
 }
 
-
-void ER1Synth::addSound(ER1Sound* sound)
-    { m_Voices.emplace_back(new ER1Voice(sound)); }
-
 void ER1Synth::prepareToPlay(double sampleRate, int blockSize)
 {
     for (auto& voice : m_Voices)
@@ -75,3 +71,6 @@ void ER1Synth::prepareToPlay(double sampleRate, int blockSize)
     m_Tmp.setSize(1, blockSize * meta::ER1::Downsampler::OverSample);
     m_Tmp.clear();
 }
+
+void ER1Synth::addVoice(ER1Voice* voice)
+    { m_Voices.emplace_back(voice); }

@@ -4,7 +4,6 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <meta/gooey/RadioButton.h>
 #include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
 #include "../../guts/juce_synth/ER1Sound.h"

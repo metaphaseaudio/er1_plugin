@@ -1,6 +1,8 @@
 #include <meta/util/math.h>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
+#include "er1_dsp/voices/AnalogVoice.h"
+#include "er1_dsp/voices/AudioVoice.h"
 
 using namespace juce;
 static juce::StringArray OscNames =
@@ -32,51 +34,7 @@ ER1AudioProcessor::ER1AudioProcessor()
 {
     for (int i = 0; i < ER1_SOUND_COUNT; i++)
     {
-        // Create params
-        auto voiceIDStr = "voice_" + juce::String(i);
-
-        auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
-        auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
-        auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, -0.2f);
-        auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
-        auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
-        auto* ring = (1 + i) % 2 == 0 ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
-
-        auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
-        auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
-        auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
-        auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
-
-        auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
-        auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
-        auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
-
-        // Add params to processor
-        addParameter(oscType);
-        addParameter(pitch);
-        addParameter(modType);
-        addParameter(modSpeed);
-        addParameter(modDepth);
-        if (ring != nullptr) { addParameter(ring); }
-
-        addParameter(level);
-        addParameter(pan);
-        addParameter(decay);
-        addParameter(lowBoost);
-
-        addParameter(time);
-        addParameter(depth);
-        addParameter(sync);
-
-        // Add Sound
-        OscParams osc = {oscType, modType, pitch, modSpeed, modDepth, ring};
-        AmpParams amp = {decay, level, pan, lowBoost};
-        DelayParams delay = {time, depth, sync};
-
-        m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
-        auto sound = m_Sounds.getLast();
-        sound->config.name = voiceIDStr.toStdString();
-        m_Synth.addSound(sound);
+        addAnalogVoice(i, (1 + i) % 2 == 0);
     }
 }
 
@@ -233,6 +191,100 @@ void ER1AudioProcessor::triggerVoice(int voice)
     const auto& note = m_Sounds[voice]->config.note;
     m_QueuedMessages.push_back(juce::MidiMessage::noteOn(chan, note, 1.0f));
 }
+
+void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
+{
+    // Create params
+    auto voiceIDStr = "analog_voice_" + juce::String(voiceNumber);
+
+    auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
+    auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
+    auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, -0.2f);
+    auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
+    auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
+    auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
+
+    auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
+    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
+    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
+    auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+
+    auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
+
+    // Add params to processor
+    addParameter(oscType);
+    addParameter(pitch);
+    addParameter(modType);
+    addParameter(modSpeed);
+    addParameter(modDepth);
+    if (ring != nullptr) { addParameter(ring); }
+
+    addParameter(level);
+    addParameter(pan);
+    addParameter(decay);
+    addParameter(lowBoost);
+
+    addParameter(time);
+    addParameter(depth);
+    addParameter(sync);
+
+    // Add Sound
+    OscParams osc = {oscType, modType, pitch, modSpeed, modDepth, ring};
+    AmpParams amp = {decay, level, pan, lowBoost};
+    DelayParams delay = {time, depth, sync};
+
+    m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
+    auto sound = m_Sounds.getLast();
+    sound->config.name = voiceIDStr.toStdString();
+    m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogVoice(getSampleRate())));
+}
+
+void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
+{
+    // Create params
+    auto voiceIDStr = "audio_voice_" + juce::String(voiceNumber);
+
+    auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
+
+    auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.01f, 1.0f, 0.1f);
+    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
+    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
+    auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+
+    auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
+
+    // Add params to processor
+    if (ring != nullptr) { addParameter(ring); }
+
+    addParameter(level);
+    addParameter(pan);
+    addParameter(decay);
+    addParameter(lowBoost);
+
+    addParameter(time);
+    addParameter(depth);
+    addParameter(sync);
+
+    // Add Sound
+    OscParams osc = {nullptr, nullptr, nullptr, nullptr, nullptr, ring};
+    AmpParams amp = {decay, level, pan, lowBoost};
+    DelayParams delay = {time, depth, sync};
+
+    m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
+    auto sound = m_Sounds.getLast();
+    sound->config.name = voiceIDStr.toStdString();
+    m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AudioVoice(getSampleRate())));
+}
+
+void ER1AudioProcessor::addPCMVoice(int voiceNumber)
+{
+
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

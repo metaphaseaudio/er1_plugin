@@ -13,7 +13,6 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <er1_dsp/Constants.h>
 #include <er1_dsp/Envelope.h>
-#include "er1_dsp/voices/AnalogVoice.h"
 #include <meta/midi/MidiState.h>
 #include "juce_synth/ER1Synth.h"
 #include "juce_synth/ER1Sound.h"
@@ -74,6 +73,10 @@ public:
     juce::ReferenceCountedArray<ER1Sound>& getAllSounds() { return m_Sounds; }
 
 private:
+    void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
+    void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
+    void addPCMVoice(int voiceNumber);
+
     meta::MidiState m_MidiState;
     juce::ReferenceCountedArray<ER1Sound> m_Sounds;
     ER1Synth m_Synth;

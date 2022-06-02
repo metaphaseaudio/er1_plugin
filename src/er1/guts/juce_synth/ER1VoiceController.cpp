@@ -3,28 +3,32 @@
 //
 
 #include "ER1VoiceController.h"
+#include "er1_dsp/voices/AnalogVoice.h"
 
-ER1Voice::ER1Voice(ER1Sound::Ptr sound)
+ER1Voice::ER1Voice(ER1Sound::Ptr& sound, meta::ER1::Voice* voice)
     : m_Sound(sound)
-    , m_Voice(48000 * meta::ER1::MainOscillator::OverSample)
+    , m_Voice(voice)
 {}
 
 void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition)
 {
-    m_Voice.reset();
-    m_Voice.start();
+    m_Voice->reset();
+    m_Voice->start();
 }
 
-void ER1Voice::setSampleRate(double newRate) { m_Voice.setSampleRate(newRate); }
+void ER1Voice::setSampleRate(double newRate)
+    { m_Voice->setSampleRate(newRate); }
 
 void ER1Voice::updateParams()
 {
-    m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(m_Sound->osc.oscType->getIndex()));
-    m_Voice.setModulationShape(static_cast<meta::ER1::AnalogVoice::ModShape>(m_Sound->osc.modType->getIndex()));
-    m_Voice.setModulationSpeed(m_Sound->osc.modSpeed->get());
-    m_Voice.setModulationDepth(m_Sound->osc.modDepth->get());
-    m_Voice.setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, m_Sound->osc.pitch->get(), 4));
-    m_Voice.setDecay(m_Sound->amp.decay->get());
+    m_Voice->setWaveShape(static_cast<meta::ER1::Wave::Shape>(m_Sound->osc.oscType->getIndex()));
+    m_Voice->setModulationShape(static_cast<meta::ER1::Mod::Shape>(m_Sound->osc.modType->getIndex()));
+    m_Voice->setModulationSpeed(m_Sound->osc.modSpeed->get());
+    m_Voice->setModulationDepth(m_Sound->osc.modDepth->get());
+    m_Voice->setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, m_Sound->osc.pitch->get(), 4));
+
+    m_Voice->setDecay(m_Sound->amp.decay->get());
+
     m_Channel.setLevel(m_Sound->amp.level->get());
     m_Channel.setPan(m_Sound->amp.pan->get());
     m_Channel.setTempoSync(true);

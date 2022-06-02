@@ -12,7 +12,7 @@ class ER1Synth
 {
 public:
     ER1Synth();
-    void addSound(ER1Sound* sound);
+    void addVoice(ER1Voice* voice);
     void prepareToPlay(double sampleRate, int blockSize);
     void processBlock(juce::AudioBuffer<float>& audio, juce::MidiBuffer midi, int nSamps);
 

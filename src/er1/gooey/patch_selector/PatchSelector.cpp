@@ -3,6 +3,7 @@
 //
 
 #include "PatchSelector.h"
+#include <meta/util/container_helpers/array.h>
 #include "../look_and_feel/StandardShapes.h"
 
 static constexpr int ringButtonCount = 5;
