@@ -4,7 +4,7 @@
 
 #pragma once
 #include <juce_audio_basics/juce_audio_basics.h>
-#include <er1_dsp/AnalogVoice.h>
+#include "er1_dsp/voices/AnalogVoice.h"
 #include "ER1Sound.h"
 #include "er1_dsp/Channel.h"
 
@@ -16,6 +16,8 @@ public:
     void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
     void updateParams();
     void setSampleRate(double sr);
+
+    [[ nodiscard ]] const ER1Sound* getSound() const { return m_Sound.get(); }
 
     void processVoice(float* outData, const float* lastData, int samps, int offset)
         { m_Voice.processBlock(outData, lastData, samps, offset); };

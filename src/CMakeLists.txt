@@ -28,7 +28,7 @@ add_subdirectory(shared/er1_dsp)
 juce_add_plugin(ER-1
         VERSION 1.0
         COMPANY_NAME Metaphase
-        IS_SYNTH TRUE
+#        IS_SYNTH TRUE
         NEEDS_MIDI_INPUT TRUE
         VST_NUM_MIDI_INS 1
         PLUGIN_MANUFACTURER_CODE Mtap

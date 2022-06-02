@@ -5,7 +5,7 @@
 #pragma once
 
 #include <juce_audio_basics/juce_audio_basics.h>
-#include <er1_dsp/AnalogVoice.h>
+#include "er1_dsp/voices/AnalogVoice.h"
 #include "SoundParameterBlocks.h"
 
 class ER1Sound

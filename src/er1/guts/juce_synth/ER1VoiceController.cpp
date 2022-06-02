@@ -19,7 +19,6 @@ void ER1Voice::setSampleRate(double newRate) { m_Voice.setSampleRate(newRate); }
 
 void ER1Voice::updateParams()
 {
-    // Plus one here to align with the options
     m_Voice.setWaveShape(static_cast<meta::ER1::WaveShape>(m_Sound->osc.oscType->getIndex()));
     m_Voice.setModulationShape(static_cast<meta::ER1::AnalogVoice::ModShape>(m_Sound->osc.modType->getIndex()));
     m_Voice.setModulationSpeed(m_Sound->osc.modSpeed->get());
