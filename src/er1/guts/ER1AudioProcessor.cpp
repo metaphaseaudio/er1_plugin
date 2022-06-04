@@ -1,8 +1,8 @@
 #include <meta/util/math.h>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
-#include "er1_dsp/voices/AnalogVoice.h"
-#include "er1_dsp/voices/AudioVoice.h"
+#include "er1_dsp/sounds/AnalogSound.h"
+#include "er1_dsp/sounds/AudioSound.h"
 
 using namespace juce;
 static juce::StringArray OscNames =
@@ -32,45 +32,17 @@ ER1AudioProcessor::ER1AudioProcessor()
                          .withOutput("Output", AudioChannelSet::stereo()))
     , m_Downsampler(44100)
 {
-    for (int i = 0; i < ER1_SOUND_COUNT; i++)
-    {
-        addAnalogVoice(i, (1 + i) % 2 == 0);
-    }
+    for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0); }
+    for (int i = 0; i < AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
 }
 
 
 //==============================================================================
-const String ER1AudioProcessor::getName() const
-{
-    return JucePlugin_Name;
-}
+const String ER1AudioProcessor::getName() const { return JucePlugin_Name; }
 
-bool ER1AudioProcessor::acceptsMidi() const
-{
-#if JucePlugin_WantsMidiInput
-    return true;
-#else
-    return false;
-#endif
-}
-
-bool ER1AudioProcessor::producesMidi() const
-{
-#if JucePlugin_ProducesMidiOutput
-    return true;
-#else
-    return false;
-#endif
-}
-
-bool ER1AudioProcessor::isMidiEffect() const
-{
-#if JucePlugin_IsMidiEffect
-    return true;
-#else
-    return false;
-#endif
-}
+bool ER1AudioProcessor::acceptsMidi() const { return true; }
+bool ER1AudioProcessor::producesMidi() const { return false; }
+bool ER1AudioProcessor::isMidiEffect() const { return false; }
 
 double ER1AudioProcessor::getTailLengthSeconds() const { return 0.0; }
 int ER1AudioProcessor::getNumPrograms() { return 1; }
@@ -109,6 +81,8 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 
     // TODO: set up "oversampled" audio input
     m_OversampleBuffer.clear();
+    m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());
+    m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
     m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
     m_Downsampler.downsampleBuffer(m_OversampleBuffer, buffer);
     midiMessages.clear();
@@ -129,8 +103,9 @@ AudioProcessorEditor *ER1AudioProcessor::createEditor()
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
-    for (const auto sound : m_Sounds)
+    for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
     {
+        const auto& sound = m_Sounds[i];
         stream.writeString(sound->config.name);
         stream.writeInt(sound->config.note);
         stream.writeInt(sound->config.chan);
@@ -157,8 +132,10 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
     MemoryInputStream stream (data, static_cast<size_t> (sizeInBytes), false);
-    for (auto& sound : m_Sounds)
+
+    for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
     {
+        const auto& sound = m_Sounds[i];
         sound->config.name = stream.readString().toStdString();
         sound->config.note = stream.readInt();
         sound->config.chan = stream.readInt();
@@ -235,10 +212,10 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
+    m_Sounds.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_Sounds.getLast();
     sound->config.name = voiceIDStr.toStdString();
-    m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogVoice(getSampleRate())));
+    m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
 }
 
 void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
@@ -274,10 +251,18 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_Sounds.add(new ER1Sound(osc, amp, delay, 1, 1));
+    m_Sounds.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_Sounds.getLast();
     sound->config.name = voiceIDStr.toStdString();
-    m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AudioVoice(getSampleRate())));
+    m_Synth.addVoice(
+        new ER1Voice(
+            sound,
+            new meta::ER1::AudioSound(
+                getSampleRate(),
+                voiceNumber == 0 ? meta::ER1::AudioSound::AudioChannel::LEFT : meta::ER1::AudioSound::AudioChannel::RIGHT
+            )
+        )
+    );
 }
 
 void ER1AudioProcessor::addPCMVoice(int voiceNumber)

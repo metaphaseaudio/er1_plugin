@@ -13,7 +13,7 @@ class KorgComboBox
     , meta::TimedParameterListener
 {
 public:
-    explicit KorgComboBox(juce::AudioParameterChoice& param);
+    explicit KorgComboBox(juce::AudioParameterChoice* param);
     void handleNewParameterValue() override;
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged);
 };

@@ -15,10 +15,10 @@
 using namespace juce;
 
 AmpSectionComponent::AmpSectionComponent(AmpParams& params)
-    : m_Decay(*params.decay), m_DecayLabel("Decay Label", "Decay")
-    , m_Level(*params.level), m_LevelLabel("Level Label", "Level")
-    , m_Pan(*params.pan), m_PanLabel("Pan Label", "Pan")
-    , m_LowBoost(*params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
+    : m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
+    , m_Level(params.level), m_LevelLabel("Level Label", "Level")
+    , m_Pan(params.pan), m_PanLabel("Pan Label", "Pan")
+    , m_LowBoost(params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
 {
 
     m_DecayLabel.setJustificationType(juce::Justification::centred);

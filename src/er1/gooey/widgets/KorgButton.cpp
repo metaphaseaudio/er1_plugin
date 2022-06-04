@@ -35,7 +35,7 @@ void KorgButton::paintButton(juce::Graphics &g, bool isMouseOverButton, bool isB
         (g, *this, isMouseOverButton, isButtonDown);
 }
 
-KorgBooleanParameterButton::KorgBooleanParameterButton(juce::AudioParameterBool& param)
+KorgBooleanParameterButton::KorgBooleanParameterButton(juce::AudioParameterBool* param)
     : TimedParameterListener(param)
 {
     handleNewParameterValue();
@@ -45,16 +45,16 @@ KorgBooleanParameterButton::KorgBooleanParameterButton(juce::AudioParameterBool&
 
 void KorgBooleanParameterButton::buttonClicked()
 {
-    if (isParameterOn() != getToggleState())
+    if (isParameterOn() != getToggleState() && p_Parameter != nullptr)
     {
-        getParameter().beginChangeGesture();
-        getParameter().setValueNotifyingHost (getToggleState() ? 1.0f : 0.0f);
-        getParameter().endChangeGesture();
+        p_Parameter->beginChangeGesture();
+        p_Parameter->setValueNotifyingHost (getToggleState() ? 1.0f : 0.0f);
+        p_Parameter->endChangeGesture();
     }
 }
 
 bool KorgBooleanParameterButton::isParameterOn() const
-    { return getParameter().getValue() >= 0.5f; }
+    { return p_Parameter != nullptr && p_Parameter->getValue() >= 0.5f; }
 
 void KorgBooleanParameterButton::handleNewParameterValue()
     { setToggleState(isParameterOn(), juce::dontSendNotification); }

@@ -5,16 +5,16 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
+
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
 #include "delay_section/DelaySectionComponent.h"
 #include "config_section/ConfigComponent.h"
+
 #include "../widgets/LCDText.h"
 #include "../widgets/DividerLine.h"
 #include "../../guts/ER1AudioProcessor.h"
-#include "../../guts/juce_synth/ER1Sound.h"
-#include <meta/gooey/RadioGrid.h>
-#include "er1_dsp/voices/AnalogVoice.h"
+#include "../../guts/juce_synth/ER1ControlBlock.h"
 
 
 class SoundEditorWindow
@@ -22,7 +22,7 @@ class SoundEditorWindow
     , juce::ChangeListener
 {
 public:
-    explicit SoundEditorWindow(ER1Sound::Ptr sound);
+    explicit SoundEditorWindow(ER1ControlBlock::Ptr sound);
     void resized() override;
 
 private:

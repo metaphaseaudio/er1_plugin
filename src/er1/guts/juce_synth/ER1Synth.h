@@ -4,8 +4,8 @@
 
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
-#include "ER1VoiceController.h"
-#include "ER1Sound.h"
+#include "ER1Voice.h"
+#include "ER1ControlBlock.h"
 
 
 class ER1Synth

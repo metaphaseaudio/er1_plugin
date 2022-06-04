@@ -11,9 +11,8 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "er1_dsp/voices/AnalogVoice.h"
 #include "../../widgets/KorgKnob.h"
-#include "../../../guts/juce_synth/ER1Sound.h"
+#include "../../../guts/juce_synth/ER1ControlBlock.h"
 
 
 class AmpSectionComponent

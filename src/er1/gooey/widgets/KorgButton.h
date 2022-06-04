@@ -30,7 +30,7 @@ class KorgBooleanParameterButton
     , meta::TimedParameterListener
 {
 public:
-    explicit KorgBooleanParameterButton(juce::AudioParameterBool& param);
+    explicit KorgBooleanParameterButton(juce::AudioParameterBool* param);
     bool isParameterOn() const;
     void buttonClicked();
     void handleNewParameterValue() override;

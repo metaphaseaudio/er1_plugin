@@ -74,7 +74,8 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     {
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
         const auto selected = m_PatchSelector.getSelected();
-        if (selected >= ER1AudioProcessor::ER1_SOUND_COUNT) { return; }  // TODO: handle the non-analog channels
+
+        if (selected >= ER1AudioProcessor::ER1_SOUND_COUNT) { return; }
         m_SoundEditorWindows[m_PatchSelector.getSelected()]->setVisible(true);
         processor.triggerVoice(selected);
     }

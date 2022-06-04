@@ -5,14 +5,18 @@
 #include "KorgKnob.h"
 #include <meta/util/range.h>
 
-KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
+KorgKnob::KorgKnob(juce::AudioParameterFloat* param, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
-    auto interval = std::abs(param.range.start - param.range.end) / granularity;
-    setRange(juce::Range<double>(param.range.start, param.range.end), interval);
-    setValue(param, juce::NotificationType::dontSendNotification);
-    param.addListener(this);
+    if (param != nullptr)
+    {
+        auto interval = std::abs(param->range.start - param->range.end) / granularity;
+        setRange(juce::Range<double>(param->range.start, param->range.end), interval);
+        setValue(*param, juce::NotificationType::dontSendNotification);
+        param->addListener(this);
+    }
+
     addListener(this);
 
     onDragStart   = [this]() { sliderStartedDragging(); };
@@ -21,9 +25,9 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat& param, float granularity)
 
 void KorgKnob::handleNewParameterValue()
 {
-    if (!isDragging)
+    if (p_Parameter != nullptr && !isDragging)
     {
-        const auto value = getParameter().getValue();
+        const auto value = p_Parameter->getValue();
         setValue(meta::remap_range(getRange().getStart(), getRange().getEnd(), 0.0, 1.0, value), juce::NotificationType::dontSendNotification);
         repaint();
     }
@@ -36,26 +40,26 @@ void KorgKnob::sliderValueChanged(juce::Slider* slider)
 
     const auto new_value = meta::remap_range(0.0f, 1.f, getRange().getStart(), getRange().getEnd(), static_cast<double>(getValue()));
 
-    if (getParameter().getValue() != new_value)
+    if (p_Parameter != nullptr && p_Parameter->getValue() != new_value)
     {
         if (!isDragging)
-            getParameter().beginChangeGesture();
+            p_Parameter->beginChangeGesture();
 
-        getParameter().setValueNotifyingHost(new_value);
+        p_Parameter->setValueNotifyingHost(new_value);
 
         if (!isDragging)
-            getParameter().endChangeGesture();
+            p_Parameter->endChangeGesture();
     }
 }
 
 void KorgKnob::sliderStartedDragging()
 {
     isDragging = true;
-    getParameter().beginChangeGesture();
+    if (p_Parameter != nullptr) { p_Parameter->beginChangeGesture(); }
 }
 
 void KorgKnob::sliderStoppedDragging()
 {
     isDragging = false;
-    getParameter().endChangeGesture();
+    if (p_Parameter != nullptr) { p_Parameter->endChangeGesture(); }
 }

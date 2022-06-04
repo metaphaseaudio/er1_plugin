@@ -6,14 +6,14 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
-#include "../../guts/juce_synth/ER1Sound.h"
+#include "../../guts/juce_synth/ER1ControlBlock.h"
 
 class PatchSelector
     : public juce::Component
     , public juce::ChangeBroadcaster
 {
 public:
-    explicit PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds);
+    explicit PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
 
     void resized() override;
     void paint(juce::Graphics& g) override;

@@ -15,9 +15,9 @@
 using namespace juce;
 
 DelaySectionComponent::DelaySectionComponent(DelayParams& params)
-    : m_Depth(*params.depth), m_DepthLabel("Depth Label", "Depth")
-    , m_Time(*params.time), m_TimeLabel("Time Label", "Time")
-    , m_Sync(*params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
+    : m_Depth(params.depth), m_DepthLabel("Depth Label", "Depth")
+    , m_Time(params.time), m_TimeLabel("Time Label", "Time")
+    , m_Sync(params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
 {
 
     m_DepthLabel.setJustificationType(juce::Justification::centred);

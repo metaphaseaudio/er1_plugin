@@ -7,14 +7,12 @@
 #include <juce_audio_basics/juce_audio_basics.h>
 #include "SoundParameterBlocks.h"
 
-class ER1Sound
+class ER1ControlBlock
     : public juce::ReferenceCountedObject
 {
 public:
-    using Ptr = juce::ReferenceCountedObjectPtr<ER1Sound>;
-    ER1Sound(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel=1);
-    bool appliesToNote (int midiNoteNumber) const { return midiNoteNumber == config.note; };
-    bool appliesToChannel (int midiChannel) const { return midiChannel == config.chan; };
+    using Ptr = juce::ReferenceCountedObjectPtr<ER1ControlBlock>;
+    ER1ControlBlock(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel=1);
     bool isRingModCarrier() const { return osc.enableRing != nullptr && osc.enableRing->get(); }
     void printStatus();
 

@@ -8,7 +8,7 @@
 
 static constexpr int ringButtonCount = 5;
 
-PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
+PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
 {
     for (auto& btn : m_Buttons)
     {
@@ -20,7 +20,7 @@ PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1Sound>& sounds)
     for (int i = 0; i < ringButtonCount; i ++)
     {
         if ((i * 2 + 1) >= sounds.size()) { continue; }
-        auto& btn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(*sounds[(i * 2) + 1]->osc.enableRing));
+        auto& btn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(sounds[(i * 2) + 1]->osc.enableRing));
         addAndMakeVisible(*btn);
     }
 

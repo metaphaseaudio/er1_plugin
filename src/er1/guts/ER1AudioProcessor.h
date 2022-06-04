@@ -15,8 +15,8 @@
 #include <er1_dsp/Envelope.h>
 #include <meta/midi/MidiState.h>
 #include "juce_synth/ER1Synth.h"
-#include "juce_synth/ER1Sound.h"
-#include "juce_synth/ER1VoiceController.h"
+#include "juce_synth/ER1ControlBlock.h"
+#include "juce_synth/ER1Voice.h"
 
 //==============================================================================
 /**
@@ -26,10 +26,13 @@ class ER1AudioProcessor
 {
 public:
 #ifdef _DEBUG
-    static constexpr int ER1_SOUND_COUNT = 5;
+    static constexpr int ANALOG_SOUND_COUNT = 3;
 #else
-    static constexpr int ER1_SOUND_COUNT = 10;
+    static constexpr int ANALOG_SOUND_COUNT = 10;
 #endif
+
+    static constexpr int AUDIO_SOUND_COUNT = 2;
+    static constexpr int ER1_SOUND_COUNT = ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT;
     //==============================================================================
     ER1AudioProcessor();
     ~ER1AudioProcessor() override = default;
@@ -68,9 +71,9 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     meta::MidiState& getMidiState() { return m_MidiState; }
-    ER1Sound::Ptr getSound(int i) { return m_Sounds[i]; }
+    ER1ControlBlock::Ptr getSound(int i) { return m_Sounds[i]; }
     void triggerVoice(int num);
-    juce::ReferenceCountedArray<ER1Sound>& getAllSounds() { return m_Sounds; }
+    juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_Sounds; }
 
 private:
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
@@ -78,7 +81,7 @@ private:
     void addPCMVoice(int voiceNumber);
 
     meta::MidiState m_MidiState;
-    juce::ReferenceCountedArray<ER1Sound> m_Sounds;
+    juce::ReferenceCountedArray<ER1ControlBlock> m_Sounds;
     ER1Synth m_Synth;
 
     std::vector<juce::MidiMessage> m_QueuedMessages;
