@@ -4,7 +4,7 @@
 #include "er1_dsp/sounds/AnalogSound.h"
 #include "er1_dsp/sounds/AudioSound.h"
 #include "er1_dsp/sounds/PCMSound.h"
-#include "ER1PCMSamples.h"
+#include "er1_dsp/ER1PCMSamples.h"
 
 using namespace juce;
 static juce::StringArray OscNames =
@@ -39,10 +39,10 @@ ER1AudioProcessor::ER1AudioProcessor()
     for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0); }
     for (int i = 0; i < AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
 
-    auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize);
-    auto oh = addPCMVoice("Open Hat", ER1PCMSamples::open_hat_wav, ER1PCMSamples::open_hat_wavSize);
-    auto cr = addPCMVoice("Crash", ER1PCMSamples::crash_wav, ER1PCMSamples::crash_wavSize);
-    auto cl = addPCMVoice("Clap", ER1PCMSamples::clap_wav, ER1PCMSamples::clap_wavSize);
+    auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize, 32000);
+    auto oh = addPCMVoice("Open Hat", ER1PCMSamples::open_hat_wav, ER1PCMSamples::open_hat_wavSize, 32000);
+    auto cr = addPCMVoice("Crash", ER1PCMSamples::crash_wav, ER1PCMSamples::crash_wavSize, 32000);
+    auto cl = addPCMVoice("Clap", ER1PCMSamples::clap_wav, ER1PCMSamples::clap_wavSize, 32000);
 
     oh->addToChokeList(ch);
     ch->addToChokeList(oh);
@@ -191,7 +191,7 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
 
     auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
     auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
-    auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, -0.2f);
+    auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, 0.2f);
     auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
     auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
@@ -280,10 +280,10 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     );
 }
 
-ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData)
+ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate)
 {
     // Create params
-    auto* pitch = new juce::AudioParameterFloat(name + "_pitch", name + " Pitch", 0.0f, 1.0f, -0.2f);
+    auto* pitch = new juce::AudioParameterFloat(name + "_pitch", name + " Pitch", 0.5f, 2.0f, 1.0f);
 
     auto* decay = new juce::AudioParameterFloat(name + "_decay", name + " Decay", 0.01f, 1.0f, 0.1f);
     auto* level = new juce::AudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 1.0f);
@@ -314,7 +314,14 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
     sound->config.name = name;
-    return m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::PCMSound(getSampleRate(), ER1PCMSamples::loadBinaryPCMData(data, nData))));
+    return m_Synth.addVoice(
+        new ER1Voice(
+            sound,
+            new meta::ER1::PCMSound(
+                getSampleRate(), ER1PCMSamples::loadBinaryPCMData(data, nData), dataSampleRate
+            )
+        )
+    );
 }
 
 

@@ -78,7 +78,7 @@ public:
 private:
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
-    ER1Voice* addPCMVoice(std::string name, const char* data, const int nData);
+    ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
     meta::MidiState m_MidiState;
     juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;

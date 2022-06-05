@@ -4,6 +4,7 @@
 
 #include "ER1Voice.h"
 #include "er1_dsp/sounds/AnalogSound.h"
+#include "er1_dsp/sounds/PCMSound.h"
 
 ER1Voice::ER1Voice(ER1ControlBlock::Ptr& sound, meta::ER1::BaseSound* voice)
     : p_Ctrls(sound)
@@ -27,7 +28,12 @@ void ER1Voice::updateParams()
         m_Sound->setModulationShape(static_cast<meta::ER1::Mod::Shape>(p_Ctrls->osc.modType->getIndex()));
         m_Sound->setModulationSpeed(p_Ctrls->osc.modSpeed->get());
         m_Sound->setModulationDepth(p_Ctrls->osc.modDepth->get());
-        m_Sound->setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, p_Ctrls->osc.pitch->get(), 4));
+        m_Sound->setPitch(p_Ctrls->osc.pitch->get());
+    }
+
+    if (dynamic_cast<meta::ER1::PCMSound*>(m_Sound.get()) != nullptr)
+    {
+        m_Sound->setPitch(p_Ctrls->osc.pitch->get());
     }
 
     m_Sound->setDecay(p_Ctrls->amp.decay->get());
