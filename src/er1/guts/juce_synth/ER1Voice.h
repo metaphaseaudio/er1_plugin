@@ -16,6 +16,7 @@ public:
     void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
     void updateParams();
     void setSampleRate(double sr);
+    void addToChokeList(ER1Voice* voice) { m_Sound->addSoundToChokeList(voice->m_Sound.get()); }
 
     void processBlock(float** inData, float** outData, const float* lastData, int samps, int offset);
 

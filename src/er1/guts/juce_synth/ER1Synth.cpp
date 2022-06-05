@@ -71,5 +71,5 @@ void ER1Synth::prepareToPlay(double sampleRate, int blockSize)
     m_Tmp.clear();
 }
 
-void ER1Synth::addVoice(ER1Voice* voice)
-    { m_Voices.emplace_back(voice); }
+ER1Voice* ER1Synth::addVoice(ER1Voice* voice)
+    { return m_Voices.emplace_back(voice).get(); }

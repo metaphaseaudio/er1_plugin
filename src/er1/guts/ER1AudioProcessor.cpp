@@ -3,6 +3,8 @@
 #include "../gooey/ER1AudioProcessorEditor.h"
 #include "er1_dsp/sounds/AnalogSound.h"
 #include "er1_dsp/sounds/AudioSound.h"
+#include "er1_dsp/sounds/PCMSound.h"
+#include "ER1PCMSamples.h"
 
 using namespace juce;
 static juce::StringArray OscNames =
@@ -25,6 +27,8 @@ static juce::StringArray ModulationNames =
     , "Noise"
     , "Decay"
 };
+
+
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
     : AudioProcessor(
@@ -34,6 +38,17 @@ ER1AudioProcessor::ER1AudioProcessor()
 {
     for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0); }
     for (int i = 0; i < AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
+
+    auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize);
+    auto oh = addPCMVoice("Open Hat", ER1PCMSamples::open_hat_wav, ER1PCMSamples::open_hat_wavSize);
+    auto cr = addPCMVoice("Crash", ER1PCMSamples::crash_wav, ER1PCMSamples::crash_wavSize);
+    auto cl = addPCMVoice("Clap", ER1PCMSamples::clap_wav, ER1PCMSamples::clap_wavSize);
+
+    oh->addToChokeList(ch);
+    ch->addToChokeList(oh);
+
+    cr->addToChokeList(cl);
+    cl->addToChokeList(cr);
 }
 
 
@@ -105,7 +120,7 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
     MemoryOutputStream stream(destData, true);
     for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
     {
-        const auto& sound = m_Sounds[i];
+        const auto& sound = m_CtrlBlocks[i];
         stream.writeString(sound->config.name);
         stream.writeInt(sound->config.note);
         stream.writeInt(sound->config.chan);
@@ -135,7 +150,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
     for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
     {
-        const auto& sound = m_Sounds[i];
+        const auto& sound = m_CtrlBlocks[i];
         sound->config.name = stream.readString().toStdString();
         sound->config.note = stream.readInt();
         sound->config.chan = stream.readInt();
@@ -164,8 +179,8 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
 void ER1AudioProcessor::triggerVoice(int voice)
 {
-    const auto& chan = m_Sounds[voice]->config.chan;
-    const auto& note = m_Sounds[voice]->config.note;
+    const auto& chan = m_CtrlBlocks[voice]->config.chan;
+    const auto& note = m_CtrlBlocks[voice]->config.note;
     m_QueuedMessages.push_back(juce::MidiMessage::noteOn(chan, note, 1.0f));
 }
 
@@ -212,8 +227,8 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_Sounds.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
-    auto sound = m_Sounds.getLast();
+    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    auto sound = m_CtrlBlocks.getLast();
     sound->config.name = voiceIDStr.toStdString();
     m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
 }
@@ -251,8 +266,8 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_Sounds.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
-    auto sound = m_Sounds.getLast();
+    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    auto sound = m_CtrlBlocks.getLast();
     sound->config.name = voiceIDStr.toStdString();
     m_Synth.addVoice(
         new ER1Voice(
@@ -265,9 +280,41 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     );
 }
 
-void ER1AudioProcessor::addPCMVoice(int voiceNumber)
+ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData)
 {
+    // Create params
+    auto* pitch = new juce::AudioParameterFloat(name + "_pitch", name + " Pitch", 0.0f, 1.0f, -0.2f);
 
+    auto* decay = new juce::AudioParameterFloat(name + "_decay", name + " Decay", 0.01f, 1.0f, 0.1f);
+    auto* level = new juce::AudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 1.0f);
+    auto* pan = new juce::AudioParameterFloat(name + "_pan", name + " Pan", 0.0f, 1.0f, 0.5);
+    auto* lowBoost = new juce::AudioParameterFloat(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
+
+    auto* time = new juce::AudioParameterFloat(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new juce::AudioParameterFloat(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* sync = new juce::AudioParameterBool(name + "_tempo_sync", name + " Tempo Sync", true);
+
+    // Add params to processor
+    addParameter(pitch);
+
+    addParameter(level);
+    addParameter(pan);
+    addParameter(decay);
+    addParameter(lowBoost);
+
+    addParameter(time);
+    addParameter(depth);
+    addParameter(sync);
+
+    // Add Sound
+    OscParams osc = {nullptr, nullptr, pitch, nullptr, nullptr, nullptr};
+    AmpParams amp = {decay, level, pan, lowBoost};
+    DelayParams delay = {time, depth, sync};
+
+    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    auto sound = m_CtrlBlocks.getLast();
+    sound->config.name = name;
+    return m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::PCMSound(getSampleRate(), ER1PCMSamples::loadBinaryPCMData(data, nData))));
 }
 
 
