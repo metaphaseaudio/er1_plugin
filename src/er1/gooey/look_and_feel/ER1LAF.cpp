@@ -30,6 +30,15 @@ void ER1LAF::drawRotarySlider
 {
     auto outline   = slider.findColour(Slider::rotarySliderOutlineColourId);
     auto fill      = slider.findColour(Slider::rotarySliderFillColourId);
+    auto thumb     = slider.findColour(Slider::thumbColourId);
+
+    if (!slider.isEnabled())
+    {
+        outline = outline.withSaturation(0.0f).withAlpha(0.5f);
+        fill = fill.withSaturation(0.0f).withAlpha(0.5f);
+        thumb = thumb.withSaturation(0.0f).withAlpha(0.5f);
+    }
+
     auto bounds    = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
     auto toAngle   = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
     auto radius    = jmin(bounds.getWidth(), bounds.getHeight()) / 2.0f;
@@ -79,7 +88,7 @@ void ER1LAF::drawRotarySlider
     line_path.addLineSegment(line, 4);
     lineShadow.drawForPath(g, line_path);
 
-    g.setColour(slider.findColour(Slider::thumbColourId));
+    g.setColour(thumb);
     g.drawLine(line, 4);
 }
 
@@ -91,8 +100,7 @@ void ER1LAF::drawKorgButton
     drawPad(g, button, isButtonDown ? dwnColour : upColour);
 }
 
-void
-ER1LAF::drawKorgToggleButton
+void ER1LAF::drawKorgToggleButton
 (juce::Graphics &g, KorgToggleButton &button, bool isMouseOverButton, bool isButtonDown)
 {
     auto toggleDown = button.getToggleState();
@@ -119,7 +127,6 @@ void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& int
     // Border
     g.setColour(juce::Colours::darkgrey);
     g.fillRoundedRectangle(bounds, calcCurve(area.getLocalBounds().toFloat(), 5));
-
 
     // Shadow
     auto shadow_centre = area.getLocalBounds().getTopLeft();

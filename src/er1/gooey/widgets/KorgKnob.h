@@ -17,6 +17,8 @@ public:
     void handleNewParameterValue() override;
     void sliderValueChanged(juce::Slider* slider) override;
 
+    virtual bool isEnabled() const { return true; }
+
 private:
     void sliderStartedDragging();
     void sliderStoppedDragging();

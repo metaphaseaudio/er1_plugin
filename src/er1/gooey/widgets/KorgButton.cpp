@@ -38,6 +38,7 @@ void KorgButton::paintButton(juce::Graphics &g, bool isMouseOverButton, bool isB
 KorgBooleanParameterButton::KorgBooleanParameterButton(juce::AudioParameterBool* param)
     : TimedParameterListener(param)
 {
+    if (param == nullptr) { setEnabled(false); }
     handleNewParameterValue();
     onClick = [this](){ buttonClicked(); };
 }

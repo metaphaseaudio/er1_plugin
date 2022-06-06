@@ -27,7 +27,6 @@ public:
     void drawKorgToggleButton
         (juce::Graphics& g, KorgToggleButton& button, bool isMouseOverButton, bool isButtonDown);
 
-
 private:
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);
 };

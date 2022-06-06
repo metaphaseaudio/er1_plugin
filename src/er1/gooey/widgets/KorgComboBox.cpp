@@ -7,15 +7,17 @@
 KorgComboBox::KorgComboBox(juce::AudioParameterChoice* param)
     : meta::TimedParameterListener(param)
 {
-    if (param != nullptr)
+    if (param == nullptr)
     {
-        auto choices = param->getAllValueStrings();
-        for (int i = 0; i < choices.size(); i++)
-            { addItem(choices[i], i + 1); }
-        setSelectedId(param->getIndex() + 1, juce::dontSendNotification);
-        param->addListener(this);
+        setEnabled(false);
+        return;
     }
 
+    auto choices = param->getAllValueStrings();
+    for (int i = 0; i < choices.size(); i++)
+        { addItem(choices[i], i + 1); }
+    setSelectedId(param->getIndex() + 1, juce::dontSendNotification);
+    param->addListener(this);
     addListener(this);
 }
 

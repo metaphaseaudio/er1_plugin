@@ -9,13 +9,16 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat* param, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
-    if (param != nullptr)
+    if (param == nullptr)
     {
-        auto interval = std::abs(param->range.start - param->range.end) / granularity;
-        setRange(juce::Range<double>(param->range.start, param->range.end), interval);
-        setValue(*param, juce::NotificationType::dontSendNotification);
-        param->addListener(this);
+        setEnabled(false);
+        return;
     }
+
+    auto interval = std::abs(param->range.start - param->range.end) / granularity;
+    setRange(juce::Range<double>(param->range.start, param->range.end), interval);
+    setValue(*param, juce::NotificationType::dontSendNotification);
+    param->addListener(this);
 
     addListener(this);
 
