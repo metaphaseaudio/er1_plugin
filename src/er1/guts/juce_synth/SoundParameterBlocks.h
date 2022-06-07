@@ -55,6 +55,9 @@ struct OscParams
 
     void fromJSON(json j)
     {
+        if (j.is_null())
+            { return; }
+
         if (oscType != nullptr) { *oscType = j.value("osc_type", modType->getIndex()); }
         if (modType != nullptr) { *modType = j.value("mod_type", modType->getIndex()); }
         if (pitch != nullptr) { *pitch = j.value("pitch", pitch->get()); }

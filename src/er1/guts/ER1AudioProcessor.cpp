@@ -163,13 +163,13 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     for (int i = 0; i < AUDIO_SOUND_COUNT || i < j["audio"].size(); i++)
     {
         auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
-        ctrls->fromJSON(j["analog"][i]);
+        ctrls->fromJSON(j["audio"][i]);
     }
 
     for (int i = 0; i < SAMPLE_SOUND_COUNT || i < j["pcm"].size(); i++)
     {
         auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
-        ctrls->fromJSON(j["analog"][i]);
+        ctrls->fromJSON(j["pcm"][i]);
     }
 }
 
