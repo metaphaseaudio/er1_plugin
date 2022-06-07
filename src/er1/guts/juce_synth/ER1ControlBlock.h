@@ -16,6 +16,9 @@ public:
     bool isRingModCarrier() const { return osc.enableRing != nullptr && osc.enableRing->get(); }
     void printStatus();
 
+    json asJSON() const;
+    void fromJSON(json j);
+
     ConfigParams config;
     AmpParams amp;
     OscParams osc;

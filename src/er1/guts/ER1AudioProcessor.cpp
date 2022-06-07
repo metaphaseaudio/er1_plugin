@@ -1,4 +1,5 @@
 #include <meta/util/math.h>
+#include <nlohmann/json.hpp>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
 #include "er1_dsp/sounds/AnalogSound.h"
@@ -7,6 +8,8 @@
 #include "er1_dsp/ER1PCMSamples.h"
 
 using namespace juce;
+using json = nlohmann::json;
+
 static juce::StringArray OscNames =
 {
     "Sine"
@@ -94,7 +97,6 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
         m_QueuedMessages.pop_back();
     }
 
-    // TODO: set up "oversampled" audio input
     m_OversampleBuffer.clear();
     m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());
     m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
@@ -118,29 +120,31 @@ AudioProcessorEditor *ER1AudioProcessor::createEditor()
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
+
+    json j = {};
+    j["analog"] = json::array();
+    j["audio"] = json::array();
+    j["pcm"] = json::array();
+
     for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
     {
         const auto& sound = m_CtrlBlocks[i];
-        stream.writeString(sound->config.name);
-        stream.writeInt(sound->config.note);
-        stream.writeInt(sound->config.chan);
-
-        stream.writeFloat(*sound->osc.pitch);
-        stream.writeInt(*sound->osc.oscType);
-        stream.writeInt(*sound->osc.modType);
-        stream.writeFloat(*sound->osc.modSpeed);
-        stream.writeFloat(*sound->osc.modDepth);
-        stream.writeBool(sound->isRingModCarrier() && *sound->osc.enableRing);
-
-        stream.writeFloat(*sound->amp.decay);
-        stream.writeFloat(*sound->amp.level);
-        stream.writeFloat(*sound->amp.pan);
-        stream.writeFloat(*sound->amp.lowBoost);
-
-        stream.writeFloat(*sound->delay.time);
-        stream.writeFloat(*sound->delay.depth);
-        stream.writeBool(*sound->delay.sync);
+        j["analog"].push_back(sound->asJSON());
     }
+
+    for (auto i = ANALOG_SOUND_COUNT; i < ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT; i++)
+    {
+        const auto& sound = m_CtrlBlocks[i];
+        j["audio"].push_back(sound->asJSON());
+    }
+
+    for (auto i = ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT; i < ER1_SOUND_COUNT; i++)
+    {
+        const auto& sound = m_CtrlBlocks[i];
+        j["pcm"].push_back(sound->asJSON());
+    }
+
+    stream.writeString(j.dump(4));
 }
 
 
@@ -148,32 +152,24 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
     MemoryInputStream stream (data, static_cast<size_t> (sizeInBytes), false);
 
-    for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
+    json j = json::parse(stream.readString().toStdString());
+
+    for (int i = 0; i < ANALOG_SOUND_COUNT || i < j["analog"].size(); i++)
     {
-        const auto& sound = m_CtrlBlocks[i];
-        sound->config.name = stream.readString().toStdString();
-        sound->config.note = stream.readInt();
-        sound->config.chan = stream.readInt();
+        auto ctrls = m_CtrlBlocks[i];
+        ctrls->fromJSON(j["analog"][i]);
+    }
 
-        *sound->osc.pitch = stream.readFloat();
-        *sound->osc.oscType = stream.readInt();
-        *sound->osc.modType = stream.readInt();
-        *sound->osc.modSpeed = stream.readFloat();
-        *sound->osc.modDepth = stream.readFloat();
+    for (int i = 0; i < AUDIO_SOUND_COUNT || i < j["audio"].size(); i++)
+    {
+        auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
+        ctrls->fromJSON(j["analog"][i]);
+    }
 
-        const auto ring_state = stream.readBool();
-        if (sound->osc.enableRing != nullptr)
-            { *sound->osc.enableRing = ring_state; }
-
-        *sound->amp.decay = stream.readFloat();
-        *sound->amp.level = stream.readFloat();
-        *sound->amp.pan = stream.readFloat();
-        *sound->amp.lowBoost = stream.readFloat();
-
-        *sound->delay.time = stream.readFloat();
-        *sound->delay.depth = stream.readFloat();
-        *sound->delay.sync = stream.readBool();
-//        sound->printStatus();
+    for (int i = 0; i < SAMPLE_SOUND_COUNT || i < j["pcm"].size(); i++)
+    {
+        auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
+        ctrls->fromJSON(j["analog"][i]);
     }
 }
 
@@ -230,6 +226,9 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
     sound->config.name = voiceIDStr.toStdString();
+    sound->config.chan = 1;
+    sound->config.note = m_CtrlBlocks.size();
+
     m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
 }
 
@@ -269,6 +268,9 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
     sound->config.name = voiceIDStr.toStdString();
+    sound->config.chan = 1;
+    sound->config.note = m_CtrlBlocks.size();
+
     m_Synth.addVoice(
         new ER1Voice(
             sound,
@@ -314,11 +316,15 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
     sound->config.name = name;
+    sound->config.chan = 1;
+    sound->config.note = m_CtrlBlocks.size();
+
     return m_Synth.addVoice(
         new ER1Voice(
             sound,
             new meta::ER1::PCMSound(
-                getSampleRate(), ER1PCMSamples::loadBinaryPCMData(data, nData), dataSampleRate
+                getSampleRate(),
+                ER1PCMSamples::loadBinaryPCMData(data, nData), dataSampleRate
             )
         )
     );

@@ -22,6 +22,9 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/shared/JUCE)
 add_subdirectory(shared/metaphase_core)
 add_subdirectory(shared/er1_dsp)
 
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+add_subdirectory(shared/json)
+
 #------------------------------------------------------------------------------
 # Build ER1
 #------------------------------------------------------------------------------
@@ -56,6 +59,7 @@ target_link_libraries(ER-1
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
+        nlohmann_json::nlohmann_json
     PUBLIC
         er1dsp
         metaphase_core

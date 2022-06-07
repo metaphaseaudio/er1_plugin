@@ -51,3 +51,28 @@ void ER1ControlBlock::printStatus()
     std::cout << "Delay Sync: " << delay.sync->getCurrentValueAsText() << std::endl;
     std::cout << std::endl;
 }
+
+json ER1ControlBlock::asJSON() const
+{
+    return json({
+        {"config", config.asJSON()},
+        {"osc", osc.asJSON()},
+        {"amp", amp.asJSON()},
+        {"delay", delay.asJSON()},
+    });
+}
+
+void ER1ControlBlock::fromJSON(json j)
+{
+    try
+    {
+        config.fromJSON(j["config"]);
+        osc.fromJSON(j["osc"]);
+        amp.fromJSON(j["amp"]);
+        delay.fromJSON(j["delay"]);
+    }
+    catch (json::exception& err)
+    {
+        std::cout << "Failed to load ER-1 state:" << err.what() << std::endl;
+    }
+}
