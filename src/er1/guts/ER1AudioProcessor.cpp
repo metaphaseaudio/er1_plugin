@@ -152,24 +152,31 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
     MemoryInputStream stream (data, static_cast<size_t> (sizeInBytes), false);
 
-    json j = json::parse(stream.readString().toStdString());
-
-    for (int i = 0; i < ANALOG_SOUND_COUNT || i < j["analog"].size(); i++)
+    try
     {
-        auto ctrls = m_CtrlBlocks[i];
-        ctrls->fromJSON(j["analog"][i]);
+        json j = json::parse(stream.readString().toStdString());
+
+        for (int i = 0; i < ANALOG_SOUND_COUNT || i < j["analog"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i];
+            ctrls->fromJSON(j["analog"][i]);
+        }
+
+        for (int i = 0; i < AUDIO_SOUND_COUNT || i < j["audio"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
+            ctrls->fromJSON(j["audio"][i]);
+        }
+
+        for (int i = 0; i < SAMPLE_SOUND_COUNT || i < j["pcm"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
+            ctrls->fromJSON(j["pcm"][i]);
+        }
     }
-
-    for (int i = 0; i < AUDIO_SOUND_COUNT || i < j["audio"].size(); i++)
+    catch (json::exception& err)
     {
-        auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
-        ctrls->fromJSON(j["audio"][i]);
-    }
-
-    for (int i = 0; i < SAMPLE_SOUND_COUNT || i < j["pcm"].size(); i++)
-    {
-        auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
-        ctrls->fromJSON(j["pcm"][i]);
+        std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }
 }
 

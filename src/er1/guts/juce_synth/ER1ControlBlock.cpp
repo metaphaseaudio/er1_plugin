@@ -73,6 +73,6 @@ void ER1ControlBlock::fromJSON(json j)
     }
     catch (json::exception& err)
     {
-        std::cout << "Failed to load ER-1 state:" << err.what() << std::endl;
+        std::cout << "Failed to load ER-1 control state:" << err.what() << std::endl;
     }
 }
