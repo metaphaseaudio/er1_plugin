@@ -15,6 +15,7 @@ void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWhe
 {
     m_Sound->reset();
     m_Sound->start();
+    m_Channel.setAccentGain(meta::Interpolate<float>::parabolic(0.1, 1.0, velocity, 1.5f));
 }
 
 void ER1Voice::setSampleRate(double newRate)
