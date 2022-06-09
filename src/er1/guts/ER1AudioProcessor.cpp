@@ -156,19 +156,19 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         json j = json::parse(stream.readString().toStdString());
 
-        for (int i = 0; i < ANALOG_SOUND_COUNT || i < j["analog"].size(); i++)
+        for (int i = 0; i < ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i];
             ctrls->fromJSON(j["analog"][i]);
         }
 
-        for (int i = 0; i < AUDIO_SOUND_COUNT || i < j["audio"].size(); i++)
+        for (int i = 0; i < AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
             ctrls->fromJSON(j["audio"][i]);
         }
 
-        for (int i = 0; i < SAMPLE_SOUND_COUNT || i < j["pcm"].size(); i++)
+        for (int i = 0; i < SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
             ctrls->fromJSON(j["pcm"][i]);
