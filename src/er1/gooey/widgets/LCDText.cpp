@@ -57,7 +57,7 @@ const juce::Font& LCDText::getNewFont(LCDText::FontOption option)
 {
     switch (option)
     {
-        case standard: return FontLCD::ClassicBold16();
+        case standard: return FontLCD::ArcadeN();
         case italic: return FontLCD::ClassicItalic14();
         case light: return FontLCD::ClassicLight14();
         case lightItalic: return FontLCD::ClassicLightItalic14();

@@ -7,19 +7,19 @@
 #include "../../widgets/LCDText.h"
 #include "../../../guts/juce_synth/SoundParameterBlocks.h"
 
-class ConfigComponent
+class LCDScreen
     : public juce::Component
 {
 public:
-    ConfigComponent(ConfigParams& config);
+    explicit LCDScreen(ConfigParams& config);
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
     ConfigParams& r_Config;
-    LCDText m_Name, m_MidiNote, m_MidiChan;
-    LCDText /*m_NameLabel,*/ m_MidiNoteLabel, m_MidiChanLabel;
+    juce::Label m_Name, m_MidiNote, m_MidiChan;
+    juce::Label /*m_NameLabel,*/ m_MidiNoteLabel, m_MidiChanLabel;
 };
 
 

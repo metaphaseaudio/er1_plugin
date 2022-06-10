@@ -6,6 +6,7 @@
 #include "bin_data/FontDSEG7.h"
 #include "bin_data/FontDSEG14.h"
 #include "bin_data/Segment16C.h"
+#include "bin_data/Arcade.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 
@@ -105,6 +106,18 @@ namespace FontLCD
     static const juce::Font& ClassicBold16()
     {
         static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Segment16C_Bold_ttf, Segment16C_Bold_ttfSize)));
+        return font;
+    }
+
+    static const juce::Font& ArcadeI()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Arcade::ARCADE_I_TTF, Arcade::ARCADE_I_TTFSize)));
+        return font;
+    }
+
+    static const juce::Font& ArcadeN()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Arcade::ARCADE_N_TTF, Arcade::ARCADE_N_TTFSize)));
         return font;
     }
 }
