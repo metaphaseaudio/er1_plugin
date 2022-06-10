@@ -200,8 +200,8 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
     auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.1f);
-    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
-    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
+    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
     auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
     auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
@@ -247,8 +247,8 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
     auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.1f);
-    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 1.0f);
-    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", 0.0f, 1.0f, 0.5);
+    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
     auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
     auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
@@ -295,8 +295,8 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     auto* pitch = new juce::AudioParameterFloat(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
 
     auto* decay = new juce::AudioParameterFloat(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
-    auto* level = new juce::AudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 1.0f);
-    auto* pan = new juce::AudioParameterFloat(name + "_pan", name + " Pan", 0.0f, 1.0f, 0.5);
+    auto* level = new juce::AudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new juce::AudioParameterFloat(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
     auto* lowBoost = new juce::AudioParameterFloat(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
 
     auto* time = new juce::AudioParameterFloat(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
