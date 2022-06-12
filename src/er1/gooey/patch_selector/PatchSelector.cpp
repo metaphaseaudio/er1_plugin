@@ -58,9 +58,10 @@ void PatchSelector::resized()
 
     for (int i = 0; i < m_RingButtons.size(); i++)
     {
+        const bool isLast = i + 1 == m_RingButtons.size();
         const auto b = i * 2;
-        const auto& lBtn = m_Buttons[b];
-        const auto& rBtn = m_Buttons[b + 1];
+        const auto& lBtn = m_Buttons[!isLast ? b : ER1AudioProcessor::ANALOG_SOUND_COUNT - 1];
+        const auto& rBtn = m_Buttons[!isLast ? b + 1 : ER1AudioProcessor::ANALOG_SOUND_COUNT];
         auto& ringBtn = m_RingButtons[i];
 
         const auto left = lBtn->getBounds().getTopLeft().x;

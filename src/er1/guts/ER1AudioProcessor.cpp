@@ -39,7 +39,7 @@ ER1AudioProcessor::ER1AudioProcessor()
                          .withOutput("Output", AudioChannelSet::stereo()))
     , m_Downsampler(44100)
 {
-    for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0); }
+    for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != ANALOG_SOUND_COUNT); }
     for (int i = 0; i < AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
 
     auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize, 32000);
