@@ -36,7 +36,10 @@ static juce::StringArray ModulationNames =
 ER1AudioProcessor::ER1AudioProcessor()
     : AudioProcessor(
         BusesProperties().withInput("Input",  AudioChannelSet::stereo())
-                         .withOutput("Output", AudioChannelSet::stereo()))
+                         .withOutput ("Output #1",  AudioChannelSet::stereo(), true)
+                         .withOutput ("Output #2",  AudioChannelSet::stereo(), true)
+                         .withOutput ("Output #3",  AudioChannelSet::stereo(), true)
+                         .withOutput ("Output #4",  AudioChannelSet::stereo(), true))
     , m_Downsampler(44100)
 {
     for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != ANALOG_SOUND_COUNT); }
@@ -74,17 +77,18 @@ void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     m_Downsampler.set_sample_rate(sampleRate);
     m_Synth.prepareToPlay(sampleRate, samplesPerBlock * meta::ER1::Downsampler::OverSample);
-    m_OversampleBuffer.setSize(2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
+    m_OversampleBuffer.setSize(2 * getTotalNumOutputChannels(), samplesPerBlock * meta::ER1::Downsampler::OverSample);
 }
 
 void ER1AudioProcessor::releaseResources() {}
 
-bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout) const
 {
-    const auto& mainInLayout  = layouts.getChannelSet (true,  0);
-    const auto& mainOutLayout = layouts.getChannelSet (false, 0);
+    for (const auto& bus : layout.outputBuses)
+        if (bus != AudioChannelSet::stereo())
+            return false;
 
-    return (mainInLayout == mainOutLayout && (! mainInLayout.isDisabled()));
+    return layout.inputBuses.isEmpty() && 1 <= layout.outputBuses.size();
 }
 
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& midiMessages)
@@ -96,6 +100,14 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
         midiMessages.addEvent(m_QueuedMessages.back(), 0);
         m_QueuedMessages.pop_back();
     }
+
+    auto busCount = getBusCount(false);
+
+//    for (auto busNr = 0; busNr < busCount; ++busNr)
+//    {
+//        auto audioBusBuffer = getBusBuffer (buffer, false, busNr);
+////        synth [busNr]->renderNextBlock (audioBusBuffer, midiChannelBuffer, 0, audioBusBuffer.getNumSamples());
+//    }
 
     m_OversampleBuffer.clear();
     m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());

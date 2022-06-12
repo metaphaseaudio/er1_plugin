@@ -55,5 +55,5 @@ void ER1Voice::processBlock(float** inData, float** outData, const float* lastDa
     const auto* ringData = isRingModCarrier() ? lastData : nullptr;
     auto* tmpData = inData[m_Sound->wantsAudioChannel()];
     m_Sound->processBlock(tmpData, ringData, samps, offset);
-    m_Channel.processBlock(tmpData, outData, samps, offset);
+    m_Channel.processBlock(tmpData, outData + 2 * p_Ctrls->config.bus, samps, offset);
 }

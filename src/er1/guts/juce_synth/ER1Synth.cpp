@@ -15,8 +15,8 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
 {
     for (auto& voice : m_Voices) { voice->updateParams(); }
 
-    // Up-sample by linear interpolation the incoming audio
-    for (int c = audioOut.getNumChannels(); --c >= 0;)
+    // Up-sample by linear interpolation the incoming audio. audio is on the first two chans coming in
+    for (int c = 2; --c >= 0;)
     {
         // Copy the data into temp storage chans 1, 2
         meta::linearUpsample(audioOut.getReadPointer(c), m_Tmp.getWritePointer(c + 1), nSamps, nSamps * meta::ER1::MainOscillator::OverSample);

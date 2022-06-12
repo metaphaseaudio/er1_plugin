@@ -14,13 +14,15 @@ struct ConfigParams
     std::string name = "New Sound";
     std::atomic<unsigned int> note = 1;
     std::atomic<unsigned int> chan = 1;
+    std::atomic<unsigned int> bus = 0;
 
     json asJSON() const
     {
         return json({
             {"name", name},
             {"note", note.load()},
-            {"chan", chan.load()}
+            {"chan", chan.load()},
+            {"bus", bus.load()}
         });
     }
 
@@ -29,6 +31,7 @@ struct ConfigParams
         name = j.value("name", "New Sound");
         note = j.value("note", 1);
         chan = j.value("chan", 1);
+        bus = j.value("bus", 0);
     }
 };
 
