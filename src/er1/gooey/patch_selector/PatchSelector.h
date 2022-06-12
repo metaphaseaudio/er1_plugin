@@ -23,7 +23,7 @@ public:
 
 private:
     int selected = 0;
-    std::array<KorgToggleButton, 16> m_Buttons;
+    std::vector<std::unique_ptr<KorgToggleButton>> m_Buttons;
     std::vector<std::unique_ptr<KorgBooleanParameterButton>> m_RingButtons;
     std::vector<std::unique_ptr<juce::Component>> m_Arrows;
 };

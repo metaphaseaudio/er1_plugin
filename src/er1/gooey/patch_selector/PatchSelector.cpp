@@ -7,30 +7,30 @@
 #include <meta/util/NumericConstants.h>
 #include "../look_and_feel/StandardShapes.h"
 #include "Arrows.h"
+#include "../../guts/ER1AudioProcessor.h"
 
-static constexpr int ringButtonCount = 5;
 
 PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
 {
-    for (auto& btn : m_Buttons)
+    for (auto& sound : sounds)
     {
-        addAndMakeVisible(btn);
-        btn.setRadioGroupId(1);
-        btn.onClick = [&]() { sendChangeMessage(); };
-    }
-
-    for (int i = 0; i < ringButtonCount; i ++)
-    {
-        if ((i * 2 + 1) >= sounds.size()) { continue; }
-        auto& btn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(sounds[(i * 2) + 1]->osc.enableRing));
-        auto& uandr = m_Arrows.emplace_back(new Arrow::UpAndRight());
-        addAndMakeVisible(*uandr);
-        auto& landd = m_Arrows.emplace_back(new Arrow::UpAndRight(true));
-        addAndMakeVisible(*landd);
+        auto& btn = m_Buttons.emplace_back(new KorgToggleButton(sound->config.name));
         addAndMakeVisible(*btn);
+        btn->setRadioGroupId(1);
+        btn->onClick = [&](){ sendChangeMessage(); };
+
+        if (sound->osc.enableRing != nullptr)
+        {
+            auto& ringBtn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(sound->osc.enableRing));
+            addAndMakeVisible(*ringBtn);
+            auto& uandr = m_Arrows.emplace_back(new Arrow::UpAndRight());
+            addAndMakeVisible(*uandr);
+            auto& landd = m_Arrows.emplace_back(new Arrow::UpAndRight(true));
+            addAndMakeVisible(*landd);
+        }
     }
 
-    m_Buttons[0].setToggleState(true, juce::sendNotification);
+    m_Buttons[0]->setToggleState(true, juce::sendNotification);
 }
 
 void PatchSelector::resized()
@@ -38,42 +38,59 @@ void PatchSelector::resized()
     auto bounds = getLocalBounds();
     auto selectorBtnBounds = StandardShapes::smallRectButton;
     auto ringCtrlBounds = StandardShapes::smallSquareButton;
-    auto arrowBounds = StandardShapes::smallRingConnector;
     bounds.removeFromTop(ringCtrlBounds.getHeight());
     bounds.removeFromBottom(ringCtrlBounds.getHeight());
     selectorBtnBounds.setPosition(bounds.getTopLeft());
-    const auto offset = (getWidth() - selectorBtnBounds.getWidth() * m_Buttons.size()) / 2.0f;
+
+    const auto offset = float(getWidth() - selectorBtnBounds.getWidth() * 16) / 2.0f;
+    const auto nonAnalogOffset = offset + selectorBtnBounds.getWidth() * 10;
     selectorBtnBounds = selectorBtnBounds.withX(selectorBtnBounds.getX() + offset);
 
-    for (auto& btn : m_Buttons)
+    for (int i = 0; i < m_Buttons.size(); i++)
     {
-        btn.setBounds(selectorBtnBounds);
+        if (i == ER1AudioProcessor::ANALOG_SOUND_COUNT)
+            { selectorBtnBounds = selectorBtnBounds.withX(nonAnalogOffset); }
+
+        auto& btn = m_Buttons[i];
+        btn->setBounds(selectorBtnBounds);
         selectorBtnBounds = selectorBtnBounds.withX(selectorBtnBounds.getTopRight().x);
     }
 
     for (int i = 0; i < m_RingButtons.size(); i++)
     {
         const auto b = i * 2;
-        const auto left = m_Buttons[b].getRight();
-        const auto right = m_Buttons[b + 1].getX();
+        const auto& lBtn = m_Buttons[b];
+        const auto& rBtn = m_Buttons[b + 1];
+        auto& ringBtn = m_RingButtons[i];
+
+        const auto left = lBtn->getBounds().getTopLeft().x;
+        const auto right = rBtn->getBounds().getTopRight().x;
         const auto mid = left + ((right - left) / 2);
 
         ringCtrlBounds.setCentre(mid, ringCtrlBounds.getCentreY());
         m_RingButtons[i]->setBounds(ringCtrlBounds);
 
-        auto ringLeft = m_Buttons[i * 2].getBounds().getCentreX() - 5;
-        auto ringRight = m_Buttons[i * 2 + 1].getBounds().getCentreX();
-        arrowBounds.setPosition(ringLeft, ringCtrlBounds.getCentreY());
-        m_Arrows[i * 2]->setBounds(arrowBounds);
-        arrowBounds.setPosition(ringRight, ringCtrlBounds.getCentreY());
-        m_Arrows[i * 2 + 1]->setBounds(arrowBounds);
+        const auto leftConnectorBounds = juce::Rectangle<int>(
+            left + 8, ringCtrlBounds.getCentreY(),
+            ringCtrlBounds.getTopLeft().x - (left + 8),
+            lBtn->getBounds().getTopLeft().y - ringCtrlBounds.getCentreY()
+        );
+
+        const auto rightConnectorBounds = juce::Rectangle<int>(
+            ringCtrlBounds.getBottomRight().x - 1, ringCtrlBounds.getCentreY(),
+            (right - 8) - ringCtrlBounds.getBottomRight().x,
+            lBtn->getBounds().getTopLeft().y - ringCtrlBounds.getCentreY()
+        );
+
+        m_Arrows[i * 2]->setBounds(leftConnectorBounds);
+        m_Arrows[i * 2 + 1]->setBounds(rightConnectorBounds);
     }
 }
 
 void PatchSelector::paint(juce::Graphics& g)
 {
     auto bounds = getLocalBounds().removeFromBottom(18);
-    const auto offset = (getWidth() - StandardShapes::smallRectButton.getWidth() * m_Buttons.size()) / 2.0f;
+    const auto offset = float(getWidth() - StandardShapes::smallRectButton.getWidth() * 16) / 2.0f;
     bounds = bounds.withX(bounds.getX() + offset + 5);
 
     auto analogBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 10) - 10);
@@ -91,9 +108,8 @@ void PatchSelector::paint(juce::Graphics& g)
 int PatchSelector::getSelected() const
 {
     for (const auto& i_btn : meta::enumerate(m_Buttons)) {
-        if (std::get<1>(i_btn).getToggleState())
+        if (std::get<1>(i_btn)->getToggleState())
             { return std::get<0>(i_btn); }
     }
     return -1;
 }
-
