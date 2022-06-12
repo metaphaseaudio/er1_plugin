@@ -8,3 +8,4 @@ const juce::Rectangle<int> StandardShapes::largeDial(75, 75);
 const juce::Rectangle<int> StandardShapes::smallDial(30, 30);
 const juce::Rectangle<int> StandardShapes::smallSquareButton(35, 35);
 const juce::Rectangle<int> StandardShapes::smallRectButton(35, 56);
+const juce::Rectangle<int> StandardShapes::smallRingConnector(6, 20);

@@ -4,7 +4,9 @@
 
 #include "PatchSelector.h"
 #include <meta/util/container_helpers/array.h>
+#include <meta/util/NumericConstants.h>
 #include "../look_and_feel/StandardShapes.h"
+#include "Arrows.h"
 
 static constexpr int ringButtonCount = 5;
 
@@ -21,6 +23,10 @@ PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sound
     {
         if ((i * 2 + 1) >= sounds.size()) { continue; }
         auto& btn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(sounds[(i * 2) + 1]->osc.enableRing));
+        auto& uandr = m_Arrows.emplace_back(new Arrow::UpAndRight());
+        addAndMakeVisible(*uandr);
+        auto& landd = m_Arrows.emplace_back(new Arrow::UpAndRight(true));
+        addAndMakeVisible(*landd);
         addAndMakeVisible(*btn);
     }
 
@@ -32,7 +38,8 @@ void PatchSelector::resized()
     auto bounds = getLocalBounds();
     auto selectorBtnBounds = StandardShapes::smallRectButton;
     auto ringCtrlBounds = StandardShapes::smallSquareButton;
-    auto ringBounds = bounds.removeFromTop(ringCtrlBounds.getHeight());
+    auto arrowBounds = StandardShapes::smallRingConnector;
+    bounds.removeFromTop(ringCtrlBounds.getHeight());
     bounds.removeFromBottom(ringCtrlBounds.getHeight());
     selectorBtnBounds.setPosition(bounds.getTopLeft());
     const auto offset = (getWidth() - selectorBtnBounds.getWidth() * m_Buttons.size()) / 2.0f;
@@ -53,6 +60,13 @@ void PatchSelector::resized()
 
         ringCtrlBounds.setCentre(mid, ringCtrlBounds.getCentreY());
         m_RingButtons[i]->setBounds(ringCtrlBounds);
+
+        auto ringLeft = m_Buttons[i * 2].getBounds().getCentreX() - 5;
+        auto ringRight = m_Buttons[i * 2 + 1].getBounds().getCentreX();
+        arrowBounds.setPosition(ringLeft, ringCtrlBounds.getCentreY());
+        m_Arrows[i * 2]->setBounds(arrowBounds);
+        arrowBounds.setPosition(ringRight, ringCtrlBounds.getCentreY());
+        m_Arrows[i * 2 + 1]->setBounds(arrowBounds);
     }
 }
 

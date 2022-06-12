@@ -8,6 +8,7 @@
 #include "../widgets/KorgButton.h"
 #include "../../guts/juce_synth/ER1ControlBlock.h"
 
+
 class PatchSelector
     : public juce::Component
     , public juce::ChangeBroadcaster
@@ -24,6 +25,7 @@ private:
     int selected = 0;
     std::array<KorgToggleButton, 16> m_Buttons;
     std::vector<std::unique_ptr<KorgBooleanParameterButton>> m_RingButtons;
+    std::vector<std::unique_ptr<juce::Component>> m_Arrows;
 };
 
 
