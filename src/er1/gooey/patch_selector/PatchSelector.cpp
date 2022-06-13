@@ -4,10 +4,8 @@
 
 #include "PatchSelector.h"
 #include <meta/util/container_helpers/array.h>
-#include <meta/util/NumericConstants.h>
 #include "../look_and_feel/StandardShapes.h"
 #include "Arrows.h"
-#include "../../guts/ER1AudioProcessor.h"
 
 
 PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
@@ -48,7 +46,7 @@ void PatchSelector::resized()
 
     for (int i = 0; i < m_Buttons.size(); i++)
     {
-        if (i == ER1AudioProcessor::ANALOG_SOUND_COUNT)
+        if (i == meta::ER1::ANALOG_SOUND_COUNT)
             { selectorBtnBounds = selectorBtnBounds.withX(nonAnalogOffset); }
 
         auto& btn = m_Buttons[i];
@@ -60,8 +58,8 @@ void PatchSelector::resized()
     {
         const bool isLast = i + 1 == m_RingButtons.size();
         const auto b = i * 2;
-        const auto& lBtn = m_Buttons[!isLast ? b : ER1AudioProcessor::ANALOG_SOUND_COUNT - 1];
-        const auto& rBtn = m_Buttons[!isLast ? b + 1 : ER1AudioProcessor::ANALOG_SOUND_COUNT];
+        const auto& lBtn = m_Buttons[!isLast ? b : meta::ER1::ANALOG_SOUND_COUNT - 1];
+        const auto& rBtn = m_Buttons[!isLast ? b + 1 : meta::ER1::ANALOG_SOUND_COUNT];
         auto& ringBtn = m_RingButtons[i];
 
         const auto left = lBtn->getBounds().getTopLeft().x;

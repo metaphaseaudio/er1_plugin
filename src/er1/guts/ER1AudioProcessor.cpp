@@ -1,5 +1,6 @@
 #include <meta/util/math.h>
 #include <nlohmann/json.hpp>
+#include <memory>
 #include "ER1AudioProcessor.h"
 #include "../gooey/ER1AudioProcessorEditor.h"
 #include "er1_dsp/sounds/AnalogSound.h"
@@ -32,18 +33,14 @@ static juce::StringArray ModulationNames =
 };
 
 
+
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
-    : AudioProcessor(
-        BusesProperties().withInput("Input",  AudioChannelSet::stereo())
-                         .withOutput ("Output #1",  AudioChannelSet::stereo(), true)
-                         .withOutput ("Output #2",  AudioChannelSet::stereo(), true)
-                         .withOutput ("Output #3",  AudioChannelSet::stereo(), true)
-                         .withOutput ("Output #4",  AudioChannelSet::stereo(), true))
-    , m_Downsampler(44100)
+    : AudioProcessor(makeBusesProperties(1, meta::ER1::NumOutBuses))
+    , m_Downsampler(nullptr)
 {
-    for (int i = 0; i < ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != ANALOG_SOUND_COUNT); }
-    for (int i = 0; i < AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
+    for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != meta::ER1::ANALOG_SOUND_COUNT); }
+    for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
 
     auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize, 32000);
     auto oh = addPCMVoice("Open Hat", ER1PCMSamples::open_hat_wav, ER1PCMSamples::open_hat_wavSize, 32000);
@@ -75,20 +72,24 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    m_Downsampler.set_sample_rate(sampleRate);
-    m_Synth.prepareToPlay(sampleRate, samplesPerBlock * meta::ER1::Downsampler::OverSample);
-    m_OversampleBuffer.setSize(2 * getTotalNumOutputChannels(), samplesPerBlock * meta::ER1::Downsampler::OverSample);
+    m_Downsampler = std::make_unique<meta::ER1::Downsampler>(sampleRate, getTotalNumOutputChannels());
+    m_Synth.prepareToPlay(sampleRate, getTotalNumOutputChannels() / 2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
+    m_OversampleBuffer.setSize(getTotalNumOutputChannels(), samplesPerBlock * meta::ER1::Downsampler::OverSample);
 }
 
 void ER1AudioProcessor::releaseResources() {}
 
 bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout) const
 {
-    for (const auto& bus : layout.outputBuses)
-        if (bus != AudioChannelSet::stereo())
-            return false;
+    int inChans = 0;
+    int outChans = 0;
 
-    return layout.inputBuses.isEmpty() && 1 <= layout.outputBuses.size();
+    for (const auto& bus : layout.inputBuses)
+        { inChans += bus.size(); }
+    for (const auto& bus : layout.outputBuses)
+        { outChans += bus.size(); }
+
+    return outChans <= getTotalNumOutputChannels() && inChans <= getTotalNumInputChannels();
 }
 
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& midiMessages)
@@ -101,19 +102,14 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
         m_QueuedMessages.pop_back();
     }
 
-    auto busCount = getBusCount(false);
-
-//    for (auto busNr = 0; busNr < busCount; ++busNr)
-//    {
-//        auto audioBusBuffer = getBusBuffer (buffer, false, busNr);
-////        synth [busNr]->renderNextBlock (audioBusBuffer, midiChannelBuffer, 0, audioBusBuffer.getNumSamples());
-//    }
-
     m_OversampleBuffer.clear();
+
+    // Just copy the input data
     m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());
     m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
+
     m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
-    m_Downsampler.downsampleBuffer(m_OversampleBuffer, buffer);
+    m_Downsampler->downsampleBuffer(m_OversampleBuffer, buffer);
     midiMessages.clear();
 }
 
@@ -138,19 +134,19 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
     j["audio"] = json::array();
     j["pcm"] = json::array();
 
-    for (auto i = 0; i < ANALOG_SOUND_COUNT; i++)
+    for (auto i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++)
     {
         const auto& sound = m_CtrlBlocks[i];
         j["analog"].push_back(sound->asJSON());
     }
 
-    for (auto i = ANALOG_SOUND_COUNT; i < ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT; i++)
+    for (auto i = meta::ER1::ANALOG_SOUND_COUNT; i < meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i++)
     {
         const auto& sound = m_CtrlBlocks[i];
         j["audio"].push_back(sound->asJSON());
     }
 
-    for (auto i = ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT; i < ER1_SOUND_COUNT; i++)
+    for (auto i = meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
         const auto& sound = m_CtrlBlocks[i];
         j["pcm"].push_back(sound->asJSON());
@@ -168,21 +164,21 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         json j = json::parse(stream.readString().toStdString());
 
-        for (int i = 0; i < ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
+        for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i];
             ctrls->fromJSON(j["analog"][i]);
         }
 
-        for (int i = 0; i < AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
+        for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
         {
-            auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT];
+            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT];
             ctrls->fromJSON(j["audio"][i]);
         }
 
-        for (int i = 0; i < SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
+        for (int i = 0; i < meta::ER1::SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
         {
-            auto ctrls = m_CtrlBlocks[i + ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT];
+            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT];
             ctrls->fromJSON(j["pcm"][i]);
         }
     }
@@ -347,6 +343,18 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
             )
         )
     );
+}
+
+AudioProcessor::BusesProperties ER1AudioProcessor::makeBusesProperties(int inBusses, int outBusses)
+{
+    auto rv = AudioProcessor::BusesProperties();
+    for (int i = 0; i < inBusses; i++)
+        { rv = rv.withInput(juce::String("Input ") + juce::String(i), juce::AudioChannelSet::stereo(), i == 0); }
+
+    for (int i = 0; i < outBusses; i++)
+        { rv = rv.withOutput(juce::String("Output ") + juce::String(i), juce::AudioChannelSet::stereo(), true); }
+
+    return rv;
 }
 
 

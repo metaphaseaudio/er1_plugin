@@ -62,10 +62,13 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     }
 }
 
-void ER1Synth::prepareToPlay(double sampleRate, int blockSize)
+void ER1Synth::prepareToPlay(double sampleRate, int busCount, int blockSize)
 {
     for (auto& voice : m_Voices)
-        { voice->setSampleRate(sampleRate * meta::ER1::Downsampler::OverSample); }
+    {
+        voice->setSampleRate(sampleRate * meta::ER1::Downsampler::OverSample);
+        voice->setMaxBusCount(busCount);
+    }
 
     m_Tmp.setSize(3, blockSize * meta::ER1::Downsampler::OverSample);
     m_Tmp.clear();

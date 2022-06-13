@@ -16,6 +16,7 @@ public:
     void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
     void updateParams();
     void setSampleRate(double sr);
+    void setMaxBusCount(int busCount) { m_BusCount = busCount; }
     void addToChokeList(ER1Voice* voice) { m_Sound->addSoundToChokeList(voice->m_Sound.get()); }
 
     void processBlock(float** inData, float** outData, const float* lastData, int samps, int offset);
@@ -25,6 +26,7 @@ public:
     [[ nodiscard ]] bool isRingModCarrier() const { return p_Ctrls->osc.enableRing != nullptr && p_Ctrls->osc.enableRing->get(); }
 
 private:
+    int m_BusCount = 1;
     ER1ControlBlock::Ptr p_Ctrls;
     std::unique_ptr<meta::ER1::BaseSound> m_Sound;
     meta::ER1::Channel m_Channel;

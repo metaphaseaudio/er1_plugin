@@ -25,14 +25,6 @@ class ER1AudioProcessor
     : public juce::AudioProcessor
 {
 public:
-#ifdef _DEBUG
-    static constexpr int ANALOG_SOUND_COUNT = 3;
-#else
-    static constexpr int ANALOG_SOUND_COUNT = 10;
-#endif
-    static constexpr int SAMPLE_SOUND_COUNT = 4;
-    static constexpr int AUDIO_SOUND_COUNT = 2;
-    static constexpr int ER1_SOUND_COUNT = ANALOG_SOUND_COUNT + AUDIO_SOUND_COUNT + SAMPLE_SOUND_COUNT;
     //==============================================================================
     ER1AudioProcessor();
     ~ER1AudioProcessor() override = default;
@@ -76,6 +68,8 @@ public:
     juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
 
 private:
+    static BusesProperties makeBusesProperties(int inBusses, int outBusses);
+
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
@@ -86,7 +80,7 @@ private:
 
     std::vector<juce::MidiMessage> m_QueuedMessages;
     juce::AudioBuffer<float> m_OversampleBuffer;
-    meta::ER1::Downsampler m_Downsampler;
+    std::unique_ptr<meta::ER1::Downsampler> m_Downsampler;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };

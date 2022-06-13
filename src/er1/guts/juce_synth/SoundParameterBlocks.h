@@ -5,6 +5,7 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <nlohmann/json.hpp>
+#include <er1_dsp/Constants.h>
 
 using json = nlohmann::json;
 
@@ -31,7 +32,7 @@ struct ConfigParams
         name = j.value("name", "New Sound");
         note = j.value("note", 1);
         chan = j.value("chan", 1);
-        bus = j.value("bus", 0);
+        bus = std::min(meta::ER1::NumOutBuses, std::max(0, j.value("bus", 0)));
     }
 };
 

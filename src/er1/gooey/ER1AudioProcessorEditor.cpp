@@ -23,7 +23,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 {
     setLookAndFeel(&m_LAF);
 
-    for (int i = 0; i < ER1AudioProcessor::ER1_SOUND_COUNT; i++)
+    for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
         m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
@@ -75,7 +75,7 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
         const auto selected = m_PatchSelector.getSelected();
 
-        if (selected >= ER1AudioProcessor::ER1_SOUND_COUNT) { return; }
+        if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
         m_SoundEditorWindows[m_PatchSelector.getSelected()]->setVisible(true);
         processor.triggerVoice(selected);
     }
