@@ -7,6 +7,7 @@
 #include "../widgets/LCDText.h"
 #include "../widgets/KorgButton.h"
 #include "../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../guts/MidiManager.h"
 
 
 class PatchSelector
@@ -14,7 +15,7 @@ class PatchSelector
     , public juce::ChangeBroadcaster
 {
 public:
-    explicit PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
+    PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
 
     void resized() override;
     void paint(juce::Graphics& g) override;

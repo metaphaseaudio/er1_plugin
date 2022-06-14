@@ -19,13 +19,13 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_PatchSelector(p.getAllSounds())
+    , m_PatchSelector(p.getMidiManager(), p.getAllSounds())
 {
     setLookAndFeel(&m_LAF);
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
-        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
+        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getMidiManager(), p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
         addChildComponent(window);
     }

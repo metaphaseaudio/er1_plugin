@@ -20,7 +20,7 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat* param, float granularity)
     setValue(*param, juce::NotificationType::dontSendNotification);
     param->addListener(this);
 
-    addListener(this);
+    juce::Slider::addListener(this);
 
     onDragStart   = [this]() { sliderStartedDragging(); };
     onDragEnd     = [this]() { sliderStoppedDragging(); };
@@ -65,4 +65,30 @@ void KorgKnob::sliderStoppedDragging()
 {
     isDragging = false;
     if (p_Parameter != nullptr) { p_Parameter->endChangeGesture(); }
+}
+
+void KorgKnob::mouseDown(const juce::MouseEvent& e)
+{
+    juce::Slider::mouseDown(e);
+    if (!e.mods.isPopupMenu() || p_Parameter == nullptr)
+        { return; }
+
+    juce::PopupMenu learn;
+    learn.addItem(1, "MIDI Learn");
+    learn.addItem(1, "MIDI Un-learn");
+
+    learn.showMenuAsync(juce::PopupMenu::Options(), [this] (int result)
+    {
+        if (result == 0) { return; }
+        if (result == 1) { sendLearn(); }
+        if (result == 2) { sendUnlearn(); }
+    });
+}
+
+void KorgKnob::handleMidiMessage(const juce::MidiMessage& message)
+{
+    if (p_Parameter != nullptr)
+    {
+        p_Parameter->setValueNotifyingHost(message.getControllerValue() / 127.0f);
+    }
 }

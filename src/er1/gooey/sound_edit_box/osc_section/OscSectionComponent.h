@@ -15,13 +15,14 @@
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgComboBox.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../../guts/MidiManager.h"
 
 
 class OscSectionComponent
     : public juce::Component
 {
 public:
-    explicit OscSectionComponent(OscParams& params);
+    OscSectionComponent(MidiManager& manager, OscParams& params);
 
     void paint (juce::Graphics&) override;
     void resized() override;

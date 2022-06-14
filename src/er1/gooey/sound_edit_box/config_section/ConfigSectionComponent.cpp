@@ -7,7 +7,7 @@
 #include "../../look_and_feel/StandardShapes.h"
 
 
-ConfigSectionComponent::ConfigSectionComponent(ConfigParams& params)
+ConfigSectionComponent::ConfigSectionComponent(MidiManager& midiManager, ConfigParams& params)
     : m_Screen(params)
 {
     addAndMakeVisible(m_Screen);

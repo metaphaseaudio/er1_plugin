@@ -17,6 +17,7 @@
 #include "juce_synth/ER1Synth.h"
 #include "juce_synth/ER1ControlBlock.h"
 #include "juce_synth/ER1Voice.h"
+#include "MidiManager.h"
 
 //==============================================================================
 /**
@@ -62,7 +63,7 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-    meta::MidiState& getMidiState() { return m_MidiState; }
+    MidiManager& getMidiManager() { return m_MidiManager; }
     ER1ControlBlock::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
     void triggerVoice(int num);
     juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
@@ -74,7 +75,8 @@ private:
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
-    meta::MidiState m_MidiState;
+    MidiManager m_MidiManager;
+
     juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;
     ER1Synth m_Synth;
 

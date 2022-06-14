@@ -13,13 +13,14 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../../widgets/KorgKnob.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../../guts/MidiManager.h"
 
 
 class AmpSectionComponent
     : public juce::Component
 {
 public:
-    explicit AmpSectionComponent(AmpParams& params);
+    AmpSectionComponent(MidiManager& midiManager, AmpParams& params);
     ~AmpSectionComponent() override;
 
     void paint (juce::Graphics&) override;

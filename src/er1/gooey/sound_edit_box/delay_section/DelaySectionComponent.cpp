@@ -14,7 +14,7 @@
 
 using namespace juce;
 
-DelaySectionComponent::DelaySectionComponent(DelayParams& params)
+DelaySectionComponent::DelaySectionComponent(MidiManager& midiManager, DelayParams& params)
     : m_Depth(params.depth), m_DepthLabel("Depth Label", "Depth")
     , m_Time(params.time), m_TimeLabel("Time Label", "Time")
     , m_Sync(params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
@@ -27,6 +27,9 @@ DelaySectionComponent::DelaySectionComponent(DelayParams& params)
     addAndMakeVisible(m_Depth); addAndMakeVisible(m_DepthLabel);
     addAndMakeVisible(m_Time); addAndMakeVisible(m_TimeLabel);
     addAndMakeVisible(m_Sync); addAndMakeVisible(m_SyncLabel);
+
+    m_Depth.meta::MidiLearnBroadcaster::addListener(&midiManager);
+    m_Time.meta::MidiLearnBroadcaster::addListener(&midiManager);
 }
 
 DelaySectionComponent::~DelaySectionComponent() = default;

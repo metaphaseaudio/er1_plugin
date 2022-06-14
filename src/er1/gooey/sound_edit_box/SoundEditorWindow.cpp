@@ -5,11 +5,11 @@
 #include "SoundEditorWindow.h"
 #include "../look_and_feel/ER1Colours.h"
 
-SoundEditorWindow::SoundEditorWindow(ER1ControlBlock::Ptr sound)
-    : m_VoiceSetup(dynamic_cast<ER1ControlBlock*>(sound.get())->config)
-    , m_OscSection(dynamic_cast<ER1ControlBlock*>(sound.get())->osc)
-    , m_AmpSection(dynamic_cast<ER1ControlBlock*>(sound.get())->amp)
-    , m_DelaySection(dynamic_cast<ER1ControlBlock*>(sound.get())->delay)
+SoundEditorWindow::SoundEditorWindow(MidiManager& midiManager, ER1ControlBlock::Ptr sound)
+    : m_VoiceSetup(midiManager, dynamic_cast<ER1ControlBlock*>(sound.get())->config)
+    , m_OscSection(midiManager, dynamic_cast<ER1ControlBlock*>(sound.get())->osc)
+    , m_AmpSection(midiManager, dynamic_cast<ER1ControlBlock*>(sound.get())->amp)
+    , m_DelaySection(midiManager, dynamic_cast<ER1ControlBlock*>(sound.get())->delay)
 {
     addAndMakeVisible(&m_VoiceSetup);
     addAndMakeVisible(&m_OscSection);
@@ -30,9 +30,4 @@ void SoundEditorWindow::resized()
     m_AmpSection.setBounds(secondRow.removeFromLeft(340));
     secondRow.removeFromLeft(5);
     m_DelaySection.setBounds(secondRow);
-}
-
-void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
-{
-
 }

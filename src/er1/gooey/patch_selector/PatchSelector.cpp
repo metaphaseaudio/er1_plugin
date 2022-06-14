@@ -8,7 +8,7 @@
 #include "Arrows.h"
 
 
-PatchSelector::PatchSelector(juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
+PatchSelector::PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
 {
     for (auto& sound : sounds)
     {

@@ -14,13 +14,14 @@
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgButton.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../../guts/MidiManager.h"
 
 
 class DelaySectionComponent
     : public juce::Component
 {
 public:
-    explicit DelaySectionComponent(DelayParams& params);
+    DelaySectionComponent(MidiManager& midiManager, DelayParams& params);
     ~DelaySectionComponent() override;
 
     void paint (juce::Graphics&) override;

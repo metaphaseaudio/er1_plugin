@@ -4,13 +4,14 @@
 
 #pragma once
 #include "LCDScreen.h"
+#include "../../../guts/MidiManager.h"
 
 
 class ConfigSectionComponent
     : public juce::Component
 {
 public:
-    explicit ConfigSectionComponent(ConfigParams& params);
+    ConfigSectionComponent(MidiManager& midiManager, ConfigParams& params);
     void paint(juce::Graphics& g) override;
     void resized() override;
 

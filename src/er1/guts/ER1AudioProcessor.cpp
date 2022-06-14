@@ -95,6 +95,7 @@ bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout) const
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
+    m_MidiManager.processBlock(midiMessages);
 
     while (!m_QueuedMessages.empty())
     {
