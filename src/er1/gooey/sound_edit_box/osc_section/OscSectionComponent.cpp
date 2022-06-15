@@ -14,7 +14,7 @@
 
 using namespace juce;
 
-OscSectionComponent::OscSectionComponent(MidiManager& manager, OscParams& params)
+OscSectionComponent::OscSectionComponent(OscParams& params)
     : m_Pitch(params.pitch), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth(params.modDepth), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
     , m_ModSpeed(params.modSpeed, 8000), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
@@ -30,10 +30,6 @@ OscSectionComponent::OscSectionComponent(MidiManager& manager, OscParams& params
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
-
-    m_Pitch.meta::MidiLearnBroadcaster::addListener(&manager);
-    m_ModSpeed.meta::MidiLearnBroadcaster::addListener(&manager);
-    m_ModDepth.meta::MidiLearnBroadcaster::addListener(&manager);
 }
 
 

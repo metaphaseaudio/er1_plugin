@@ -10,15 +10,13 @@
 
 class KorgKnob
     : public juce::Slider
-    , public meta::MidiLearnBroadcaster
     , juce::Slider::Listener
     , meta::TimedParameterListener
 {
 public:
-    explicit KorgKnob(juce::AudioParameterFloat* param, float granularity=1000.0f);
+    explicit KorgKnob(meta::MidiLearnableAudioParameterFloat* param, float granularity=1000.0f);
     void handleNewParameterValue() override;
     void sliderValueChanged(juce::Slider* slider) override;
-    void handleMidiMessage(const juce::MidiMessage& message) override;
     void mouseDown(const juce::MouseEvent& e) override;
 
 private:

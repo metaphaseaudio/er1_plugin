@@ -7,6 +7,8 @@
 #include "er1_dsp/sounds/AudioSound.h"
 #include "er1_dsp/sounds/PCMSound.h"
 #include "er1_dsp/ER1PCMSamples.h"
+#include <meta/midi/MidiLearnable.h>
+
 
 using namespace juce;
 using json = nlohmann::json;
@@ -203,18 +205,18 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
 
     auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
     auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
-    auto* pitch = new juce::AudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, 0.2f);
-    auto* modSpeed = new juce::AudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
-    auto* modDepth = new juce::AudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
+    auto* pitch = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, 0.2f);
+    auto* modSpeed = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
+    auto* modDepth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
-    auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
-    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
+    auto* level = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
 
     // Add params to processor
@@ -245,6 +247,7 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
 
+    addMidiLearn(sound);
     m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
 }
 
@@ -255,13 +258,13 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
 
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
-    auto* decay = new juce::AudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
-    auto* level = new juce::AudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new juce::AudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new juce::AudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
+    auto* level = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new juce::AudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new juce::AudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
 
     // Add params to processor
@@ -287,6 +290,8 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
 
+
+    addMidiLearn(sound);
     m_Synth.addVoice(
         new ER1Voice(
             sound,
@@ -301,15 +306,15 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
 ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate)
 {
     // Create params
-    auto* pitch = new juce::AudioParameterFloat(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
+    auto* pitch = new meta::MidiLearnableAudioParameterFloat(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
 
-    auto* decay = new juce::AudioParameterFloat(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
-    auto* level = new juce::AudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new juce::AudioParameterFloat(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new juce::AudioParameterFloat(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new meta::MidiLearnableAudioParameterFloat(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
+    auto* level = new meta::MidiLearnableAudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new meta::MidiLearnableAudioParameterFloat(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new juce::AudioParameterFloat(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new juce::AudioParameterFloat(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new meta::MidiLearnableAudioParameterFloat(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new meta::MidiLearnableAudioParameterFloat(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(name + "_tempo_sync", name + " Tempo Sync", true);
 
     // Add params to processor
@@ -335,6 +340,8 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
 
+
+    addMidiLearn(sound);
     return m_Synth.addVoice(
         new ER1Voice(
             sound,
@@ -356,6 +363,21 @@ AudioProcessor::BusesProperties ER1AudioProcessor::makeBusesProperties(int inBus
         { rv = rv.withOutput(juce::String("Output ") + juce::String(i), juce::AudioChannelSet::stereo(), true); }
 
     return rv;
+}
+
+void ER1AudioProcessor::addMidiLearn(ER1ControlBlock* ctrls)
+{
+    if (ctrls->osc.pitch != nullptr) { ctrls->osc.pitch->addMidiLearnListener(&m_MidiManager); }
+    if (ctrls->osc.modSpeed != nullptr) { ctrls->osc.modSpeed->addMidiLearnListener(&m_MidiManager); }
+    if (ctrls->osc.modDepth != nullptr) { ctrls->osc.modDepth->addMidiLearnListener(&m_MidiManager); }
+
+    ctrls->amp.decay->addMidiLearnListener(&m_MidiManager);
+    ctrls->amp.level->addMidiLearnListener(&m_MidiManager);
+    ctrls->amp.pan->addMidiLearnListener(&m_MidiManager);
+    ctrls->amp.lowBoost->addMidiLearnListener(&m_MidiManager);
+
+    ctrls->delay.depth->addMidiLearnListener(&m_MidiManager);
+    ctrls->delay.time->addMidiLearnListener(&m_MidiManager);
 }
 
 

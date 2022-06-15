@@ -71,6 +71,7 @@ public:
 private:
     static BusesProperties makeBusesProperties(int inBusses, int outBusses);
 
+    void addMidiLearn(ER1ControlBlock* ctrls);
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);

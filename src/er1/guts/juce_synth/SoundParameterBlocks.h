@@ -6,6 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <nlohmann/json.hpp>
 #include <er1_dsp/Constants.h>
+#include <meta/midi/MidiLearnable.h>
 
 using json = nlohmann::json;
 
@@ -40,9 +41,9 @@ struct OscParams
 {
     juce::AudioParameterChoice* oscType;
     juce::AudioParameterChoice* modType;
-    juce::AudioParameterFloat* pitch;
-    juce::AudioParameterFloat* modSpeed;
-    juce::AudioParameterFloat* modDepth;
+    meta::MidiLearnableAudioParameterFloat* pitch;
+    meta::MidiLearnableAudioParameterFloat* modSpeed;
+    meta::MidiLearnableAudioParameterFloat* modDepth;
     juce::AudioParameterBool* enableRing;
 
     json asJSON() const
@@ -73,10 +74,10 @@ struct OscParams
 
 struct AmpParams
 {
-    juce::AudioParameterFloat* decay;
-    juce::AudioParameterFloat* level;
-    juce::AudioParameterFloat* pan;
-    juce::AudioParameterFloat* lowBoost;
+    meta::MidiLearnableAudioParameterFloat* decay;
+    meta::MidiLearnableAudioParameterFloat* level;
+    meta::MidiLearnableAudioParameterFloat* pan;
+    meta::MidiLearnableAudioParameterFloat* lowBoost;
 
     json asJSON() const
     {
@@ -99,8 +100,8 @@ struct AmpParams
 
 struct DelayParams
 {
-    juce::AudioParameterFloat* time;
-    juce::AudioParameterFloat* depth;
+    meta::MidiLearnableAudioParameterFloat* time;
+    meta::MidiLearnableAudioParameterFloat* depth;
     juce::AudioParameterBool* sync;
 
     json asJSON() const

@@ -14,7 +14,7 @@
 
 using namespace juce;
 
-AmpSectionComponent::AmpSectionComponent(MidiManager& midiManager, AmpParams& params)
+AmpSectionComponent::AmpSectionComponent(AmpParams& params)
     : m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
     , m_Level(params.level), m_LevelLabel("Level Label", "Level")
     , m_Pan(params.pan), m_PanLabel("Pan Label", "Pan")
@@ -30,11 +30,6 @@ AmpSectionComponent::AmpSectionComponent(MidiManager& midiManager, AmpParams& pa
     addAndMakeVisible(m_Level);    addAndMakeVisible(m_LevelLabel);
     addAndMakeVisible(m_Pan);      addAndMakeVisible(m_PanLabel);
     addAndMakeVisible(m_LowBoost); addAndMakeVisible(m_LowBoostLabel);
-
-    m_Decay.meta::MidiLearnBroadcaster::addListener(&midiManager);
-    m_Level.meta::MidiLearnBroadcaster::addListener(&midiManager);
-    m_Pan.meta::MidiLearnBroadcaster::addListener(&midiManager);
-    m_LowBoost.meta::MidiLearnBroadcaster::addListener(&midiManager);
 }
 
 AmpSectionComponent::~AmpSectionComponent() {}

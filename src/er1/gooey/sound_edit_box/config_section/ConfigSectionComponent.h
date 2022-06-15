@@ -5,6 +5,7 @@
 #pragma once
 #include "LCDScreen.h"
 #include "../../../guts/MidiManager.h"
+#include "../../widgets/KorgButton.h"
 
 
 class ConfigSectionComponent
@@ -17,4 +18,5 @@ public:
 
 private:
     LCDScreen m_Screen;
+    KorgButton m_LiveMode, m_NoteListen;
 };

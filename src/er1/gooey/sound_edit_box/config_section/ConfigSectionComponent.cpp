@@ -11,6 +11,8 @@ ConfigSectionComponent::ConfigSectionComponent(MidiManager& midiManager, ConfigP
     : m_Screen(params)
 {
     addAndMakeVisible(m_Screen);
+    addAndMakeVisible(m_NoteListen);
+    addAndMakeVisible(m_LiveMode);
 }
 
 void ConfigSectionComponent::resized()
@@ -19,6 +21,8 @@ void ConfigSectionComponent::resized()
     auto button = StandardShapes::smallSquareButton;
     auto buttonRow = bounds.removeFromBottom(button.getHeight());
     m_Screen.setBounds(bounds);
+    m_NoteListen.setBounds(button.withX(buttonRow.getTopLeft().x).withY(buttonRow.getTopLeft().y));
+    m_LiveMode.setBounds(button.withX(buttonRow.getTopRight().x - button.getWidth()).withY(buttonRow.getTopLeft().y));
 }
 
 void ConfigSectionComponent::paint(juce::Graphics& g)

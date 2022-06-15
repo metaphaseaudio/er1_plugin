@@ -22,7 +22,7 @@ class OscSectionComponent
     : public juce::Component
 {
 public:
-    OscSectionComponent(MidiManager& manager, OscParams& params);
+    explicit OscSectionComponent(OscParams& params);
 
     void paint (juce::Graphics&) override;
     void resized() override;

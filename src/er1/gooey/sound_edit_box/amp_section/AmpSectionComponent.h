@@ -20,7 +20,7 @@ class AmpSectionComponent
     : public juce::Component
 {
 public:
-    AmpSectionComponent(MidiManager& midiManager, AmpParams& params);
+    explicit AmpSectionComponent(AmpParams& params);
     ~AmpSectionComponent() override;
 
     void paint (juce::Graphics&) override;

@@ -5,7 +5,7 @@
 #include "KorgKnob.h"
 #include <meta/util/range.h>
 
-KorgKnob::KorgKnob(juce::AudioParameterFloat* param, float granularity)
+KorgKnob::KorgKnob(meta::MidiLearnableAudioParameterFloat* param, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
@@ -15,15 +15,15 @@ KorgKnob::KorgKnob(juce::AudioParameterFloat* param, float granularity)
         return;
     }
 
-    auto interval = std::abs(param->range.start - param->range.end) / granularity;
-    setRange(juce::Range<double>(param->range.start, param->range.end), interval);
+    auto& range = param->getNormalisableRange();
+    auto interval = std::abs(range.start - range.end) / granularity;
+    setRange(juce::Range<double>(range.start, range.end), interval);
     setValue(*param, juce::NotificationType::dontSendNotification);
-    param->addListener(this);
 
     juce::Slider::addListener(this);
 
-    onDragStart   = [this]() { sliderStartedDragging(); };
-    onDragEnd     = [this]() { sliderStoppedDragging(); };
+    onDragStart   = [this, param]() { sliderStartedDragging(); };
+    onDragEnd     = [this, param]() { sliderStoppedDragging(); };
 }
 
 void KorgKnob::handleNewParameterValue()
@@ -80,15 +80,7 @@ void KorgKnob::mouseDown(const juce::MouseEvent& e)
     learn.showMenuAsync(juce::PopupMenu::Options(), [this] (int result)
     {
         if (result == 0) { return; }
-        if (result == 1) { sendLearn(); }
-        if (result == 2) { sendUnlearn(); }
+        if (result == 1) { dynamic_cast<meta::MidiLearnableAudioParameterFloat*>(p_Parameter)->sendLearn(); }
+        if (result == 2) { dynamic_cast<meta::MidiLearnableAudioParameterFloat*>(p_Parameter)->sendUnlearn(); }
     });
-}
-
-void KorgKnob::handleMidiMessage(const juce::MidiMessage& message)
-{
-    if (p_Parameter != nullptr)
-    {
-        p_Parameter->setValueNotifyingHost(message.getControllerValue() / 127.0f);
-    }
 }

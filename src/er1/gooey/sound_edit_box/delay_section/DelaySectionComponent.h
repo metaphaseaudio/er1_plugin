@@ -21,7 +21,7 @@ class DelaySectionComponent
     : public juce::Component
 {
 public:
-    DelaySectionComponent(MidiManager& midiManager, DelayParams& params);
+    explicit DelaySectionComponent(DelayParams& params);
     ~DelaySectionComponent() override;
 
     void paint (juce::Graphics&) override;
