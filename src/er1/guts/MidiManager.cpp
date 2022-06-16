@@ -3,6 +3,7 @@
 //
 
 #include "MidiManager.h"
+#include <algorithm>
 
 void MidiManager::stopLearn()
 {
@@ -19,12 +20,19 @@ void MidiManager::processBlock(juce::MidiBuffer& midi)
             const auto ctrlNumber = message.getControllerNumber();
             if (isLearning())
             {
-                m_LearnMap[ctrlNumber] = m_CurrentlyLearning;
+                auto learned = m_CurrentlyLearning.load();
+                learned->setLearnedCtrlNumber(ctrlNumber);
+                m_LearnedList.push_back(learned);
                 stopLearn();
             }
 
-            if (m_LearnMap.contains(ctrlNumber))
-                { m_LearnMap[ctrlNumber]->handleMidiMessage(message); }
+            for (auto& param : m_LearnedList)
+            {
+                if (param->getLearnedCtrlNumber() == ctrlNumber)
+                {
+                    param->handleMidiMessage(message);
+                }
+            }
         }
     }
 }
@@ -35,15 +43,13 @@ void MidiManager::learn(meta::MidiLearnBroadcaster* broadcaster)
 
 void MidiManager::unlearn(meta::MidiLearnBroadcaster* broadcaster)
 {
-    // Find the key
-    int key = -1;
-    for (auto& kv : m_LearnMap)
-    {
-        if (std::get<1>(kv) == broadcaster)
-            { key = std::get<0>(kv); }
-    }
+    m_LearnedList.erase(
+        std::remove_if(m_LearnedList.begin(), m_LearnedList.end(), [&](meta::MidiLearnBroadcaster* item)
+        {
+            return item == broadcaster;
+        }),
 
-    if (key != -1)
-        { m_LearnMap.erase(key); }
+        m_LearnedList.end()
+    );
 }
 

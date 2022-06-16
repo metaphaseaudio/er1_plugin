@@ -75,7 +75,7 @@ void KorgKnob::mouseDown(const juce::MouseEvent& e)
 
     juce::PopupMenu learn;
     learn.addItem(1, "MIDI Learn");
-    learn.addItem(1, "MIDI Un-learn");
+    learn.addItem(2, "MIDI Un-learn");
 
     learn.showMenuAsync(juce::PopupMenu::Options(), [this] (int result)
     {

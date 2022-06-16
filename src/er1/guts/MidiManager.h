@@ -21,6 +21,7 @@ public:
     void processBlock(juce::MidiBuffer& midi);
 
 private:
+    std::vector<meta::MidiLearnBroadcaster*> m_LearnedList;
     std::atomic<meta::MidiLearnBroadcaster*> m_CurrentlyLearning;
     juce::MidiKeyboardState m_State;
     std::map<MidiCtrlNumber, meta::MidiLearnBroadcaster*> m_LearnMap;
