@@ -132,7 +132,9 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
 
-    json j = {};
+    json j = {
+        {"midi_management", m_MidiManager.getState()}
+    };
     j["analog"] = json::array();
     j["audio"] = json::array();
     j["pcm"] = json::array();

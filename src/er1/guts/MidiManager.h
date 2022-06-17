@@ -6,6 +6,7 @@
 
 #include <map>
 #include <meta/midi/MidiLearnable.h>
+#include <nlohmann/json.hpp>
 
 
 class MidiManager
@@ -20,9 +21,16 @@ public:
     void unlearn(meta::MidiLearnBroadcaster* broadcaster) override;
     void processBlock(juce::MidiBuffer& midi);
 
+    void setActiveVoice(int voiceNumber) { m_ActiveVoice = voiceNumber; }
+
+    nlohmann::json getState() const;
+    void setState(const nlohmann::json& newState);
+
+
 private:
-    std::vector<meta::MidiLearnBroadcaster*> m_LearnedList;
-    std::atomic<meta::MidiLearnBroadcaster*> m_CurrentlyLearning;
+    std::vector<meta::MidiLearnableAudioParameterFloat*> m_LearnedList;
+    std::atomic<meta::MidiLearnableAudioParameterFloat*> m_CurrentlyLearning;
+    std::atomic<int> m_ActiveVoice;
+    std::map<MidiCtrlNumber, std::string> m_GlobalLearnMap;
     juce::MidiKeyboardState m_State;
-    std::map<MidiCtrlNumber, meta::MidiLearnBroadcaster*> m_LearnMap;
 };
