@@ -17,8 +17,9 @@ public:
 
     bool isLearning() const { return m_CurrentlyLearning != nullptr; }
     void stopLearn();
-    void learn(meta::MidiLearnBroadcaster* broadcaster) override;
+    void startLearn(meta::MidiLearnBroadcaster* broadcaster) override;
     void unlearn(meta::MidiLearnBroadcaster* broadcaster) override;
+    void addToLearnedList(meta::MidiLearnBroadcaster* broadcaster);
     void processBlock(juce::MidiBuffer& midi);
 
     void setActiveVoice(int voiceNumber) { m_ActiveVoice = voiceNumber; }

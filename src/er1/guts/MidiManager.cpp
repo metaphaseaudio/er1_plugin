@@ -34,8 +34,8 @@ void MidiManager::processBlock(juce::MidiBuffer& midi)
 }
 
 
-void MidiManager::learn(meta::MidiLearnBroadcaster* broadcaster)
-    { m_CurrentlyLearning = dynamic_cast<meta::MidiLearnableAudioParameterFloat*>(broadcaster); }
+void MidiManager::startLearn(meta::MidiLearnBroadcaster* broadcaster)
+    { m_CurrentlyLearning = broadcaster; }
 
 void MidiManager::unlearn(meta::MidiLearnBroadcaster* broadcaster)
 {
@@ -47,4 +47,7 @@ void MidiManager::unlearn(meta::MidiLearnBroadcaster* broadcaster)
 
 json MidiManager::getState() const{return {};}
 void MidiManager::setState(const json& newState){}
+
+void MidiManager::addToLearnedList(meta::MidiLearnBroadcaster* broadcaster)
+    { m_LearnedList.push_back(broadcaster); }
 

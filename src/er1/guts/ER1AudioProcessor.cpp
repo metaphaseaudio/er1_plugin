@@ -195,9 +195,9 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
     for (auto& param : getParameters())
     {
-        const auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);
+        auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);
         if (learnable != nullptr && learnable->isLearned())
-            { m_MidiManager.learn(learnable); }
+            { m_MidiManager.addToLearnedList(learnable); }
     }
 }
 

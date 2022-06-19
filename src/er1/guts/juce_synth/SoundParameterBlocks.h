@@ -66,9 +66,9 @@ struct OscParams
 
         if (oscType != nullptr) { *oscType = j.value("osc_type", modType->getIndex()); }
         if (modType != nullptr) { *modType = j.value("mod_type", modType->getIndex()); }
-        if (pitch != nullptr) { pitch->fromJson(j.value("pitch", pitch->get())); }
-        if (modSpeed != nullptr) { modSpeed->fromJson(j.value("mod_speed", modSpeed->get())); }
-        if (modDepth != nullptr) { modDepth->fromJson(j.value("mod_depth", modDepth->get())); }
+        if (pitch != nullptr) { pitch->fromJson(j["pitch"]); }
+        if (modSpeed != nullptr) { modSpeed->fromJson(j["mod_speed"]); }
+        if (modDepth != nullptr) { modDepth->fromJson(j["mod_depth"]); }
         if (enableRing != nullptr) { *enableRing = j.value("enable_ring", enableRing->get()); }
     }
 };
@@ -83,19 +83,19 @@ struct AmpParams
     json asJSON() const
     {
         return json({
-            {"decay", decay->get()},
-            {"level", level->get()},
-            {"pan", pan->get()},
-            {"lowBoost", lowBoost->get()}
+            {"decay", decay->toJson()},
+            {"level", level->toJson()},
+            {"pan", pan->toJson()},
+            {"lowBoost", lowBoost->toJson()}
         });
     }
 
     void fromJSON(json j)
     {
-        decay->fromJson(j.value("decay", decay->get()));
-        level->fromJson(j.value("level", level->get()));
-        pan->fromJson(j.value("pan", pan->get()));
-        lowBoost->fromJson(j.value("lowBoost", lowBoost->get()));
+        decay->fromJson(j["decay"]);
+        level->fromJson(j["level"]);
+        pan->fromJson(j["pan"]);
+        lowBoost->fromJson(j["lowBoost"]);
     }
 };
 
@@ -108,16 +108,16 @@ struct DelayParams
     json asJSON() const
     {
         return json({
-            {"time", time->get()},
-            {"depth", depth->get()},
+            {"time", time->toJson()},
+            {"depth", depth->toJson()},
             {"sync", sync->get()}
         });
     }
 
     void fromJSON(json j)
     {
-        time->fromJson(j.value("time", time->get()));
-        depth->fromJson(j.value("depth", depth->get()));
+        time->fromJson(j["time"]);
+        depth->fromJson(j["depth"]);
         *sync = j.value("sync", sync->get());
     }
 };
