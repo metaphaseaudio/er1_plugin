@@ -6,7 +6,7 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <meta/vst/TimedParameterListener.h>
-#include "../../guts/LearnableSerializeableProcessorParamFloat.h"
+#include "../../guts/LearnableSerializeableParam.h"
 
 class KorgKnob
     : public juce::Slider

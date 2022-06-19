@@ -44,37 +44,7 @@ public:
     {
         const auto value = json[key_value];
         static_cast<juce::RangedAudioParameter*>(this)->setValueNotifyingHost(value);
-        if (json.contains(key_midi_ctrl_num) && json.contains(key_midi_chan))
-            { setLearnedControl(juce::MidiMessage::controllerEvent(json[key_midi_chan], json[key_midi_ctrl_num], 0.0f)); }
-    }
-};
 
-
-class LearnableSerializeableProcessorParamFloat
-    : public meta::MidiLearnableAudioParameterFloat
-{
-    static constexpr auto key_value = "value";
-    static constexpr auto key_midi_ctrl_num = "midi_ctrl_num";
-    static constexpr auto key_midi_chan = "midi_chan";
-
-public:
-    using meta::MidiLearnableAudioParameterFloat::MidiLearnableAudioParameterFloat;
-
-    nlohmann::json toJson()
-    {
-        nlohmann::json rv = {{key_value, get()}};
-
-        if (isLearned())
-        {
-            rv[key_midi_chan] = m_Ctrl.getChannel();
-            rv[key_midi_ctrl_num] = m_Ctrl.getControllerNumber();
-        }
-
-        return rv;
-    }
-
-    void fromJson(const nlohmann::json& json)
-    {
         if (json.contains(key_midi_ctrl_num) && json.contains(key_midi_chan))
             { setLearnedControl(juce::MidiMessage::controllerEvent(json[key_midi_chan], json[key_midi_ctrl_num], 0.0f)); }
     }

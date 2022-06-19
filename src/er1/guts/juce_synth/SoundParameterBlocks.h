@@ -7,7 +7,7 @@
 #include <nlohmann/json.hpp>
 #include <er1_dsp/Constants.h>
 #include <meta/midi/MidiLearnable.h>
-#include "../LearnableSerializeableProcessorParamFloat.h"
+#include "../LearnableSerializeableParam.h"
 
 using json = nlohmann::json;
 
