@@ -12,6 +12,7 @@
 
 using namespace juce;
 using json = nlohmann::json;
+using FloatParam = LearnableSerializeable<juce::AudioParameterFloat>;
 
 static juce::StringArray OscNames =
 {
@@ -191,6 +192,13 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }
+
+    for (auto& param : getParameters())
+    {
+        const auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);
+        if (learnable != nullptr && learnable->isLearned())
+            { m_MidiManager.learn(learnable); }
+    }
 }
 
 void ER1AudioProcessor::triggerVoice(int voice)
@@ -207,18 +215,19 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
 
     auto* oscType = new juce::AudioParameterChoice(voiceIDStr + "_osc_type", voiceIDStr + " Oscillator Type", OscNames, 0);
     auto* modType = new juce::AudioParameterChoice(voiceIDStr + "_mod_type", voiceIDStr + " Modulation Type", ModulationNames, 0);
-    auto* pitch = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, 0.2f);
-    auto* modSpeed = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
-    auto* modDepth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
+
+    auto* pitch = new FloatParam(voiceIDStr + "_pitch", voiceIDStr + " Oscillator Freq", 0.0f, 1.0f, 0.2f);
+    auto* modSpeed = new FloatParam(voiceIDStr + "_mod_speed", voiceIDStr + " Modulation Speed", 0.0f, 1.0f, 0.0f);
+    auto* modDepth = new FloatParam(voiceIDStr + "_mod_depth", voiceIDStr + " Modulation Depth", -1.0f, 1.0f, 0.0f);
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
-    auto* decay = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
-    auto* level = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new FloatParam(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
+    auto* level = new FloatParam(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new FloatParam(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new FloatParam(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new FloatParam(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
 
     // Add params to processor
@@ -260,13 +269,13 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
 
     auto* ring = canBeRingCarrier ? new juce::AudioParameterBool(voiceIDStr + "_ring_mod", voiceIDStr + " Ring Mod", false) : nullptr;
 
-    auto* decay = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
-    auto* level = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new FloatParam(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
+    auto* level = new FloatParam(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new FloatParam(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new meta::MidiLearnableAudioParameterFloat(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new FloatParam(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new FloatParam(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(voiceIDStr + "_tempo_sync", voiceIDStr + " Tempo Sync", true);
 
     // Add params to processor
@@ -308,15 +317,15 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
 ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate)
 {
     // Create params
-    auto* pitch = new meta::MidiLearnableAudioParameterFloat(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
+    auto* pitch = new FloatParam(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
 
-    auto* decay = new meta::MidiLearnableAudioParameterFloat(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
-    auto* level = new meta::MidiLearnableAudioParameterFloat(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
-    auto* pan = new meta::MidiLearnableAudioParameterFloat(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new meta::MidiLearnableAudioParameterFloat(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* decay = new FloatParam(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
+    auto* level = new FloatParam(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
+    auto* pan = new FloatParam(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
 
-    auto* time = new meta::MidiLearnableAudioParameterFloat(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
-    auto* depth = new meta::MidiLearnableAudioParameterFloat(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
+    auto* time = new FloatParam(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
+    auto* depth = new FloatParam(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
     auto* sync = new juce::AudioParameterBool(name + "_tempo_sync", name + " Tempo Sync", true);
 
     // Add params to processor

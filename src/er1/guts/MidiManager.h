@@ -28,8 +28,8 @@ public:
 
 
 private:
-    std::vector<meta::MidiLearnableAudioParameterFloat*> m_LearnedList;
-    std::atomic<meta::MidiLearnableAudioParameterFloat*> m_CurrentlyLearning;
+    std::vector<meta::MidiLearnBroadcaster*> m_LearnedList;
+    std::atomic<meta::MidiLearnBroadcaster*> m_CurrentlyLearning;
     std::atomic<int> m_ActiveVoice;
     std::map<MidiCtrlNumber, std::string> m_GlobalLearnMap;
     juce::MidiKeyboardState m_State;

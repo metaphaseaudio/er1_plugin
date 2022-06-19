@@ -5,7 +5,8 @@
 #include "KorgKnob.h"
 #include <meta/util/range.h>
 
-KorgKnob::KorgKnob(meta::MidiLearnableAudioParameterFloat* param, float granularity)
+
+KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
@@ -22,8 +23,8 @@ KorgKnob::KorgKnob(meta::MidiLearnableAudioParameterFloat* param, float granular
 
     juce::Slider::addListener(this);
 
-    onDragStart   = [this, param]() { sliderStartedDragging(); };
-    onDragEnd     = [this, param]() { sliderStoppedDragging(); };
+    onDragStart   = [this]() { sliderStartedDragging(); };
+    onDragEnd     = [this]() { sliderStoppedDragging(); };
 }
 
 void KorgKnob::handleNewParameterValue()
@@ -35,7 +36,6 @@ void KorgKnob::handleNewParameterValue()
         repaint();
     }
 }
-
 
 void KorgKnob::sliderValueChanged(juce::Slider* slider)
 {
@@ -80,7 +80,7 @@ void KorgKnob::mouseDown(const juce::MouseEvent& e)
     learn.showMenuAsync(juce::PopupMenu::Options(), [this] (int result)
     {
         if (result == 0) { return; }
-        if (result == 1) { dynamic_cast<meta::MidiLearnableAudioParameterFloat*>(p_Parameter)->sendLearn(); }
-        if (result == 2) { dynamic_cast<meta::MidiLearnableAudioParameterFloat*>(p_Parameter)->sendUnlearn(); }
+        if (result == 1) { dynamic_cast<meta::MidiLearnBroadcaster*>(p_Parameter)->sendLearn(); }
+        if (result == 2) { dynamic_cast<meta::MidiLearnBroadcaster*>(p_Parameter)->sendUnlearn(); }
     });
 }

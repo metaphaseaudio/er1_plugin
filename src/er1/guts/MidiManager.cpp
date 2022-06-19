@@ -45,26 +45,6 @@ void MidiManager::unlearn(meta::MidiLearnBroadcaster* broadcaster)
     );
 }
 
-json MidiManager::getState() const
-{
-    std::vector<json> learnedList;
-
-    for (auto& learned : m_LearnedList)
-    {
-        learnedList.push_back({
-            {"param", learned->name.toStdString()},
-            {"ctrl", learned->getLearnedControl().getControllerNumber()},
-            {"chan", learned->getLearnedControl().getChannel()},
-        });
-    }
-
-    return {
-        {"learned", learnedList},
-    };
-}
-
-void MidiManager::setState(const json& newState)
-{
-
-}
+json MidiManager::getState() const{return {};}
+void MidiManager::setState(const json& newState){}
 
