@@ -45,14 +45,12 @@ LCDScreen::LCDScreen(ConfigParams& config)
         m_AudioBus.setText(juce::String(r_Config.bus), juce::dontSendNotification);
     };
 
-    m_Name.setText(config.name, juce::NotificationType::dontSendNotification);
-    m_MidiChan.setText(juce::String(r_Config.chan).toStdString(), juce::dontSendNotification);
-    m_MidiNote.setText(juce::String(r_Config.note).toStdString(), juce::dontSendNotification);
-    m_AudioBus.setText(juce::String(r_Config.bus).toStdString(), juce::dontSendNotification);
+    refreshText(juce::dontSendNotification);
 }
 
 void LCDScreen::paint(juce::Graphics& g)
 {
+    refreshText(juce::dontSendNotification);
     auto lcdTextColour = getLookAndFeel().findColour(LCDText::ColourIds::textColour).darker(0.1);
     auto font = FontLCD::ArcadeI();
 
@@ -127,4 +125,12 @@ void LCDScreen::resized()
     m_MidiChan.setBounds(chanLength);
     m_AudioBusLabel.setBounds(audioLabelLength);
     m_AudioBus.setBounds(audioLength);
+}
+
+void LCDScreen::refreshText(juce::NotificationType notify)
+{
+    m_Name.setText(r_Config.name, notify);
+    m_MidiChan.setText(juce::String(r_Config.chan).toStdString(), notify);
+    m_MidiNote.setText(juce::String(r_Config.note).toStdString(), notify);
+    m_AudioBus.setText(juce::String(r_Config.bus).toStdString(), notify);
 }

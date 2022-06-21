@@ -20,18 +20,21 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
     , m_PatchSelector(p.getMidiManager(), p.getAllSounds())
+    , m_GlobalCtrls(p.getMidiManager())
 {
     setLookAndFeel(&m_LAF);
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
-        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getMidiManager(), p.getSound(i)));
+        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
+        p.getMidiManager().addChangeListener(window);
         addChildComponent(window);
     }
 
     addAndMakeVisible(m_PatchSelector);
     addAndMakeVisible(m_Divider);
+    addAndMakeVisible((m_GlobalCtrls));
     getChildComponent(0)->setVisible(true);
     m_PatchSelector.addChangeListener(this);
     setSize(600, 380);
@@ -58,10 +61,13 @@ void ER1AudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds().reduced(7);
 
-    const auto internalBounds = bounds.removeFromTop(245);
+    auto internalBounds = bounds.removeFromTop(245);
 
     for (auto& window : m_SoundEditorWindows)
         { window->setBounds(internalBounds); }
+
+    auto upper_bounds = internalBounds.removeFromTop(120);
+    m_GlobalCtrls.setBounds(upper_bounds.removeFromLeft(220));
 
     bounds.removeFromTop(5);
     m_Divider.setBounds(bounds.removeFromTop(5));

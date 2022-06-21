@@ -15,7 +15,10 @@ PatchSelector::PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArr
         auto& btn = m_Buttons.emplace_back(new KorgToggleButton(sound->config.name));
         addAndMakeVisible(*btn);
         btn->setRadioGroupId(1);
-        btn->onClick = [&](){ sendChangeMessage(); };
+        btn->onClick = [&](){
+            midiManager.setActiveVoice(sound);
+            sendChangeMessage();
+        };
 
         if (sound->osc.enableRing != nullptr)
         {

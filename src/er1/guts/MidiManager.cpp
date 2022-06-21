@@ -17,6 +17,13 @@ void MidiManager::processBlock(juce::MidiBuffer& midi)
     for (const auto event : midi)
     {
         const auto& message = event.getMessage();
+        if (message.isNoteOn() && m_IsListening)
+        {
+            m_ActiveVoice.load()->config.note = message.getNoteNumber();
+            m_ActiveVoice.load()->config.chan = message.getChannel();
+            m_IsListening = false;
+            sendChangeMessage();
+        }
         if (message.isController())
         {
             if (isLearning())

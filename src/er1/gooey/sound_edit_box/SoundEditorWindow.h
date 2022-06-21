@@ -20,12 +20,14 @@
 
 class SoundEditorWindow
     : public juce::Component
+    , public juce::ChangeListener
 {
 public:
-    SoundEditorWindow(MidiManager& midiManager, ER1ControlBlock::Ptr sound);
+    explicit SoundEditorWindow(ER1ControlBlock::Ptr sound);
     void resized() override;
 
 private:
+    void changeListenerCallback(juce::ChangeBroadcaster* broadcaster) override;
     ConfigSectionComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;

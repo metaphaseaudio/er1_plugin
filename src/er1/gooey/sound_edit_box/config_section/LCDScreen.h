@@ -15,8 +15,9 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    void refreshText(juce::NotificationType notifiy);
 private:
+
     ConfigParams& r_Config;
     juce::Label m_Name, m_MidiNote, m_MidiChan, m_AudioBus;
     juce::Label /*m_NameLabel,*/ m_MidiNoteLabel, m_MidiChanLabel, m_AudioBusLabel;

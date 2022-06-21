@@ -12,11 +12,12 @@ class ConfigSectionComponent
     : public juce::Component
 {
 public:
-    ConfigSectionComponent(MidiManager& midiManager, ConfigParams& params);
+    explicit ConfigSectionComponent(ConfigParams& params);
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
+
+
     LCDScreen m_Screen;
-    KorgButton m_LiveMode, m_NoteListen;
 };

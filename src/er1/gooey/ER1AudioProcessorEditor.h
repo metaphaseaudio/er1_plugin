@@ -16,6 +16,7 @@
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
 #include "../gooey/patch_selector/PatchSelector.h"
 #include "look_and_feel/ER1LAF.h"
+#include "GlobalCtrls.h"
 
 //==============================================================================
 /**
@@ -40,5 +41,6 @@ private:
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     DividerLine m_Divider;
     PatchSelector m_PatchSelector;
+    GlobalCtrls m_GlobalCtrls;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

@@ -5,8 +5,8 @@
 #include "SoundEditorWindow.h"
 #include "../look_and_feel/ER1Colours.h"
 
-SoundEditorWindow::SoundEditorWindow(MidiManager& midiManager, ER1ControlBlock::Ptr sound)
-    : m_VoiceSetup(midiManager, sound->config)
+SoundEditorWindow::SoundEditorWindow(ER1ControlBlock::Ptr sound)
+    : m_VoiceSetup(sound->config)
     , m_OscSection(sound->osc)
     , m_AmpSection(sound->amp)
     , m_DelaySection(sound->delay)
@@ -30,4 +30,9 @@ void SoundEditorWindow::resized()
     m_AmpSection.setBounds(secondRow.removeFromLeft(340));
     secondRow.removeFromLeft(5);
     m_DelaySection.setBounds(secondRow);
+}
+
+void SoundEditorWindow::changeListenerCallback(juce::ChangeBroadcaster*)
+{
+    repaint();
 }
