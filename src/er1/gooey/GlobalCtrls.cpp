@@ -10,20 +10,20 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr)
 {
     setInterceptsMouseClicks(false, true);
 
-    m_NoteListenLabel.setText("Listen", juce::dontSendNotification);
-    m_LiveModeLabel.setText("Global", juce::dontSendNotification);
-    m_SelectBankLabel.setText("Bank", juce::dontSendNotification);
-    m_SelectSoundLabel.setText("Sound", juce::dontSendNotification);
+    m_NoteListenLabel.setText("LISTEN", juce::dontSendNotification);
+    m_LiveModeLabel.setText("OPTIONS", juce::dontSendNotification);
+    m_SelectBankLabel.setText("BANK", juce::dontSendNotification);
+    m_SelectSoundLabel.setText("SOUND", juce::dontSendNotification);
 
     m_NoteListenLabel.setJustificationType(juce::Justification::centred);
     m_LiveModeLabel.setJustificationType(juce::Justification::centred);
     m_SelectBankLabel.setJustificationType(juce::Justification::centred);
     m_SelectSoundLabel.setJustificationType(juce::Justification::centred);
 
-    m_NoteListenLabel.setFont(m_NoteListenLabel.getFont().withPointHeight(10));
-    m_LiveModeLabel.setFont(m_LiveModeLabel.getFont().withPointHeight(10));
-    m_SelectBankLabel.setFont(m_SelectBankLabel.getFont().withPointHeight(10));
-    m_SelectSoundLabel.setFont(m_SelectSoundLabel.getFont().withPointHeight(10));
+    m_NoteListenLabel.setFont(m_NoteListenLabel.getFont().withPointHeight(8));
+    m_LiveModeLabel.setFont(m_LiveModeLabel.getFont().withPointHeight(8));
+    m_SelectBankLabel.setFont(m_SelectBankLabel.getFont().withPointHeight(8));
+    m_SelectSoundLabel.setFont(m_SelectSoundLabel.getFont().withPointHeight(8));
 
     m_NoteListenLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
     m_LiveModeLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);

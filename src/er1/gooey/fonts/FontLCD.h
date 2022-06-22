@@ -7,6 +7,7 @@
 #include "bin_data/FontDSEG14.h"
 #include "bin_data/Segment16C.h"
 #include "bin_data/Arcade.h"
+#include "bin_data/BitFonts.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 
@@ -120,6 +121,55 @@ namespace FontLCD
         static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(Arcade::ARCADE_N_TTF, Arcade::ARCADE_N_TTFSize)));
         return font;
     }
+
+
+    static const juce::Font& EIGHT_BIT_WONDER_TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::EIGHT_BIT_WONDER_TTF,
+                                                                                  BitFonts::EIGHT_BIT_WONDER_TTFSize)));
+        return font;
+    }
+    static const juce::Font& editundo_ttf()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::editundo_ttf, BitFonts::editundo_ttfSize)));
+        return font;
+    }
+    static const juce::Font& Minecraft_ttf()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::Minecraft_ttf, BitFonts::Minecraft_ttfSize)));
+        return font;
+    }
+    static const juce::Font& Retro_Gaming_ttf()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::Retro_Gaming_ttf, BitFonts::Retro_Gaming_ttfSize)));
+        return font;
+    }
+    static const juce::Font& ROTORB___TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::ROTORB___TTF, BitFonts::ROTORB___TTFSize)));
+        return font;
+    }
+    static const juce::Font& ROTORCAP_TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::ROTORCAP_TTF, BitFonts::ROTORCAP_TTFSize)));
+        return font;
+    }
+    static const juce::Font& ROTOREB__TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::ROTOREB__TTF, BitFonts::ROTOREB__TTFSize)));
+        return font;
+    }
+    static const juce::Font& ROTORE___TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::ROTORE___TTF, BitFonts::ROTORE___TTFSize)));
+        return font;
+    }
+    static const juce::Font& ROTORS___TTF()
+    {
+        static juce::Font font(juce::Font(juce::Typeface::createSystemTypefaceFor(BitFonts::ROTORS___TTF, BitFonts::ROTORS___TTFSize)));
+        return font;
+    }
+
 }
 
 
