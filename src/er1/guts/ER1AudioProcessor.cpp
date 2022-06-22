@@ -92,7 +92,7 @@ bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout) const
     for (const auto& bus : layout.outputBuses)
         { outChans += bus.size(); }
 
-    return outChans <= getTotalNumOutputChannels() && inChans <= getTotalNumInputChannels();
+    return outChans <= getTotalNumOutputChannels() && inChans == 2;
 }
 
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& midiMessages)
