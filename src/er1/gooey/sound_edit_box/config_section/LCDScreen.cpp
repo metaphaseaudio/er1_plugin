@@ -129,8 +129,8 @@ void LCDScreen::resized()
 
 void LCDScreen::refreshText(juce::NotificationType notify)
 {
-    m_Name.setText(r_Config.name, notify);
-    m_MidiChan.setText(juce::String(r_Config.chan).toStdString(), notify);
-    m_MidiNote.setText(juce::String(r_Config.note).toStdString(), notify);
-    m_AudioBus.setText(juce::String(r_Config.bus).toStdString(), notify);
+    if (!m_Name.isBeingEdited()) { m_Name.setText(r_Config.name, notify); }
+    if (!m_MidiChan.isBeingEdited()) { m_MidiChan.setText(juce::String(r_Config.chan).toStdString(), notify); }
+    if (!m_MidiNote.isBeingEdited()) { m_MidiNote.setText(juce::String(r_Config.note).toStdString(), notify); }
+    if (!m_AudioBus.isBeingEdited()) { m_AudioBus.setText(juce::String(r_Config.bus).toStdString(), notify); }
 }

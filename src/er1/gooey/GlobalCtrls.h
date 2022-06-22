@@ -15,12 +15,11 @@ class GlobalCtrls
 {
 public:
     explicit GlobalCtrls(MidiManager& mgr);
-
     void resized() override;
 
 private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;
     MidiManager& r_MidiManager;
-    KorgButton m_LiveMode, m_NoteListen;
+    KorgButton m_LiveMode, m_NoteListen, m_SelectSound, m_SelectBank;
 };

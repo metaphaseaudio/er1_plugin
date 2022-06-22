@@ -11,6 +11,7 @@
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
 #include "BGImage.h"
+#include "look_and_feel/StandardShapes.h"
 
 
 using namespace juce;
