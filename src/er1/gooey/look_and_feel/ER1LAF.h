@@ -35,6 +35,8 @@ public:
         juce::DirectoryContentsDisplayComponent&
     ) override;
 
+    const juce::Drawable* getDefaultFolderImage() override;
 private:
+    std::unique_ptr<juce::Drawable> folderImage;
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);
 };

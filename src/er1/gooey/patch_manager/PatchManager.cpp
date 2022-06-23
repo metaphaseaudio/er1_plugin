@@ -3,7 +3,7 @@
 //
 
 #include "PatchManager.h"
-#include "../widgets/LCDText.h"
+#include "../look_and_feel/ER1Colours.h"
 
 PatchManager::PatchManager()
 {
@@ -11,16 +11,15 @@ PatchManager::PatchManager()
     m_ImageList.setDirectory(homeDir, true, true);
     m_DirectoryThread.startThread();
 
-    m_FileTree.setRowHeight(18);
+    m_FileTree.setRowHeight(15);
     m_FileTree.addListener(this);
     addAndMakeVisible(m_FileTree);
+    m_FileTree.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
+    m_FileTree.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
 }
 
 void PatchManager::paint(juce::Graphics& g)
-{
-    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::lcdColour));
-    g.fillAll();
-}
+{}
 
 void PatchManager::resized()
 {

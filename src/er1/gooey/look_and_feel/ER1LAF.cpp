@@ -5,10 +5,17 @@
 #include "ER1LAF.h"
 #include "ER1Colours.h"
 #include "../widgets/LCDText.h"
+#include "../fonts/FontLCD.h"
 
 
 using namespace juce;
 
+static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
+{
+    auto xml = parseXML (data);
+    jassert (xml != nullptr);
+    return Drawable::createFromSVG (*xml);
+}
 
 ER1LAF::ER1LAF()
 {
@@ -151,9 +158,141 @@ void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& int
 
 void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& file, const String& filename, juce::Image* icon,
                                 const String& fileSizeDescription, const String& fileTimeDescription, bool isDirectory, bool isItemSelected,
-                                int itemIndex, DirectoryContentsDisplayComponent& c)
+                                int itemIndex, DirectoryContentsDisplayComponent& dcc)
 {
-    LookAndFeel_V4::drawFileBrowserRow(g, width, height, file, filename, icon, fileSizeDescription, fileTimeDescription, isDirectory,
-                                       isItemSelected, itemIndex,c);
+    auto fileListComp = dynamic_cast<Component*> (&dcc);
+
+    if (isItemSelected)
+        g.fillAll (fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::highlightColourId)
+                                           : findColour (DirectoryContentsDisplayComponent::highlightColourId));
+
+    const int x = 32;
+    g.setColour (Colours::black);
+
+    if (icon != nullptr && icon->isValid())
+    {
+        g.drawImageWithin(*icon, 0, 0, height, height,
+                           RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize,
+                           false);
+    }
+    else
+    {
+        if (auto* d = isDirectory ? getDefaultFolderImage()
+                                  : getDefaultDocumentFileImage())
+            d->drawWithin (g, Rectangle<float> (0, 0, height, (float) height),
+                           RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
+    }
+
+    if (isItemSelected)
+        g.setColour (fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::highlightedTextColourId)
+                                             : findColour (DirectoryContentsDisplayComponent::highlightedTextColourId));
+    else
+        g.setColour (fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::textColourId)
+                                             : findColour (DirectoryContentsDisplayComponent::textColourId));
+
+    g.setFont(FontLCD::ROTORCAP_TTF());
+    g.setFont ((float) height * 0.7f);
+
+    if (width > 450 && ! isDirectory)
+    {
+        auto sizeX = roundToInt ((float) width * 0.7f);
+        auto dateX = roundToInt ((float) width * 0.8f);
+
+        g.drawFittedText (filename,
+                          height, 0, sizeX - x, height,
+                          Justification::centredLeft, 1);
+
+        g.setFont ((float) height * 0.5f);
+        g.setColour (Colours::darkgrey);
+
+        if (! isDirectory)
+        {
+            g.drawFittedText (fileSizeDescription,
+                              sizeX, 0, dateX - sizeX - 8, height,
+                              Justification::centredRight, 1);
+
+            g.drawFittedText (fileTimeDescription,
+                              dateX, 0, width - 8 - dateX, height,
+                              Justification::centredRight, 1);
+        }
+    }
+    else
+    {
+        g.drawFittedText (filename,
+                          height, 0, width - x, height,
+                          Justification::centredLeft, 1);
+
+    }
+}
+
+const juce::Drawable* ER1LAF::getDefaultFolderImage()
+{
+    if (folderImage == nullptr)
+    {
+        folderImage = createDrawableFromSVG(R"svgdata(
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 8.4666665 8.4666666"
+   version="1.1"
+   id="svg5"
+   xml:space="preserve"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="folder_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="true"
+     showguides="true"
+     inkscape:zoom="22.853691"
+     inkscape:cx="12.842564"
+     inkscape:cy="14.395924"
+     inkscape:window-width="3378"
+     inkscape:window-height="1417"
+     inkscape:window-x="54"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"><inkscape:grid
+       type="xygrid"
+       id="grid426"
+       empspacing="4"
+       visible="true" /></sodipodi:namedview><defs
+     id="defs2" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"><rect
+       style="fill:#ffffff;stroke-width:0.274881"
+       id="rect480"
+       width="8.4666662"
+       height="4.4979167"
+       x="1.5894571e-08"
+       y="2.9104166" /><rect
+       style="fill:#ffffff;stroke-width:0.285783"
+       id="rect482"
+       width="7.4083333"
+       height="0.52916664"
+       x="0.52916664"
+       y="1.8520834" /><rect
+       style="fill:#ffffff;stroke-width:0.476983"
+       id="rect492"
+       width="3.4395833"
+       height="0.79375011"
+       x="0.52916664"
+       y="1.0583333" /></g></svg>
+)svgdata");
+    }
+
+    folderImage->replaceColour(juce::Colours::white, juce::Colours::red);
+    return folderImage.get();
 }
 

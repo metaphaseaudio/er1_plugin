@@ -41,10 +41,6 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr)
     m_SelectSound.addListener(this);
     m_SelectBank.addListener(this);
     m_Options.addListener(this);
-
-//    m_SelectSound.setRadioGroupId(1, juce::dontSendNotification);
-//    m_SelectBank.setRadioGroupId(1, juce::dontSendNotification);
-//    m_Options.setRadioGroupId(1, juce::dontSendNotification);
 }
 
 void GlobalCtrls::timerCallback()
