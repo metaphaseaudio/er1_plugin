@@ -10,12 +10,12 @@
 #include "../../guts/MidiManager.h"
 
 
-class PatchSelector
+class VoiceSelector
     : public juce::Component
     , public juce::ChangeBroadcaster
 {
 public:
-    PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
+    VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
 
     void resized() override;
     void paint(juce::Graphics& g) override;

@@ -2,13 +2,13 @@
 // Created by Matt on 9/19/2020.
 //
 
-#include "PatchSelector.h"
+#include "VoiceSelector.h"
 #include <meta/util/container_helpers/array.h>
 #include "../look_and_feel/StandardShapes.h"
 #include "Arrows.h"
 
 
-PatchSelector::PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
+VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
 {
     for (auto& sound : sounds)
     {
@@ -34,7 +34,7 @@ PatchSelector::PatchSelector(MidiManager& midiManager, juce::ReferenceCountedArr
     m_Buttons[0]->setToggleState(true, juce::sendNotification);
 }
 
-void PatchSelector::resized()
+void VoiceSelector::resized()
 {
     auto bounds = getLocalBounds();
     auto selectorBtnBounds = StandardShapes::smallRectButton;
@@ -89,7 +89,7 @@ void PatchSelector::resized()
     }
 }
 
-void PatchSelector::paint(juce::Graphics& g)
+void VoiceSelector::paint(juce::Graphics& g)
 {
     auto bounds = getLocalBounds().removeFromBottom(18);
     const auto offset = float(getWidth() - StandardShapes::smallRectButton.getWidth() * 16) / 2.0f;
@@ -107,7 +107,7 @@ void PatchSelector::paint(juce::Graphics& g)
     g.fillRect(pcmBounds);
 }
 
-int PatchSelector::getSelected() const
+int VoiceSelector::getSelected() const
 {
     for (const auto& i_btn : meta::enumerate(m_Buttons)) {
         if (std::get<1>(i_btn)->getToggleState())

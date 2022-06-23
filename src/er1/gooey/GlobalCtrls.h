@@ -5,6 +5,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../guts/MidiManager.h"
+#include "patch_manager/PatchManager.h"
 #include "widgets/KorgButton.h"
 
 
@@ -21,6 +22,8 @@ private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;
     MidiManager& r_MidiManager;
+    PatchManager m_PatchManager;
     juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel;
-    KorgButton m_LiveMode, m_NoteListen, m_SelectSound, m_SelectBank;
+    KorgButton m_NoteListen;
+    KorgToggleButton m_SelectSound, m_SelectBank, m_LiveMode;
 };

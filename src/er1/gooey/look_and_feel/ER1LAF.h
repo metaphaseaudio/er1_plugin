@@ -27,6 +27,14 @@ public:
     void drawKorgToggleButton
         (juce::Graphics& g, KorgToggleButton& button, bool isMouseOverButton, bool isButtonDown);
 
+    void drawFileBrowserRow(
+        juce::Graphics&, int width, int height,
+        const juce::File& file, const juce::String& filename, juce::Image* icon,
+        const juce::String& fileSizeDescription, const juce::String& fileTimeDescription,
+        bool isDirectory, bool isItemSelected, int itemIndex,
+        juce::DirectoryContentsDisplayComponent&
+    ) override;
+
 private:
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);
 };

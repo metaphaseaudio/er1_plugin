@@ -17,7 +17,7 @@ void ConfigSectionComponent::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
     auto button = StandardShapes::smallSquareButton;
-    auto buttonRow = bounds.removeFromBottom(button.getHeight());
+    bounds.removeFromBottom(button.getHeight());
     m_Screen.setBounds(bounds);
 }
 

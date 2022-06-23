@@ -10,6 +10,8 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr)
 {
     setInterceptsMouseClicks(false, true);
 
+    addChildComponent(m_PatchManager);
+
     m_NoteListenLabel.setText("LISTEN", juce::dontSendNotification);
     m_LiveModeLabel.setText("OPTIONS", juce::dontSendNotification);
     m_SelectBankLabel.setText("BANK", juce::dontSendNotification);
@@ -36,6 +38,12 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr)
     addAndMakeVisible(m_SelectSound); addAndMakeVisible(m_SelectSoundLabel);
 
     m_NoteListen.addListener(this);
+    m_SelectSound.addListener(this);
+    m_SelectBank.addListener(this);
+
+//    m_SelectSound.setRadioGroupId(1, juce::dontSendNotification);
+//    m_SelectBank.setRadioGroupId(1, juce::dontSendNotification);
+//    m_LiveMode.setRadioGroupId(1, juce::dontSendNotification);
 }
 
 void GlobalCtrls::timerCallback()
@@ -71,6 +79,10 @@ void GlobalCtrls::resized()
     m_SelectSound.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectSoundLabel.setBounds(labelRow.removeFromLeft(btnWidth));
     m_SelectBank.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectBankLabel.setBounds(labelRow.removeFromLeft(btnWidth));
     m_LiveMode.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+
+    bounds = getLocalBounds().reduced(5);
+    bounds.removeFromBottom(button.getHeight());
+    m_PatchManager.setBounds(bounds.reduced(1));
 }
 
 void GlobalCtrls::buttonClicked(juce::Button* btn)
@@ -87,5 +99,20 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
 
         r_MidiManager.startListen();
         startTimer(750);
+    }
+
+    if (btn == &m_SelectSound)
+    {
+        if (m_SelectSound.getToggleState())
+            { m_SelectBank.setToggleState(false, juce::sendNotification); }
+        m_PatchManager.setVisible(m_SelectSound.getToggleState());
+    }
+
+
+    if (btn == &m_SelectBank)
+    {
+        if (m_SelectBank.getToggleState())
+            { m_SelectSound.setToggleState(false, juce::sendNotification); }
+//        m_PatchManager.setVisible(m_SelectSound.getToggleState());
     }
 }

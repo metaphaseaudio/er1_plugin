@@ -149,3 +149,11 @@ void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& int
     g.fillRoundedRectangle(highlightBounds, calcCurve(highlightBounds, 5));
 }
 
+void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& file, const String& filename, juce::Image* icon,
+                                const String& fileSizeDescription, const String& fileTimeDescription, bool isDirectory, bool isItemSelected,
+                                int itemIndex, DirectoryContentsDisplayComponent& c)
+{
+    LookAndFeel_V4::drawFileBrowserRow(g, width, height, file, filename, icon, fileSizeDescription, fileTimeDescription, isDirectory,
+                                       isItemSelected, itemIndex,c);
+}
+

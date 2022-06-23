@@ -14,7 +14,7 @@
 #include "../gooey/widgets/DividerLine.h"
 #include "../guts/ER1AudioProcessor.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
-#include "../gooey/patch_selector/PatchSelector.h"
+#include "../gooey/voice_selector/VoiceSelector.h"
 #include "look_and_feel/ER1LAF.h"
 #include "GlobalCtrls.h"
 
@@ -40,7 +40,7 @@ private:
     ER1AudioProcessor& processor;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     DividerLine m_Divider;
-    PatchSelector m_PatchSelector;
+    VoiceSelector m_VoiceSelector;
     GlobalCtrls m_GlobalCtrls;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

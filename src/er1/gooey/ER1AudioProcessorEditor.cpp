@@ -20,7 +20,7 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_PatchSelector(p.getMidiManager(), p.getAllSounds())
+    , m_VoiceSelector(p.getMidiManager(), p.getAllSounds())
     , m_GlobalCtrls(p.getMidiManager())
 {
     setLookAndFeel(&m_LAF);
@@ -33,11 +33,11 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
         addChildComponent(window);
     }
 
-    addAndMakeVisible(m_PatchSelector);
+    addAndMakeVisible(m_VoiceSelector);
     addAndMakeVisible(m_Divider);
     addAndMakeVisible((m_GlobalCtrls));
     getChildComponent(0)->setVisible(true);
-    m_PatchSelector.addChangeListener(this);
+    m_VoiceSelector.addChangeListener(this);
     setSize(600, 380);
 }
 
@@ -72,18 +72,18 @@ void ER1AudioProcessorEditor::resized()
 
     bounds.removeFromTop(5);
     m_Divider.setBounds(bounds.removeFromTop(5));
-    m_PatchSelector.setBounds(bounds);
+    m_VoiceSelector.setBounds(bounds);
 }
 
 void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-    if (source == &m_PatchSelector)
+    if (source == &m_VoiceSelector)
     {
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
-        const auto selected = m_PatchSelector.getSelected();
+        const auto selected = m_VoiceSelector.getSelected();
 
         if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
-        m_SoundEditorWindows[m_PatchSelector.getSelected()]->setVisible(true);
+        m_SoundEditorWindows[m_VoiceSelector.getSelected()]->setVisible(true);
         processor.triggerVoice(selected);
     }
 }
