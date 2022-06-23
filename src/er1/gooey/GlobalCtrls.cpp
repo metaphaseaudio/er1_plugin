@@ -33,17 +33,18 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr)
     m_SelectSoundLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
 
     addAndMakeVisible(m_NoteListen); addAndMakeVisible(m_NoteListenLabel);
-    addAndMakeVisible(m_LiveMode); addAndMakeVisible(m_LiveModeLabel);
+    addAndMakeVisible(m_Options); addAndMakeVisible(m_LiveModeLabel);
     addAndMakeVisible(m_SelectBank); addAndMakeVisible(m_SelectBankLabel);
     addAndMakeVisible(m_SelectSound); addAndMakeVisible(m_SelectSoundLabel);
 
     m_NoteListen.addListener(this);
     m_SelectSound.addListener(this);
     m_SelectBank.addListener(this);
+    m_Options.addListener(this);
 
 //    m_SelectSound.setRadioGroupId(1, juce::dontSendNotification);
 //    m_SelectBank.setRadioGroupId(1, juce::dontSendNotification);
-//    m_LiveMode.setRadioGroupId(1, juce::dontSendNotification);
+//    m_Options.setRadioGroupId(1, juce::dontSendNotification);
 }
 
 void GlobalCtrls::timerCallback()
@@ -78,7 +79,7 @@ void GlobalCtrls::resized()
     m_NoteListen.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_NoteListenLabel.setBounds(labelRow.removeFromLeft(btnWidth));
     m_SelectSound.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectSoundLabel.setBounds(labelRow.removeFromLeft(btnWidth));
     m_SelectBank.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectBankLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-    m_LiveMode.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+    m_Options.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
 
     bounds = getLocalBounds().reduced(5);
     bounds.removeFromBottom(button.getHeight());
@@ -104,7 +105,10 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
     if (btn == &m_SelectSound)
     {
         if (m_SelectSound.getToggleState())
-            { m_SelectBank.setToggleState(false, juce::sendNotification); }
+        {
+            m_SelectBank.setToggleState(false, juce::sendNotification);
+            m_Options.setToggleState(false, juce::sendNotification);
+        }
         m_PatchManager.setVisible(m_SelectSound.getToggleState());
     }
 
@@ -112,7 +116,19 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
     if (btn == &m_SelectBank)
     {
         if (m_SelectBank.getToggleState())
-            { m_SelectSound.setToggleState(false, juce::sendNotification); }
-//        m_PatchManager.setVisible(m_SelectSound.getToggleState());
+        {
+            m_SelectSound.setToggleState(false, juce::sendNotification);
+            m_Options.setToggleState(false, juce::sendNotification);
+        }
+    }
+
+
+    if (btn == &m_Options)
+    {
+        if (m_Options.getToggleState())
+        {
+            m_SelectSound.setToggleState(false, juce::sendNotification);
+            m_SelectBank.setToggleState(false, juce::sendNotification);
+        }
     }
 }

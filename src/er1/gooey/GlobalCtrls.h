@@ -25,5 +25,5 @@ private:
     PatchManager m_PatchManager;
     juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel;
     KorgButton m_NoteListen;
-    KorgToggleButton m_SelectSound, m_SelectBank, m_LiveMode;
+    KorgToggleButton m_SelectSound, m_SelectBank, m_Options;
 };
