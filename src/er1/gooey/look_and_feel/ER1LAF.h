@@ -35,12 +35,13 @@ public:
         juce::DirectoryContentsDisplayComponent&
     ) override;
 
+    const juce::Drawable* getDefaultDocumentFileImage() override;
     const juce::Drawable* getDefaultFolderImage() override;
 
     void drawScrollbar(juce::Graphics& graphics, juce::ScrollBar& bar, int x, int y, int width, int height, bool isScrollbarVertical,
                        int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown) override;
 
 private:
-    std::unique_ptr<juce::Drawable> folderImage;
+    std::unique_ptr<juce::Drawable> folderImage, documentImage;
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);
 };

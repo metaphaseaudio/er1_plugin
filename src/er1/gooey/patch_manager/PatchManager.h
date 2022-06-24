@@ -10,7 +10,7 @@ class PatchManager
     , juce::FileBrowserListener
 {
 public:
-    explicit PatchManager(const juce::File& startingDir);
+    PatchManager(const juce::File& startingDir, const std::string& name, const juce::WildcardFileFilter& filter);
     ~PatchManager() override;
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -25,8 +25,8 @@ private:
     void fileDoubleClicked (const juce::File&) override;
     void browserRootChanged (const juce::File&) override {}
 
-    juce::WildcardFileFilter m_ImagesWildcardFilter  { "*.jpeg;*.jpg;*.png;*.gif", "*", "Image File Filter"};
-    juce::TimeSliceThread m_DirectoryThread          { "Image File Scanner Thread" };
+    juce::WildcardFileFilter m_ImagesWildcardFilter;
+    juce::TimeSliceThread m_DirectoryThread;
     juce::DirectoryContentsList m_ImageList          { &m_ImagesWildcardFilter, m_DirectoryThread };
     juce::FileListComponent m_FileTree               { m_ImageList };
 };

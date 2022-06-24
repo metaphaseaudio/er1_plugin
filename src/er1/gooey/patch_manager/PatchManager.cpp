@@ -5,7 +5,9 @@
 #include "PatchManager.h"
 #include "../look_and_feel/ER1Colours.h"
 
-PatchManager::PatchManager(const juce::File& startingDir)
+PatchManager::PatchManager(const juce::File& startingDir, const std::string& name, const juce::WildcardFileFilter& filter)
+    : m_ImagesWildcardFilter(filter)
+    , m_DirectoryThread(name)
 {
     m_ImageList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();

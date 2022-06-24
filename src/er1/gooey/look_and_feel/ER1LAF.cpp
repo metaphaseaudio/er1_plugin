@@ -169,19 +169,10 @@ void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& 
     const int x = 32;
     g.setColour (Colours::black);
 
-    if (icon != nullptr && icon->isValid())
-    {
-        g.drawImageWithin(*icon, 0, 0, height, height,
-                          RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize,
-                          false);
-    }
-    else
-    {
-        if (auto* d = isDirectory ? getDefaultFolderImage()
-                                  : getDefaultDocumentFileImage())
-            d->drawWithin(g, Rectangle<float> (0, 0, height, (float) height),
-            RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
-    }
+
+    if (auto* d = isDirectory ? getDefaultFolderImage() : getDefaultDocumentFileImage())
+        d->drawWithin(g, Rectangle<float> (0, 0, height, (float) height),
+        RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
 
     if (isItemSelected)
         g.setColour(fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::highlightedTextColourId)
@@ -213,6 +204,108 @@ void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& 
     {
         g.drawFittedText(filename, height, 0, width - x, height, Justification::centredLeft, 1);
     }
+}
+
+const juce::Drawable* ER1LAF::getDefaultDocumentFileImage()
+{
+    if (documentImage == nullptr)
+    {
+        documentImage = createDrawableFromSVG(R"svgdata(
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 8.4666665 8.4666666"
+   version="1.1"
+   id="svg5"
+   xml:space="preserve"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="doc_icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="true"
+     showguides="true"
+     inkscape:zoom="22.853691"
+     inkscape:cx="12.886321"
+     inkscape:cy="14.461559"
+     inkscape:window-width="1687"
+     inkscape:window-height="1408"
+     inkscape:window-x="1744"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"><inkscape:grid
+       type="xygrid"
+       id="grid426"
+       empspacing="4"
+       visible="true" /></sodipodi:namedview><defs
+     id="defs2" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"><rect
+       style="fill:#ffffff;stroke-width:0.305514"
+       id="rect699"
+       width="1.0583334"
+       height="8.4666662"
+       x="0.79374999"
+       y="0" /><rect
+       style="fill:#ffffff;stroke-width:0.305514"
+       id="rect701"
+       width="5.8208332"
+       height="1.058333"
+       x="1.5875"
+       y="7.4083333" /><rect
+       style="fill:#ffffff;stroke-width:0.305514"
+       id="rect703"
+       width="1.058333"
+       height="4.4979167"
+       x="6.3499999"
+       y="3.175" /><rect
+       style="fill:#ffffff;stroke-width:0.352777"
+       id="rect707"
+       width="1.0583338"
+       height="1.0583334"
+       x="5.2916665"
+       y="2.1166666" /><rect
+       style="fill:#ffffff;stroke-width:0.352777"
+       id="rect709"
+       width="1.0583335"
+       height="1.0583334"
+       x="4.2333331"
+       y="1.0583332" /><rect
+       style="fill:#ffffff;stroke-width:0.365159"
+       id="rect713"
+       width="2.6458333"
+       height="1.0583333"
+       x="1.5875"
+       y="0" /><rect
+       style="fill:#ffffff;stroke-width:0.305514"
+       id="rect715"
+       width="1.0583333"
+       height="2.9104166"
+       x="2.6458333"
+       y="0.79374999" /><rect
+       style="fill:#ffffff;stroke-width:0.316237"
+       id="rect717"
+       width="3.96875"
+       height="1.0583333"
+       x="2.6458333"
+       y="3.7041667" /></g></svg>
+)svgdata");
+    }
+
+    documentImage->replaceColour(juce::Colours::white, juce::Colours::red);
+    return documentImage.get();
 }
 
 const juce::Drawable* ER1LAF::getDefaultFolderImage()

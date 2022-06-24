@@ -5,9 +5,18 @@
 #include "GlobalCtrls.h"
 #include "look_and_feel/StandardShapes.h"
 
+static juce::File getPatchDir(const std::string& dir)
+{
+    return juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory)
+    .getChildFile("metaphase")
+    .getChildFile("er1")
+    .getChildFile(dir);
+}
+
+
 GlobalCtrls::GlobalCtrls(MidiManager& mgr)
-    : m_SoundPatchManager(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory))
-    , m_BankPatchManager(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory))
+    : m_SoundPatchManager(getPatchDir("sounds"), "Sound", { "*.json;*.er1snd;", "*","Sound Patch Filter"})
+    , m_BankPatchManager(getPatchDir("banks"), "Bank", { "*.json;*.er1bnk;", "*",  "Bank Patch Filter"})
     , r_MidiManager(mgr)
 {
     setInterceptsMouseClicks(false, true);
