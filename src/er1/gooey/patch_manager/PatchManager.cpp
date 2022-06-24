@@ -5,13 +5,12 @@
 #include "PatchManager.h"
 #include "../look_and_feel/ER1Colours.h"
 
-PatchManager::PatchManager()
+PatchManager::PatchManager(const juce::File& startingDir)
 {
-    const auto homeDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory);
-    m_ImageList.setDirectory(homeDir, true, true);
+    m_ImageList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();
 
-    m_FileTree.setRowHeight(15);
+    m_FileTree.setRowHeight(14);
     m_FileTree.addListener(this);
     addAndMakeVisible(m_FileTree);
     m_FileTree.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);

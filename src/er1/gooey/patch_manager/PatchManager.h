@@ -10,7 +10,7 @@ class PatchManager
     , juce::FileBrowserListener
 {
 public:
-    PatchManager();
+    explicit PatchManager(const juce::File& startingDir);
     ~PatchManager() override;
     void paint(juce::Graphics& g) override;
     void resized() override;

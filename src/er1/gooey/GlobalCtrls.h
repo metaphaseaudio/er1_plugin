@@ -22,7 +22,7 @@ private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;
     MidiManager& r_MidiManager;
-    PatchManager m_PatchManager;
+    PatchManager m_SoundPatchManager, m_BankPatchManager;
     juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel;
     KorgButton m_NoteListen;
     KorgToggleButton m_SelectSound, m_SelectBank, m_Options;

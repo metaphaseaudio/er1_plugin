@@ -6,11 +6,14 @@
 #include "look_and_feel/StandardShapes.h"
 
 GlobalCtrls::GlobalCtrls(MidiManager& mgr)
-    : r_MidiManager(mgr)
+    : m_SoundPatchManager(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory))
+    , m_BankPatchManager(juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory))
+    , r_MidiManager(mgr)
 {
     setInterceptsMouseClicks(false, true);
 
-    addChildComponent(m_PatchManager);
+    addChildComponent(m_SoundPatchManager);
+    addChildComponent(m_BankPatchManager);
 
     m_NoteListenLabel.setText("LISTEN", juce::dontSendNotification);
     m_LiveModeLabel.setText("OPTIONS", juce::dontSendNotification);
@@ -79,7 +82,10 @@ void GlobalCtrls::resized()
 
     bounds = getLocalBounds().reduced(5);
     bounds.removeFromBottom(button.getHeight());
-    m_PatchManager.setBounds(bounds.reduced(1));
+    bounds = bounds.reduced(2);
+
+    m_SoundPatchManager.setBounds(bounds);
+    m_BankPatchManager.setBounds(bounds);
 }
 
 void GlobalCtrls::buttonClicked(juce::Button* btn)
@@ -105,7 +111,7 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
             m_SelectBank.setToggleState(false, juce::sendNotification);
             m_Options.setToggleState(false, juce::sendNotification);
         }
-        m_PatchManager.setVisible(m_SelectSound.getToggleState());
+        m_SoundPatchManager.setVisible(m_SelectSound.getToggleState());
     }
 
 
@@ -116,6 +122,7 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
             m_SelectSound.setToggleState(false, juce::sendNotification);
             m_Options.setToggleState(false, juce::sendNotification);
         }
+        m_BankPatchManager.setVisible(m_SelectBank.getToggleState());
     }
 
 

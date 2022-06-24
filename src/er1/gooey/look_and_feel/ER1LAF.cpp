@@ -172,56 +172,46 @@ void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& 
     if (icon != nullptr && icon->isValid())
     {
         g.drawImageWithin(*icon, 0, 0, height, height,
-                           RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize,
-                           false);
+                          RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize,
+                          false);
     }
     else
     {
         if (auto* d = isDirectory ? getDefaultFolderImage()
                                   : getDefaultDocumentFileImage())
-            d->drawWithin (g, Rectangle<float> (0, 0, height, (float) height),
-                           RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
+            d->drawWithin(g, Rectangle<float> (0, 0, height, (float) height),
+            RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
     }
 
     if (isItemSelected)
-        g.setColour (fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::highlightedTextColourId)
-                                             : findColour (DirectoryContentsDisplayComponent::highlightedTextColourId));
+        g.setColour(fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::highlightedTextColourId)
+                                            : findColour (DirectoryContentsDisplayComponent::highlightedTextColourId));
     else
-        g.setColour (fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::textColourId)
-                                             : findColour (DirectoryContentsDisplayComponent::textColourId));
+        g.setColour(fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::textColourId)
+                                            : findColour (DirectoryContentsDisplayComponent::textColourId));
 
     g.setFont(FontLCD::ROTORCAP_TTF());
     g.setFont ((float) height * 0.7f);
 
-    if (width > 450 && ! isDirectory)
+    if (width > 450 && !isDirectory)
     {
         auto sizeX = roundToInt ((float) width * 0.7f);
         auto dateX = roundToInt ((float) width * 0.8f);
 
-        g.drawFittedText (filename,
-                          height, 0, sizeX - x, height,
-                          Justification::centredLeft, 1);
+        g.drawFittedText(filename, height, 0, sizeX - x, height, Justification::centredLeft, 1);
 
         g.setFont ((float) height * 0.5f);
         g.setColour (Colours::darkgrey);
 
-        if (! isDirectory)
+        if (!isDirectory)
         {
-            g.drawFittedText (fileSizeDescription,
-                              sizeX, 0, dateX - sizeX - 8, height,
-                              Justification::centredRight, 1);
-
-            g.drawFittedText (fileTimeDescription,
-                              dateX, 0, width - 8 - dateX, height,
-                              Justification::centredRight, 1);
+            g.drawFittedText(fileSizeDescription, sizeX, 0, dateX - sizeX - 8, height, Justification::centredRight, 1);
+            g.drawFittedText(fileTimeDescription, dateX, 0, width - 8 - dateX, height, Justification::centredRight, 1);
         }
     }
     else
     {
-        g.drawFittedText (filename,
-                          height, 0, width - x, height,
-                          Justification::centredLeft, 1);
-
+        g.drawFittedText(filename, height, 0, width - x, height, Justification::centredLeft, 1);
     }
 }
 
@@ -294,5 +284,22 @@ const juce::Drawable* ER1LAF::getDefaultFolderImage()
 
     folderImage->replaceColour(juce::Colours::white, juce::Colours::red);
     return folderImage.get();
+}
+
+void ER1LAF::drawScrollbar(Graphics& g, ScrollBar& bar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition,
+                           int thumbSize, bool isMouseOver, bool isMouseDown)
+{
+    ignoreUnused (isMouseDown);
+
+    Rectangle<int> thumbBounds;
+
+    if (isScrollbarVertical)
+        thumbBounds = { x, thumbStartPosition, width, thumbSize };
+    else
+        thumbBounds = { thumbStartPosition, y, thumbSize, height };
+
+    auto c = juce::Colours::red;
+    g.setColour (isMouseOver ? c.brighter (0.25f) : c);
+    g.fillRect(thumbBounds.reduced (1).toFloat());
 }
 
