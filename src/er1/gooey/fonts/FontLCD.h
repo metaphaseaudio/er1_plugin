@@ -170,6 +170,10 @@ namespace FontLCD
         return font;
     }
 
+    static const juce::Font& defaultFont()
+    {
+        return ROTORCAP_TTF();
+    }
 }
 
 

@@ -181,7 +181,7 @@ void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& 
         g.setColour(fileListComp != nullptr ? fileListComp->findColour (DirectoryContentsDisplayComponent::textColourId)
                                             : findColour (DirectoryContentsDisplayComponent::textColourId));
 
-    g.setFont(FontLCD::ROTORCAP_TTF());
+    g.setFont(FontLCD::defaultFont());
     g.setFont ((float) height * 0.7f);
 
     if (width > 450 && !isDirectory)

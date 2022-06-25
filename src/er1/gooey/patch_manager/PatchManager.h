@@ -4,10 +4,13 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
+#include "../widgets/LCDButton.h"
+
 
 class PatchManager
     : public juce::Component
     , juce::FileBrowserListener
+    , juce::Button::Listener
 {
 public:
     PatchManager(const juce::File& startingDir, const std::string& name, const juce::WildcardFileFilter& filter);
@@ -25,8 +28,12 @@ private:
     void fileDoubleClicked (const juce::File&) override;
     void browserRootChanged (const juce::File&) override {}
 
-    juce::WildcardFileFilter m_ImagesWildcardFilter;
+    void buttonClicked(juce::Button* btn) override;
+
+    juce::WildcardFileFilter m_WildcardFilter;
     juce::TimeSliceThread m_DirectoryThread;
-    juce::DirectoryContentsList m_ImageList          { &m_ImagesWildcardFilter, m_DirectoryThread };
-    juce::FileListComponent m_FileTree               { m_ImageList };
+    juce::DirectoryContentsList m_FileList {&m_WildcardFilter, m_DirectoryThread };
+    juce::FileListComponent m_FileTree {m_FileList};
+
+    LCDButton m_ChangeDir, m_New, m_Delete;
 };

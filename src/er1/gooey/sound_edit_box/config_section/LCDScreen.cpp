@@ -52,7 +52,7 @@ void LCDScreen::paint(juce::Graphics& g)
 {
     refreshText(juce::dontSendNotification);
     auto lcdTextColour = getLookAndFeel().findColour(LCDText::ColourIds::textColour).darker(0.1);
-    auto& font = FontLCD::ROTORCAP_TTF();
+    auto& font = FontLCD::defaultFont();
 
     m_NameLabel.setFont(font.withPointHeight(BIG_LABEL_PT));
     m_NameLabel.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
