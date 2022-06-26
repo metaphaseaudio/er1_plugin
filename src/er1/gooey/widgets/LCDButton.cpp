@@ -16,7 +16,7 @@ void LCDButton::paintButton(juce::Graphics& g, bool isMouseOverButton, bool isBu
     g.drawRect(getLocalBounds(), lineWidth);
 
     g.setColour(isButtonDown ? juce::Colours::red.darker() : juce::Colours::red);
-    g.setFont(FontLCD::defaultFont());
-    g.drawFittedText(juce::Button::getName(), getLocalBounds().reduced(2), juce::Justification::centred, 1);
+    g.setFont(FontLCD::defaultFont().withPointHeight(12));
+    g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
 }
 

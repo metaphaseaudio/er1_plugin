@@ -34,6 +34,7 @@ private:
     juce::TimeSliceThread m_DirectoryThread;
     juce::DirectoryContentsList m_FileList {&m_WildcardFilter, m_DirectoryThread };
     juce::FileListComponent m_FileTree {m_FileList};
+    std::unique_ptr<juce::FileChooser> m_FileChooser;
 
     LCDButton m_ChangeDir, m_New, m_Delete;
 };

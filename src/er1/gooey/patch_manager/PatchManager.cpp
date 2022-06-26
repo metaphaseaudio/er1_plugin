@@ -42,7 +42,7 @@ void PatchManager::paint(juce::Graphics& g)
     g.fillAll();
 
     auto bounds = getLocalBounds();
-    bounds.removeFromBottom(15);
+    bounds.removeFromBottom(12);
     g.setColour(juce::Colours::red.darker());
     g.drawRect(bounds.reduced(1), 1);
 }
@@ -50,7 +50,7 @@ void PatchManager::paint(juce::Graphics& g)
 void PatchManager::resized()
 {
     auto bounds = getLocalBounds();
-    auto buttonRow = bounds.removeFromBottom(15);
+    auto buttonRow = bounds.removeFromBottom(12);
     m_FileTree.setBounds(bounds.reduced(2));
 
     buttonRow.removeFromLeft(1);
@@ -79,7 +79,14 @@ void PatchManager::buttonClicked(juce::Button* btn)
 {
     if (btn == &m_ChangeDir)
     {
-        std::cout << "Change dir" << std::endl;
+        m_FileChooser = std::make_unique<juce::FileChooser>("Change Directory", m_FileList.getDirectory());
+        m_FileChooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectDirectories,
+            [this] (const juce::FileChooser& chooser) {
+                const auto& result = chooser.getResult();
+                if (result.exists() && result.isDirectory())
+                    { m_FileList.setDirectory(result, true, true); }
+            }
+        );
     }
 
     else if (btn == &m_New)
