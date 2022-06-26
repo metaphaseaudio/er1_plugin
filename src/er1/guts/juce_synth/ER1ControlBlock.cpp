@@ -52,7 +52,7 @@ void ER1ControlBlock::printStatus()
     std::cout << std::endl;
 }
 
-json ER1ControlBlock::asJSON() const
+json ER1ControlBlock::toJson() const
 {
     return json({
         {"config", config.asJSON()},
@@ -62,7 +62,7 @@ json ER1ControlBlock::asJSON() const
     });
 }
 
-void ER1ControlBlock::fromJSON(json j)
+void ER1ControlBlock::fromJson(const json& j)
 {
     try
     {

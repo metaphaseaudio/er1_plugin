@@ -14,9 +14,9 @@ static juce::File getPatchDir(const std::string& dir)
 }
 
 
-GlobalCtrls::GlobalCtrls(MidiManager& mgr)
-    : m_SoundPatchManager(getPatchDir("sounds"), "Sound", { "*.json;*.er1snd;", "*","Sound Patch Filter"})
-    , m_BankPatchManager(getPatchDir("banks"), "Bank", { "*.json;*.er1bnk;", "*",  "Bank Patch Filter"})
+GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
+    : m_SoundPatchManager(mgr.getActiveVoice(), getPatchDir("sounds"), "Sound", "*.er1snd")
+    , m_BankPatchManager(&proc, getPatchDir("banks"), "Bank", "*.er1bnk")
     , r_MidiManager(mgr)
 {
     setInterceptsMouseClicks(false, true);

@@ -7,6 +7,7 @@
 #include "../guts/MidiManager.h"
 #include "patch_manager/PatchManager.h"
 #include "widgets/KorgButton.h"
+#include "../guts/ER1AudioProcessor.h"
 
 
 class GlobalCtrls
@@ -15,7 +16,7 @@ class GlobalCtrls
     , juce::Button::Listener
 {
 public:
-    explicit GlobalCtrls(MidiManager& mgr);
+    GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc);
     void resized() override;
 
 private:

@@ -28,6 +28,7 @@ public:
     void stopListen() { m_IsListening = false; }
     [[nodiscard]] bool isListening() const { return m_IsListening.load(); }
     void setActiveVoice(ER1ControlBlock* sound) { m_ActiveVoice = sound; }
+    ER1ControlBlock* getActiveVoice() const { return m_ActiveVoice; }
 
     nlohmann::json getState() const;
     void setState(const nlohmann::json& newState);

@@ -5,13 +5,19 @@
 #include "PatchManager.h"
 #include "../look_and_feel/ER1Colours.h"
 
-static int makeFlags()
+
+static std::string stripStar(const std::string& x)
 {
-    return juce::FileBrowserComponent::canSelectFiles || juce::FileBrowserComponent::openMode;
+    auto rv = x;
+    rv.erase(std::remove(rv.begin(), rv.end(), '*'), rv.end());
+    return rv;
 }
 
-PatchManager::PatchManager(const juce::File& startingDir, const std::string& name, const juce::WildcardFileFilter& filter)
-    : m_WildcardFilter(filter)
+
+PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir, const std::string& name,  const std::string& customSuffix)
+    : p_Target(target)
+    , m_Suffix(stripStar(customSuffix))
+    , m_WildcardFilter{"*.json;" + customSuffix +";", "*", "Bank Patch Filter"}
     , m_DirectoryThread(name)
     , m_ChangeDir("Change Dir")
     , m_New("New")
@@ -24,7 +30,6 @@ PatchManager::PatchManager(const juce::File& startingDir, const std::string& nam
     m_FileTree.addListener(this);
     m_FileTree.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
     m_FileTree.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
-
 
     addAndMakeVisible(m_FileTree);
     addAndMakeVisible(m_New);
@@ -91,7 +96,23 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
     else if (btn == &m_New)
     {
-        std::cout << "New" << std::endl;
+        const auto string_data = p_Target->toJson().dump(4);
+        auto new_file = m_FileList.getDirectory().getChildFile("new_patch" + m_Suffix);
+        int copy = 0;
+        while (new_file.exists())
+        {
+            copy++;
+            new_file = m_FileList.getDirectory().getChildFile("new_patch_" + juce::String(copy) + m_Suffix);
+        }
+
+        new_file.create();
+        auto stream = new_file.createOutputStream();
+        stream->writeString(string_data);
+        stream->flush();
+        stream.reset(nullptr);
+
+        m_FileList.refresh();
+
     }
 
     else if (btn == &m_Delete)

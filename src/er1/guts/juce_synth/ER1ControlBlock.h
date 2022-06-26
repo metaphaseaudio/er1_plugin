@@ -9,6 +9,7 @@
 
 class ER1ControlBlock
     : public juce::ReferenceCountedObject
+    , public Serializeable
 {
 public:
     using Ptr = juce::ReferenceCountedObjectPtr<ER1ControlBlock>;
@@ -16,8 +17,8 @@ public:
     bool isRingModCarrier() const { return osc.enableRing != nullptr && osc.enableRing->get(); }
     void printStatus();
 
-    json asJSON() const;
-    void fromJSON(json j);
+    json toJson() const override;
+    void fromJson(const json& j) override;
 
     ConfigParams config;
     AmpParams amp;

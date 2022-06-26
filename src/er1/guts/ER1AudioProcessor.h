@@ -24,6 +24,7 @@
 */
 class ER1AudioProcessor
     : public juce::AudioProcessor
+    , public Serializeable
 {
 public:
     //==============================================================================
@@ -67,6 +68,9 @@ public:
     ER1ControlBlock::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
     void triggerVoice(int num);
     juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
+
+    nlohmann::json toJson() const override;
+    void fromJson(const nlohmann::json& json) override;
 
 private:
     static BusesProperties makeBusesProperties(int inBusses, int outBusses);

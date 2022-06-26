@@ -47,7 +47,7 @@ struct OscParams
     LearnableSerializeable<juce::AudioParameterFloat>* modDepth;
     juce::AudioParameterBool* enableRing;
 
-    json asJSON() const
+    [[nodiscard]] json asJSON() const
     {
         json rv = {};
         if (oscType != nullptr) { rv["osc_type"] = oscType->getIndex(); }

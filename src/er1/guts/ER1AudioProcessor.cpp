@@ -133,31 +133,7 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
 
-    json j = {
-        {"midi_management", m_MidiManager.getState()}
-    };
-    j["analog"] = json::array();
-    j["audio"] = json::array();
-    j["pcm"] = json::array();
-
-    for (auto i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++)
-    {
-        const auto& sound = m_CtrlBlocks[i];
-        j["analog"].push_back(sound->asJSON());
-    }
-
-    for (auto i = meta::ER1::ANALOG_SOUND_COUNT; i < meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i++)
-    {
-        const auto& sound = m_CtrlBlocks[i];
-        j["audio"].push_back(sound->asJSON());
-    }
-
-    for (auto i = meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i < meta::ER1::ER1_SOUND_COUNT; i++)
-    {
-        const auto& sound = m_CtrlBlocks[i];
-        j["pcm"].push_back(sound->asJSON());
-    }
-
+    const auto j = toJson();
     stream.writeString(j.dump(4));
 }
 
@@ -170,34 +146,11 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         json j = json::parse(stream.readString().toStdString());
 
-        for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
-        {
-            auto ctrls = m_CtrlBlocks[i];
-            ctrls->fromJSON(j["analog"][i]);
-        }
-
-        for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
-        {
-            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT];
-            ctrls->fromJSON(j["audio"][i]);
-        }
-
-        for (int i = 0; i < meta::ER1::SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
-        {
-            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT];
-            ctrls->fromJSON(j["pcm"][i]);
-        }
+        fromJson(j);
     }
     catch (json::exception& err)
     {
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
-    }
-
-    for (auto& param : getParameters())
-    {
-        auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);
-        if (learnable != nullptr && learnable->isLearned())
-            { m_MidiManager.addToLearnedList(learnable); }
     }
 }
 
@@ -389,6 +342,71 @@ void ER1AudioProcessor::addMidiLearn(ER1ControlBlock* ctrls)
 
     ctrls->delay.depth->addMidiLearnListener(&m_MidiManager);
     ctrls->delay.time->addMidiLearnListener(&m_MidiManager);
+}
+
+nlohmann::json ER1AudioProcessor::toJson() const
+{
+    json j = {
+            {"midi_management", m_MidiManager.getState()}
+    };
+    j["analog"] = json::array();
+    j["audio"] = json::array();
+    j["pcm"] = json::array();
+
+    for (auto i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++)
+    {
+        const auto& sound = m_CtrlBlocks[i];
+        j["analog"].push_back(sound->toJson());
+    }
+
+    for (auto i = meta::ER1::ANALOG_SOUND_COUNT; i < meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i++)
+    {
+        const auto& sound = m_CtrlBlocks[i];
+        j["audio"].push_back(sound->toJson());
+    }
+
+    for (auto i = meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT; i < meta::ER1::ER1_SOUND_COUNT; i++)
+    {
+        const auto& sound = m_CtrlBlocks[i];
+        j["pcm"].push_back(sound->toJson());
+    }
+
+    return j;
+}
+
+void ER1AudioProcessor::fromJson(const json& j)
+{
+    try
+    {
+        for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i];
+            ctrls->fromJson(j["analog"][i]);
+        }
+
+        for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT];
+            ctrls->fromJson(j["audio"][i]);
+        }
+
+        for (int i = 0; i < meta::ER1::SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
+        {
+            auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT];
+            ctrls->fromJson(j["pcm"][i]);
+        }
+    }
+    catch (json::exception& err)
+    {
+        std::cout << "Error loading ER1 State:" << err.what() << std::endl;
+    }
+
+    for (auto& param : getParameters())
+    {
+        auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);
+        if (learnable != nullptr && learnable->isLearned())
+        { m_MidiManager.addToLearnedList(learnable); }
+    }
 }
 
 

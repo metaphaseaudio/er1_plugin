@@ -6,9 +6,18 @@
 #include <nlohmann/json.hpp>
 
 
+class Serializeable
+{
+public:
+    virtual void fromJson(const nlohmann::json& json) = 0;
+    [[nodiscard]] virtual nlohmann::json toJson() const = 0;
+};
+
+
 template <typename ParamType>
 class LearnableSerializeable
     : public ParamType
+    , public Serializeable
     , public meta::MidiLearnBroadcaster
 {
     static_assert(std::derived_from<ParamType, juce::RangedAudioParameter>, "ParamType must be derived from a juce::RangedAudioParameter");
@@ -25,10 +34,10 @@ public:
             { static_cast<juce::RangedAudioParameter*>(this)->setValueNotifyingHost(float(msg.getControllerValue()) / 127.0f); }
     };
 
-    nlohmann::json toJson()
+    [[nodiscard]] nlohmann::json toJson() const override
     {
         nlohmann::json rv = {
-            {key_value, static_cast<juce::RangedAudioParameter*>(this)->getValue()}
+            {key_value, static_cast<const juce::RangedAudioParameter*>(this)->getValue()}
         };
 
         if (isLearned())
@@ -40,7 +49,7 @@ public:
         return rv;
     }
 
-    void fromJson(const nlohmann::json& json)
+    void fromJson(const nlohmann::json& json) override
     {
         const auto value = json[key_value];
         static_cast<juce::RangedAudioParameter*>(this)->setValueNotifyingHost(value);
