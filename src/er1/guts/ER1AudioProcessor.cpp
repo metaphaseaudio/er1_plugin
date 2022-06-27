@@ -401,6 +401,8 @@ void ER1AudioProcessor::fromJson(const json& j)
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }
 
+    m_MidiManager.clearAllLearnedParams();
+
     for (auto& param : getParameters())
     {
         auto learnable = dynamic_cast<meta::MidiLearnBroadcaster*>(param);

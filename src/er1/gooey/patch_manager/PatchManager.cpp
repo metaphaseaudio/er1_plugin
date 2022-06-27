@@ -27,7 +27,6 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     m_DirList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();
 
-    addChildComponent(m_Editor);
     m_Editor.setColour(juce::TextEditor::ColourIds::backgroundColourId, m_FileListComponent.findColour(juce::DirectoryContentsDisplayComponent::ColourIds::highlightColourId));
     m_Editor.setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
     m_Editor.setFont(FontLCD::defaultFont().withPointHeight(11));
@@ -41,11 +40,11 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
 
 
     addAndMakeVisible(m_FileListComponent);
-
     addAndMakeVisible(m_New);
     addAndMakeVisible(m_Save);
     addAndMakeVisible(m_Delete);
     addAndMakeVisible(m_ChangeDir);
+    addChildComponent(m_Editor);
 
     m_ChangeDir.addListener(this);
     m_New.addListener(this);

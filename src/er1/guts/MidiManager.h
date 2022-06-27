@@ -22,6 +22,7 @@ public:
     void startLearn(meta::MidiLearnBroadcaster* broadcaster) override;
     void unlearn(meta::MidiLearnBroadcaster* broadcaster) override;
     void addToLearnedList(meta::MidiLearnBroadcaster* broadcaster);
+    void clearAllLearnedParams() { m_LearnedList.clear(); }
     void processBlock(juce::MidiBuffer& midi);
 
     void startListen() { m_IsListening = true; }
