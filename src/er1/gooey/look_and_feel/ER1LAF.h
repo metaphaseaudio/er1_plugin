@@ -41,6 +41,10 @@ public:
     void drawScrollbar(juce::Graphics& graphics, juce::ScrollBar& bar, int x, int y, int width, int height, bool isScrollbarVertical,
                        int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown) override;
 
+
+    void drawLabel(juce::Graphics& g, juce::Label& l) override;
+    void drawTextEditorOutline(juce::Graphics&, int width, int height, juce::TextEditor&) override;
+
 private:
     std::unique_ptr<juce::Drawable> folderImage, documentImage;
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);

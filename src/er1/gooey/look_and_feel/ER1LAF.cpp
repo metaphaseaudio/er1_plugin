@@ -396,3 +396,32 @@ void ER1LAF::drawScrollbar(Graphics& g, ScrollBar& bar, int x, int y, int width,
     g.fillRect(thumbBounds.reduced (1).toFloat());
 }
 
+void ER1LAF::drawTextEditorOutline(Graphics&, int width, int height, TextEditor&) {}
+
+void ER1LAF::drawLabel(juce::Graphics& g, juce::Label& label)
+{
+    g.fillAll (label.findColour (Label::backgroundColourId));
+
+    if (! label.isBeingEdited())
+    {
+        auto alpha = label.isEnabled() ? 1.0f : 0.5f;
+        const Font font (getLabelFont (label));
+
+        g.setColour (label.findColour (Label::textColourId).withMultipliedAlpha (alpha));
+        g.setFont (font);
+
+        auto textArea = getLabelBorderSize (label).subtractedFrom (label.getLocalBounds());
+
+        g.drawFittedText (label.getText(), textArea, label.getJustificationType(),
+                          jmax (1, (int) ((float) textArea.getHeight() / font.getHeight())),
+                          1.0f);
+
+        g.setColour (label.findColour (Label::outlineColourId).withMultipliedAlpha (alpha));
+    }
+    else if (label.isEnabled())
+    {
+        g.setColour (label.findColour (Label::outlineColourId));
+    }
+
+    g.drawRect (label.getLocalBounds());
+}

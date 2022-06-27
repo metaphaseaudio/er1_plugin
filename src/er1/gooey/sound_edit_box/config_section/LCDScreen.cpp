@@ -6,7 +6,7 @@
 #include "../../look_and_feel/ER1Colours.h"
 #include "../../fonts/FontLCD.h"
 
-#define BIG_LABEL_PT 18
+#define BIG_LABEL_PT 17
 #define STD_LABEL_PT 12
 
 
@@ -24,7 +24,6 @@ LCDScreen::LCDScreen(ConfigParams& config)
 
     m_Name.setEditable(false, true); m_MidiNote.setEditable(false, true); m_MidiChan.setEditable(false, true); m_AudioBus.setEditable(false, true);
 
-//    m_Name.setJustificationType(juce::Justification::centred);
     m_MidiNote.setJustificationType(juce::Justification::right);
     m_MidiChan.setJustificationType(juce::Justification::right);
     m_AudioBus.setJustificationType(juce::Justification::right);
@@ -92,7 +91,7 @@ void LCDScreen::resized()
 
     const auto nameLabelLength = juce::Rectangle<int>(
         nameBounds.getX(), nameBounds.getY(),
-        BIG_LABEL_PT + m_NameLabel.getFont().getStringWidth(m_NameLabel.getText()), nameBounds.getHeight()
+        BIG_LABEL_PT + m_NameLabel.getFont().getStringWidthFloat(m_NameLabel.getText()) + 5, nameBounds.getHeight()
     );
     const auto nameLength = juce::Rectangle<int>(
         nameLabelLength.getRight() - 5, nameBounds.getY(),
@@ -105,29 +104,29 @@ void LCDScreen::resized()
 
     const auto noteLabelLength = juce::Rectangle<int>(
         midiBounds.getX(), midiBounds.getY(),
-        STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidth(m_MidiNoteLabel.getText()), midiBounds.getHeight()
+        STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidthFloat(m_MidiNoteLabel.getText()), midiBounds.getHeight()
     );
     const auto noteLength = juce::Rectangle<int>(
         noteLabelLength.getRight() - STD_LABEL_PT, midiBounds.getY(),
-        STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidth("000"), midiBounds.getHeight()
+        STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidthFloat("000"), midiBounds.getHeight()
     );
 
     const auto chanLabelLength = juce::Rectangle<int>(
         noteLength.getRight() + 2, midiBounds.getY(),
-        STD_LABEL_PT + m_MidiChanLabel.getFont().getStringWidth(m_MidiChanLabel.getText()), midiBounds.getHeight()
+        STD_LABEL_PT + m_MidiChanLabel.getFont().getStringWidthFloat(m_MidiChanLabel.getText()), midiBounds.getHeight()
     );
     const auto chanLength = juce::Rectangle<int>(
         chanLabelLength.getRight() - STD_LABEL_PT, midiBounds.getY(),
-        STD_LABEL_PT + m_MidiChan.getFont().getStringWidth("00"), midiBounds.getHeight()
+        STD_LABEL_PT + m_MidiChan.getFont().getStringWidthFloat("00"), midiBounds.getHeight()
     );
 
     const auto audioLabelLength = juce::Rectangle<int>(
         chanLength.getRight() + 2, midiBounds.getY(),
-        STD_LABEL_PT + m_AudioBusLabel.getFont().getStringWidth(m_AudioBusLabel.getText()), midiBounds.getHeight()
+        STD_LABEL_PT + m_AudioBusLabel.getFont().getStringWidthFloat(m_AudioBusLabel.getText()), midiBounds.getHeight()
     );
     const auto audioLength = juce::Rectangle<int>(
         audioLabelLength.getRight() - STD_LABEL_PT, midiBounds.getY(),
-        STD_LABEL_PT + m_AudioBus.getFont().getStringWidth("00"), midiBounds.getHeight()
+        STD_LABEL_PT + m_AudioBus.getFont().getStringWidthFloat("00"), midiBounds.getHeight()
     );
 
     m_NameLabel.setBounds(nameLabelLength); m_Name.setBounds(nameLength);
