@@ -23,15 +23,15 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     , m_New("New")
     , m_Delete("Delete")
 {
-    m_FileList.setDirectory(startingDir, true, true);
+    m_DirList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();
 
-    m_FileTree.setRowHeight(14);
-    m_FileTree.addListener(this);
-    m_FileTree.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
-    m_FileTree.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
+    m_FileListComponent.setRowHeight(14);
+    m_FileListComponent.addListener(this);
+    m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
+    m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
 
-    addAndMakeVisible(m_FileTree);
+    addAndMakeVisible(m_FileListComponent);
     addAndMakeVisible(m_New);
     addAndMakeVisible(m_Delete);
     addAndMakeVisible(m_ChangeDir);
@@ -56,7 +56,7 @@ void PatchManager::resized()
 {
     auto bounds = getLocalBounds();
     auto buttonRow = bounds.removeFromBottom(12);
-    m_FileTree.setBounds(bounds.reduced(2));
+    m_FileListComponent.setBounds(bounds.reduced(2));
 
     buttonRow.removeFromLeft(1);
     m_ChangeDir.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.417));
@@ -69,14 +69,14 @@ void PatchManager::resized()
 PatchManager::~PatchManager()
 {
     m_DirectoryThread.stopThread(1000);
-    m_FileTree.removeListener(this);
+    m_FileListComponent.removeListener(this);
 }
 
 void PatchManager::fileDoubleClicked(const juce::File& f)
 {
     if (f.isDirectory())
     {
-        m_FileList.setDirectory(f, true, true);
+        m_DirList.setDirectory(f, true, true);
     }
 }
 
@@ -84,12 +84,12 @@ void PatchManager::buttonClicked(juce::Button* btn)
 {
     if (btn == &m_ChangeDir)
     {
-        m_FileChooser = std::make_unique<juce::FileChooser>("Change Directory", m_FileList.getDirectory());
+        m_FileChooser = std::make_unique<juce::FileChooser>("Change Directory", m_DirList.getDirectory());
         m_FileChooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectDirectories,
             [this] (const juce::FileChooser& chooser) {
                 const auto& result = chooser.getResult();
                 if (result.exists() && result.isDirectory())
-                    { m_FileList.setDirectory(result, true, true); }
+                    { m_DirList.setDirectory(result, true, true); }
             }
         );
     }
@@ -97,12 +97,12 @@ void PatchManager::buttonClicked(juce::Button* btn)
     else if (btn == &m_New)
     {
         const auto string_data = p_Target->toJson().dump(4);
-        auto new_file = m_FileList.getDirectory().getChildFile("new_patch" + m_Suffix);
+        auto new_file = m_DirList.getDirectory().getChildFile("new_patch" + m_Suffix);
         int copy = 0;
         while (new_file.exists())
         {
             copy++;
-            new_file = m_FileList.getDirectory().getChildFile("new_patch_" + juce::String(copy) + m_Suffix);
+            new_file = m_DirList.getDirectory().getChildFile("new_patch_" + juce::String(copy) + m_Suffix);
         }
 
         new_file.create();
@@ -111,7 +111,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
         stream->flush();
         stream.reset(nullptr);
 
-        m_FileList.refresh();
+        m_DirList.refresh();
 
     }
 

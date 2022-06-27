@@ -4,6 +4,7 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <meta/gooey/FileListComponent.h>
 #include "../widgets/LCDButton.h"
 #include "../../guts/LearnableSerializeableParam.h"
 
@@ -35,8 +36,8 @@ private:
     std::string m_Suffix;
     juce::WildcardFileFilter m_WildcardFilter;
     juce::TimeSliceThread m_DirectoryThread;
-    juce::DirectoryContentsList m_FileList {&m_WildcardFilter, m_DirectoryThread };
-    juce::FileListComponent m_FileTree {m_FileList};
+    juce::DirectoryContentsList m_DirList {&m_WildcardFilter, m_DirectoryThread };
+    meta::FileListComponent m_FileListComponent {m_DirList};
     std::unique_ptr<juce::FileChooser> m_FileChooser;
 
     LCDButton m_ChangeDir, m_New, m_Delete;
