@@ -14,7 +14,6 @@ static std::string stripStar(const std::string& x)
     return rv;
 }
 
-
 PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir, const std::string& name,  const std::string& customSuffix)
     : p_Target(target)
     , m_Suffix(stripStar(customSuffix))
@@ -31,6 +30,7 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     m_Editor.setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
     m_Editor.setFont(FontLCD::defaultFont().withPointHeight(11));
     m_Editor.setBorder(juce::BorderSize<int>(0));
+    m_Editor.addListener(this);
 
     m_FileListComponent.setRowHeight(14);
     m_FileListComponent.addListener(this);
@@ -118,16 +118,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
         stream->flush();
         stream.reset(nullptr);
 
-        m_DirList.refresh();
-
-        while (m_DirList.isStillLoading()) {};
-
-        m_FileListComponent.updateContent();
-        m_FileListComponent.setSelectedFile(new_file);
-        auto rows = m_FileListComponent.getSelectedRows();
-        m_FileListComponent.scrollToEnsureRowIsOnscreen(rows[0]);
-        m_FileListComponent.repaint();
-
+        refreshAndSetSelected(new_file);
         startRenameSelected();
     }
 
@@ -153,4 +144,41 @@ void PatchManager::startRenameSelected()
     m_Editor.setText(filename);
     m_Editor.setHighlightedRegion(juce::Range<int>(0, filename.length()));
     m_Editor.grabKeyboardFocus();
+}
+
+void PatchManager::textEditorReturnKeyPressed(juce::TextEditor& editor)
+{
+    m_Editor.giveAwayKeyboardFocus();
+    m_Editor.setVisible(false);
+}
+
+void PatchManager::textEditorFocusLost(juce::TextEditor& editor)
+{
+    auto newName = m_Editor.getText();
+    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+    auto file = m_DirList.getFile(selected_i);
+    auto newFile = file.getParentDirectory().getChildFile(newName).withFileExtension(m_Suffix);
+
+    int i = 0;
+    while (newFile.exists())
+    {
+        i++;
+        newFile = file.getParentDirectory().getChildFile(newName + "_" + juce::String(i)).withFileExtension(m_Suffix);
+    }
+
+    file.moveFileTo(newFile);
+    refreshAndSetSelected(newFile);
+}
+
+void PatchManager::refreshAndSetSelected(juce::File& f)
+{
+    m_DirList.refresh();
+
+    while (m_DirList.isStillLoading()) {};
+
+    m_FileListComponent.updateContent();
+    m_FileListComponent.setSelectedFile(f);
+    auto rows = m_FileListComponent.getSelectedRows();
+    m_FileListComponent.scrollToEnsureRowIsOnscreen(rows[0]);
+    m_FileListComponent.repaint();
 }

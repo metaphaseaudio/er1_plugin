@@ -4,13 +4,13 @@
 
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <meta/gooey/FileListComponent.h>
 #include "../widgets/LCDButton.h"
 #include "../../guts/LearnableSerializeableParam.h"
 
 
 class PatchManager
     : public juce::Component
+    , juce::TextEditor::Listener
     , juce::FileBrowserListener
     , juce::Button::Listener
 {
@@ -21,12 +21,17 @@ public:
     void resized() override;
 
 private:
+    void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
+
     void selectionChanged() override
     {
         // TODO: update the global or individual-sound patch and trigger a re-paint
     }
 
     void startRenameSelected();
+    void refreshAndSetSelected(juce::File& f);
+
+    void textEditorFocusLost(juce::TextEditor& editor) override;
 
     void fileClicked (const juce::File&, const juce::MouseEvent&) override {}
     void fileDoubleClicked (const juce::File&) override;
@@ -40,7 +45,7 @@ private:
     juce::WildcardFileFilter m_WildcardFilter;
     juce::TimeSliceThread m_DirectoryThread;
     juce::DirectoryContentsList m_DirList {&m_WildcardFilter, m_DirectoryThread };
-    meta::FileListComponent m_FileListComponent {m_DirList};
+    juce::FileListComponent m_FileListComponent {m_DirList};
     std::unique_ptr<juce::FileChooser> m_FileChooser;
 
     LCDButton m_ChangeDir, m_New, m_Delete;
