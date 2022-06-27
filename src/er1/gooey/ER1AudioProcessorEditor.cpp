@@ -37,6 +37,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     addAndMakeVisible(m_Divider);
     addAndMakeVisible((m_GlobalCtrls));
     getChildComponent(0)->setVisible(true);
+    m_GlobalCtrls.addChangeListener(this);
     m_VoiceSelector.addChangeListener(this);
     setSize(600, 380);
 }
@@ -85,5 +86,10 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
         m_SoundEditorWindows[m_VoiceSelector.getSelected()]->setVisible(true);
         processor.triggerVoice(selected);
+    }
+
+    if (source == &m_GlobalCtrls)
+    {
+        repaint();
     }
 }

@@ -10,6 +10,7 @@
 
 class PatchManager
     : public juce::Component
+    , public juce::ChangeBroadcaster
     , juce::TextEditor::Listener
     , juce::FileBrowserListener
     , juce::Button::Listener
@@ -23,10 +24,7 @@ public:
 private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
 
-    void selectionChanged() override
-    {
-        // TODO: update the global or individual-sound patch and trigger a re-paint
-    }
+    void selectionChanged() override;
 
     void startRenameSelected();
     void refreshAndSetSelected(juce::File& f);

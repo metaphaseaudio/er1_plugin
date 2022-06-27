@@ -158,14 +158,6 @@ void PatchManager::textEditorFocusLost(juce::TextEditor& editor)
     const auto selected_i = m_FileListComponent.getSelectedRows()[0];
     auto file = m_DirList.getFile(selected_i);
     auto newFile = file.getParentDirectory().getChildFile(newName).withFileExtension(m_Suffix);
-
-    int i = 0;
-    while (newFile.exists())
-    {
-        i++;
-        newFile = file.getParentDirectory().getChildFile(newName + "_" + juce::String(i)).withFileExtension(m_Suffix);
-    }
-
     file.moveFileTo(newFile);
     refreshAndSetSelected(newFile);
 }
@@ -181,4 +173,21 @@ void PatchManager::refreshAndSetSelected(juce::File& f)
     auto rows = m_FileListComponent.getSelectedRows();
     m_FileListComponent.scrollToEnsureRowIsOnscreen(rows[0]);
     m_FileListComponent.repaint();
+}
+
+void PatchManager::selectionChanged()
+{
+    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+    const auto file = m_DirList.getFile(selected_i);
+    if (!file.exists()) { return; }
+    const auto reader = file.createInputStream();
+    try
+    {
+        auto j = nlohmann::json::parse(reader->readEntireStreamAsString().toStdString());
+        p_Target->fromJson(j);
+        sendChangeMessage();
+    }
+    catch (nlohmann::json::exception& err)
+        { std::cout << err.what() << std::endl; }
+
 }

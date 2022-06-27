@@ -12,8 +12,10 @@
 
 class GlobalCtrls
     : public juce::Component
+    , public juce::ChangeBroadcaster
     , juce::Timer
     , juce::Button::Listener
+    , juce::ChangeListener
 {
 public:
     GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc);
@@ -22,6 +24,9 @@ public:
 private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;
+
+    void changeListenerCallback(ChangeBroadcaster* source) override;
+
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
     juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel;

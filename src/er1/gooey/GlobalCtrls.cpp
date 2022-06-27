@@ -49,6 +49,9 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     addAndMakeVisible(m_SelectBank); addAndMakeVisible(m_SelectBankLabel);
     addAndMakeVisible(m_SelectSound); addAndMakeVisible(m_SelectSoundLabel);
 
+    m_SoundPatchManager.addChangeListener(this);
+    m_BankPatchManager.addChangeListener(this);
+
     m_NoteListen.addListener(this);
     m_SelectSound.addListener(this);
     m_SelectBank.addListener(this);
@@ -144,3 +147,6 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
         }
     }
 }
+
+void GlobalCtrls::changeListenerCallback(juce::ChangeBroadcaster* source)
+    { sendChangeMessage(); }
