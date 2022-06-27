@@ -4,6 +4,7 @@
 
 #include "PatchManager.h"
 #include "../look_and_feel/ER1Colours.h"
+#include "../fonts/FontLCD.h"
 
 
 static std::string stripStar(const std::string& x)
@@ -26,6 +27,11 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     m_DirList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();
 
+    m_Editor.setColour(juce::TextEditor::ColourIds::backgroundColourId, m_FileListComponent.findColour(juce::DirectoryContentsDisplayComponent::ColourIds::highlightColourId));
+    m_Editor.setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
+    m_Editor.setFont(FontLCD::defaultFont().withPointHeight(11));
+    m_Editor.setBorder(juce::BorderSize<int>(0));
+
     m_FileListComponent.setRowHeight(14);
     m_FileListComponent.addListener(this);
     m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
@@ -35,6 +41,7 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     addAndMakeVisible(m_New);
     addAndMakeVisible(m_Delete);
     addAndMakeVisible(m_ChangeDir);
+    addChildComponent(m_Editor);
 
     m_ChangeDir.addListener(this);
     m_New.addListener(this);
@@ -75,9 +82,9 @@ PatchManager::~PatchManager()
 void PatchManager::fileDoubleClicked(const juce::File& f)
 {
     if (f.isDirectory())
-    {
-        m_DirList.setDirectory(f, true, true);
-    }
+        { m_DirList.setDirectory(f, true, true); }
+    else
+        { startRenameSelected(); }
 }
 
 void PatchManager::buttonClicked(juce::Button* btn)
@@ -113,10 +120,37 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
         m_DirList.refresh();
 
+        while (m_DirList.isStillLoading()) {};
+
+        m_FileListComponent.updateContent();
+        m_FileListComponent.setSelectedFile(new_file);
+        auto rows = m_FileListComponent.getSelectedRows();
+        m_FileListComponent.scrollToEnsureRowIsOnscreen(rows[0]);
+        m_FileListComponent.repaint();
+
+        startRenameSelected();
     }
 
     else if (btn == &m_Delete)
     {
-        std::cout << "Delete" << std::endl;
+        auto f = m_DirList.getFile(m_FileListComponent.getSelectedRows()[0]);
+        f.deleteFile();
+        m_DirList.refresh();
     }
+}
+
+void PatchManager::startRenameSelected()
+{
+    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+    auto selected_point = m_FileListComponent.getRowPosition(selected_i, false);
+    selected_point.removeFromLeft(selected_point.getHeight());
+    selected_point.removeFromTop(2);
+    const auto selected_file = m_DirList.getFile(selected_i);
+    const auto filename = selected_file.getFileName();
+
+    m_Editor.setBounds(selected_point);
+    m_Editor.setVisible(true);
+    m_Editor.setText(filename);
+    m_Editor.setHighlightedRegion(juce::Range<int>(0, filename.length()));
+    m_Editor.grabKeyboardFocus();
 }

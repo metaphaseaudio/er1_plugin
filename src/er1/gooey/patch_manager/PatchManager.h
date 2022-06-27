@@ -26,6 +26,8 @@ private:
         // TODO: update the global or individual-sound patch and trigger a re-paint
     }
 
+    void startRenameSelected();
+
     void fileClicked (const juce::File&, const juce::MouseEvent&) override {}
     void fileDoubleClicked (const juce::File&) override;
     void browserRootChanged (const juce::File&) override {}
@@ -34,6 +36,7 @@ private:
 
     Serializeable* p_Target;
     std::string m_Suffix;
+    juce::TextEditor m_Editor;
     juce::WildcardFileFilter m_WildcardFilter;
     juce::TimeSliceThread m_DirectoryThread;
     juce::DirectoryContentsList m_DirList {&m_WildcardFilter, m_DirectoryThread };
