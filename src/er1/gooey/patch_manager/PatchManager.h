@@ -23,11 +23,11 @@ public:
 
 private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
-
     void selectionChanged() override;
 
     void startRenameSelected();
     void refreshAndSetSelected(juce::File& f);
+    void saveStateToFile(const juce::File& f);
 
     void textEditorFocusLost(juce::TextEditor& editor) override;
 
@@ -46,5 +46,5 @@ private:
     juce::FileListComponent m_FileListComponent {m_DirList};
     std::unique_ptr<juce::FileChooser> m_FileChooser;
 
-    LCDButton m_ChangeDir, m_New, m_Delete;
+    LCDButton m_ChangeDir, m_New, m_Save, m_Delete;
 };

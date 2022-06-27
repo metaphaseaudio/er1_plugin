@@ -19,13 +19,15 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     , m_Suffix(stripStar(customSuffix))
     , m_WildcardFilter{"*.json;" + customSuffix +";", "*", "Bank Patch Filter"}
     , m_DirectoryThread(name)
-    , m_ChangeDir("Change Dir")
+    , m_ChangeDir("Dir")
     , m_New("New")
+    , m_Save("Save")
     , m_Delete("Delete")
 {
     m_DirList.setDirectory(startingDir, true, true);
     m_DirectoryThread.startThread();
 
+    addChildComponent(m_Editor);
     m_Editor.setColour(juce::TextEditor::ColourIds::backgroundColourId, m_FileListComponent.findColour(juce::DirectoryContentsDisplayComponent::ColourIds::highlightColourId));
     m_Editor.setColour(juce::TextEditor::ColourIds::textColourId, juce::Colours::white);
     m_Editor.setFont(FontLCD::defaultFont().withPointHeight(11));
@@ -37,14 +39,17 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
     m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
 
+
     addAndMakeVisible(m_FileListComponent);
+
     addAndMakeVisible(m_New);
+    addAndMakeVisible(m_Save);
     addAndMakeVisible(m_Delete);
     addAndMakeVisible(m_ChangeDir);
-    addChildComponent(m_Editor);
 
     m_ChangeDir.addListener(this);
     m_New.addListener(this);
+    m_Save.addListener(this);
     m_Delete.addListener(this);
 }
 
@@ -66,9 +71,11 @@ void PatchManager::resized()
     m_FileListComponent.setBounds(bounds.reduced(2));
 
     buttonRow.removeFromLeft(1);
-    m_ChangeDir.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.417));
+    m_ChangeDir.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.20));
     buttonRow.removeFromLeft(2);
     m_New.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.25));
+    buttonRow.removeFromLeft(2);
+    m_Save.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.25));
     buttonRow.removeFromLeft(2);
     m_Delete.setBounds(buttonRow.removeFromLeft(((bounds.getWidth() - 4) * 0.333) - 1));
 }
@@ -103,7 +110,6 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
     else if (btn == &m_New)
     {
-        const auto string_data = p_Target->toJson().dump(4);
         auto new_file = m_DirList.getDirectory().getChildFile("new_patch" + m_Suffix);
         int copy = 0;
         while (new_file.exists())
@@ -113,13 +119,16 @@ void PatchManager::buttonClicked(juce::Button* btn)
         }
 
         new_file.create();
-        auto stream = new_file.createOutputStream();
-        stream->writeString(string_data);
-        stream->flush();
-        stream.reset(nullptr);
-
+        saveStateToFile(new_file);
         refreshAndSetSelected(new_file);
         startRenameSelected();
+    }
+
+    else if (btn == &m_Save)
+    {
+        const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+        const auto selected_file = m_DirList.getFile(selected_i);
+        saveStateToFile(selected_file);
     }
 
     else if (btn == &m_Delete)
@@ -181,6 +190,7 @@ void PatchManager::selectionChanged()
     const auto file = m_DirList.getFile(selected_i);
     if (!file.exists()) { return; }
     const auto reader = file.createInputStream();
+
     try
     {
         auto j = nlohmann::json::parse(reader->readEntireStreamAsString().toStdString());
@@ -190,4 +200,14 @@ void PatchManager::selectionChanged()
     catch (nlohmann::json::exception& err)
         { std::cout << err.what() << std::endl; }
 
+}
+
+void PatchManager::saveStateToFile(const juce::File& f)
+{
+    const auto string_data = p_Target->toJson().dump(4);
+    auto stream = f.createOutputStream();
+    stream->setPosition(0);
+    stream->writeString(string_data);
+    stream->flush();
+    stream.reset(nullptr);
 }
