@@ -206,6 +206,7 @@ void PatchManager::saveStateToFile(const juce::File& f)
     const auto string_data = p_Target->toJson().dump(4);
     auto stream = f.createOutputStream();
     stream->setPosition(0);
+    stream->truncate();
     stream->writeString(string_data);
     stream->flush();
     stream.reset(nullptr);
