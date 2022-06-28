@@ -16,6 +16,7 @@
 #include "../../widgets/KorgComboBox.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../../guts/MidiManager.h"
+#include "../../widgets/Header.h"
 
 
 class OscSectionComponent
@@ -23,11 +24,10 @@ class OscSectionComponent
 {
 public:
     explicit OscSectionComponent(OscParams& params);
-
-    void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    Header m_Header;
     KorgKnob m_Pitch;    juce::Label m_PitchLabel;
     KorgKnob m_ModDepth; juce::Label m_ModDepthLabel;
     KorgKnob m_ModSpeed; juce::Label m_ModSpeedLabel;

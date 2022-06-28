@@ -15,7 +15,8 @@
 using namespace juce;
 
 DelaySectionComponent::DelaySectionComponent(DelayParams& params)
-    : m_Depth(params.depth), m_DepthLabel("Depth Label", "Depth")
+    : m_Header("DELAY")
+    , m_Depth(params.depth), m_DepthLabel("Depth Label", "Depth")
     , m_Time(params.time), m_TimeLabel("Time Label", "Time")
     , m_Sync(params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
 {
@@ -24,24 +25,12 @@ DelaySectionComponent::DelaySectionComponent(DelayParams& params)
     m_TimeLabel.setJustificationType(juce::Justification::centred);
     m_SyncLabel.setJustificationType(juce::Justification::centred);
 
+    addAndMakeVisible(m_Header);
     addAndMakeVisible(m_Depth); addAndMakeVisible(m_DepthLabel);
     addAndMakeVisible(m_Time); addAndMakeVisible(m_TimeLabel);
     addAndMakeVisible(m_Sync); addAndMakeVisible(m_SyncLabel);
 }
 
-DelaySectionComponent::~DelaySectionComponent() = default;
-
-void DelaySectionComponent::paint (Graphics& g)
-{
-    auto header = getLocalBounds().removeFromTop(22);
-
-    g.setColour(Colours::black);
-    g.fillRect(header);
-
-    g.setFont(g.getCurrentFont().boldened());
-    g.setColour(ER1Colours::defaultForeground);
-    g.drawFittedText("DELAY", header, juce::Justification::centred, 1);
-}
 
 void DelaySectionComponent::resized()
 {
@@ -49,7 +38,7 @@ void DelaySectionComponent::resized()
     const auto margin = 10;
 
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(labelHeight); // Give room for the section label
+    m_Header.setBounds(bounds.removeFromTop(labelHeight));
     bounds = bounds.reduced(2);
 
     auto ctrlBounds = StandardShapes::largeDial;

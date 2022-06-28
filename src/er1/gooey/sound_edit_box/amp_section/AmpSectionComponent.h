@@ -14,6 +14,7 @@
 #include "../../widgets/KorgKnob.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../../guts/MidiManager.h"
+#include "../../widgets/Header.h"
 
 
 class AmpSectionComponent
@@ -21,12 +22,11 @@ class AmpSectionComponent
 {
 public:
     explicit AmpSectionComponent(AmpParams& params);
-    ~AmpSectionComponent() override;
-
-    void paint (juce::Graphics&) override;
+    ~AmpSectionComponent() override = default;
     void resized() override;
 
 private:
+    Header m_Header;
     KorgKnob m_Decay;    juce::Label m_DecayLabel;
     KorgKnob m_Level;    juce::Label m_LevelLabel;
     KorgKnob m_Pan;      juce::Label m_PanLabel;

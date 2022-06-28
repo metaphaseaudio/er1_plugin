@@ -9,7 +9,14 @@
 
 
 VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
+    : m_AnalogFooter("PERCUSSION INSTRUMENT")
+    , m_AudioFooter("AUDIO")
+    , m_PCMFooter("CH    OH    CR    CL")
 {
+    addAndMakeVisible(m_AnalogFooter);
+    addAndMakeVisible(m_AudioFooter);
+    addAndMakeVisible(m_PCMFooter);
+
     for (auto& sound : sounds)
     {
         auto& btn = m_Buttons.emplace_back(new KorgToggleButton(sound->config.name));
@@ -19,6 +26,7 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArr
             midiManager.setActiveVoice(sound);
             sendChangeMessage();
         };
+
 
         if (sound->osc.enableRing != nullptr)
         {
@@ -87,25 +95,18 @@ void VoiceSelector::resized()
         m_Arrows[i * 2]->setBounds(leftConnectorBounds);
         m_Arrows[i * 2 + 1]->setBounds(rightConnectorBounds);
     }
+
+    auto labelBounds = getLocalBounds().removeFromBottom(18);
+    const auto labelOffset = float(getWidth() - StandardShapes::smallRectButton.getWidth() * 16) / 2.0f;
+    labelBounds = labelBounds.withX(labelBounds.getX() + labelOffset + 5);
+
+    m_AnalogFooter.setBounds(labelBounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 10) - 10));
+    labelBounds.removeFromLeft(10);
+    m_AudioFooter.setBounds(labelBounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 2) - 10));
+    labelBounds.removeFromLeft(10);
+    m_PCMFooter.setBounds(labelBounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 4) - 10));
 }
 
-void VoiceSelector::paint(juce::Graphics& g)
-{
-    auto bounds = getLocalBounds().removeFromBottom(18);
-    const auto offset = float(getWidth() - StandardShapes::smallRectButton.getWidth() * 16) / 2.0f;
-    bounds = bounds.withX(bounds.getX() + offset + 5);
-
-    auto analogBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 10) - 10);
-    g.fillRect(analogBounds);
-    bounds.removeFromLeft(10);
-
-    auto audioBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 2) - 10);
-    g.fillRect(audioBounds);
-    bounds.removeFromLeft(10);
-
-    auto pcmBounds = bounds.removeFromLeft((StandardShapes::smallRectButton.getWidth() * 4) - 10);
-    g.fillRect(pcmBounds);
-}
 
 int VoiceSelector::getSelected() const
 {

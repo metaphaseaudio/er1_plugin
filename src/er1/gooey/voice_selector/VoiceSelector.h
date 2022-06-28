@@ -8,6 +8,7 @@
 #include "../widgets/KorgButton.h"
 #include "../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../guts/MidiManager.h"
+#include "../widgets/Header.h"
 
 
 class VoiceSelector
@@ -16,14 +17,12 @@ class VoiceSelector
 {
 public:
     VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
-
     void resized() override;
-    void paint(juce::Graphics& g) override;
-
     int getSelected() const;
 
 private:
     int selected = 0;
+    Header m_AnalogFooter, m_AudioFooter, m_PCMFooter;
     std::vector<std::unique_ptr<KorgToggleButton>> m_Buttons;
     std::vector<std::unique_ptr<KorgBooleanParameterButton>> m_RingButtons;
     std::vector<std::unique_ptr<juce::Component>> m_Arrows;

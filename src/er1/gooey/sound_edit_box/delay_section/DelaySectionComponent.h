@@ -15,6 +15,7 @@
 #include "../../widgets/KorgButton.h"
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../../guts/MidiManager.h"
+#include "../../widgets/Header.h"
 
 
 class DelaySectionComponent
@@ -22,12 +23,11 @@ class DelaySectionComponent
 {
 public:
     explicit DelaySectionComponent(DelayParams& params);
-    ~DelaySectionComponent() override;
-
-    void paint (juce::Graphics&) override;
+    ~DelaySectionComponent() override = default;
     void resized() override;
 
 private:
+    Header m_Header;
     KorgKnob m_Time;  juce::Label m_TimeLabel;
     KorgKnob m_Depth; juce::Label m_DepthLabel;
     KorgBooleanParameterButton m_Sync; juce::Label m_SyncLabel;

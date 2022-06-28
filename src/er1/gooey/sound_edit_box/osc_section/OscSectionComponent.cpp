@@ -15,7 +15,8 @@
 using namespace juce;
 
 OscSectionComponent::OscSectionComponent(OscParams& params)
-    : m_Pitch(params.pitch), m_PitchLabel("Pitch Label", "Pitch")
+    : m_Header("OSCILLATOR")
+    , m_Pitch(params.pitch), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth(params.modDepth), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
     , m_ModSpeed(params.modSpeed, 8000), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
     , m_ModType(params.modType), m_ModTypeLabel("Mod Type Label", "Mod Type")
@@ -25,24 +26,12 @@ OscSectionComponent::OscSectionComponent(OscParams& params)
     m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
     m_ModDepthLabel.setJustificationType(juce::Justification::centred);
 
+    addAndMakeVisible(m_Header);
     addAndMakeVisible(m_Pitch);    addAndMakeVisible(m_PitchLabel);
     addAndMakeVisible(m_ModSpeed); addAndMakeVisible(m_ModSpeedLabel);
     addAndMakeVisible(m_ModDepth); addAndMakeVisible(m_ModDepthLabel);
     addAndMakeVisible(m_ModType);  addAndMakeVisible(m_ModTypeLabel);
     addAndMakeVisible(m_OscType);  addAndMakeVisible(m_OscTypeLabel);
-}
-
-
-void OscSectionComponent::paint (Graphics& g)
-{
-    auto header = getLocalBounds().removeFromTop(22);
-
-    g.setColour(Colours::black);
-    g.fillRect(header);
-
-    g.setFont(g.getCurrentFont().boldened());
-    g.setColour(ER1Colours::defaultForeground);
-    g.drawFittedText("OSCILLATOR", header, juce::Justification::centred, 1);
 }
 
 void OscSectionComponent::resized()
@@ -51,7 +40,7 @@ void OscSectionComponent::resized()
     const auto margin = 10;
 
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(labelHeight);
+    m_Header.setBounds(bounds.removeFromTop(labelHeight));
     bounds = bounds.reduced(2);
 
     auto ctrlBounds = StandardShapes::largeDial;

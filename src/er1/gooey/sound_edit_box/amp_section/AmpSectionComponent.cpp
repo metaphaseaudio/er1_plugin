@@ -15,7 +15,8 @@
 using namespace juce;
 
 AmpSectionComponent::AmpSectionComponent(AmpParams& params)
-    : m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
+    : m_Header("AMP")
+    , m_Decay(params.decay), m_DecayLabel("Decay Label", "Decay")
     , m_Level(params.level), m_LevelLabel("Level Label", "Level")
     , m_Pan(params.pan), m_PanLabel("Pan Label", "Pan")
     , m_LowBoost(params.lowBoost), m_LowBoostLabel("Low Boost Label", "Low Boost")
@@ -26,25 +27,13 @@ AmpSectionComponent::AmpSectionComponent(AmpParams& params)
     m_PanLabel.setJustificationType(juce::Justification::centred);
     m_LowBoostLabel.setJustificationType(juce::Justification::centred);
 
+    addAndMakeVisible(m_Header);
     addAndMakeVisible(m_Decay);    addAndMakeVisible(m_DecayLabel);
     addAndMakeVisible(m_Level);    addAndMakeVisible(m_LevelLabel);
     addAndMakeVisible(m_Pan);      addAndMakeVisible(m_PanLabel);
     addAndMakeVisible(m_LowBoost); addAndMakeVisible(m_LowBoostLabel);
 }
 
-AmpSectionComponent::~AmpSectionComponent() {}
-
-void AmpSectionComponent::paint (Graphics& g)
-{
-    auto header = getLocalBounds().removeFromTop(22);
-
-    g.setColour(Colours::black);
-    g.fillRect(header);
-
-    g.setFont(g.getCurrentFont().boldened());
-    g.setColour(ER1Colours::defaultForeground);
-    g.drawFittedText("AMP", header, juce::Justification::centred, 1);
-}
 
 void AmpSectionComponent::resized()
 {
@@ -52,7 +41,7 @@ void AmpSectionComponent::resized()
     const auto margin = 10;
 
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(labelHeight);
+    m_Header.setBounds(bounds.removeFromTop(labelHeight));
     bounds = bounds.reduced(2);
 
     auto ctrlBounds = StandardShapes::largeDial;
