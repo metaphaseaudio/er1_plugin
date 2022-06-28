@@ -7,6 +7,7 @@
 #include "../guts/MidiManager.h"
 #include "patch_manager/PatchManager.h"
 #include "widgets/KorgButton.h"
+#include "widgets/LCDText.h"
 #include "../guts/ER1AudioProcessor.h"
 
 
@@ -29,7 +30,8 @@ private:
 
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
-    juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel;
+    LCDText m_Bank;
+    juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel, m_BankLabel;
     KorgButton m_NoteListen;
     KorgToggleButton m_SelectSound, m_SelectBank, m_Options;
 };

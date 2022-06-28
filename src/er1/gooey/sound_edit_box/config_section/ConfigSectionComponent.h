@@ -17,7 +17,5 @@ public:
     void resized() override;
 
 private:
-
-
     LCDScreen m_Screen;
 };

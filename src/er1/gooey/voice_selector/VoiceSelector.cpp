@@ -9,7 +9,7 @@
 
 
 VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
-    : m_AnalogFooter("PERCUSSION INSTRUMENT")
+    : m_AnalogFooter("PERCUSSION SYNTHESIZER")
     , m_AudioFooter("AUDIO")
     , m_PCMFooter("CH    OH    CR    CL")
 {

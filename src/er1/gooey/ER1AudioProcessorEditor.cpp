@@ -11,6 +11,7 @@
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
 #include "BGImage.h"
+#include "Images.h"
 #include "look_and_feel/StandardShapes.h"
 
 
@@ -54,9 +55,10 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 	const auto bezel = getLocalBounds().reduced(3);
 	g.setColour(juce::Colours::silver);
 	g.fillRect(bezel);
+    g.reduceClipRegion(bezel);
 
-    Image bg = ImageCache::getFromMemory(BGImage::brushed_steel_png, BGImage::brushed_steel_pngSize);
-    g.drawImage(bg, bezel.toFloat());
+    Image bg = ImageCache::getFromMemory(Images::bg_png, Images::bg_pngSize);
+    g.drawImage(bg, getLocalBounds().toFloat());
 }
 
 void ER1AudioProcessorEditor::resized()
@@ -89,7 +91,5 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     }
 
     if (source == &m_GlobalCtrls)
-    {
-        repaint();
-    }
+        { repaint(); }
 }

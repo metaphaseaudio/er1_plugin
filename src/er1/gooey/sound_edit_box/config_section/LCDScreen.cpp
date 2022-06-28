@@ -85,7 +85,7 @@ void LCDScreen::resized()
     bounds.removeFromTop(3);
 
     bounds.removeFromTop(BIG_LABEL_PT); // Bank Name
-    bounds.removeFromTop(5);
+    bounds.removeFromTop(6);
 
     auto nameBounds = bounds.removeFromTop(BIG_LABEL_PT);
 
@@ -94,7 +94,7 @@ void LCDScreen::resized()
         BIG_LABEL_PT + m_NameLabel.getFont().getStringWidthFloat(m_NameLabel.getText()) + 5, nameBounds.getHeight()
     );
     const auto nameLength = juce::Rectangle<int>(
-        nameLabelLength.getRight() - 5, nameBounds.getY(),
+        nameLabelLength.getRight() - 8, nameBounds.getY(),
         nameBounds.getWidth() - (nameBounds.getY() + BIG_LABEL_PT), nameBounds.getHeight()
     );
 

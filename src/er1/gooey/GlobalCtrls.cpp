@@ -4,6 +4,9 @@
 
 #include "GlobalCtrls.h"
 #include "look_and_feel/StandardShapes.h"
+#include "fonts/FontLCD.h"
+
+#define BIG_LABEL_PT 19
 
 static juce::File getPatchDir(const std::string& dir)
 {
@@ -18,6 +21,8 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     : m_SoundPatchManager(mgr.getActiveVoice(), getPatchDir("sounds"), "Sound", "*.er1snd")
     , m_BankPatchManager(&proc, getPatchDir("banks"), "Bank", "*.er1bnk")
     , r_MidiManager(mgr)
+    , m_Bank("Bank", "Default")
+    , m_BankLabel("Bank Label", "BNK:")
 {
     setInterceptsMouseClicks(false, true);
 
@@ -44,6 +49,9 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     m_SelectBankLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
     m_SelectSoundLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
 
+    m_Bank.setEditable(false, true);
+
+    addAndMakeVisible(m_BankLabel); addAndMakeVisible(m_Bank);
     addAndMakeVisible(m_NoteListen); addAndMakeVisible(m_NoteListenLabel);
     addAndMakeVisible(m_Options); addAndMakeVisible(m_LiveModeLabel);
     addAndMakeVisible(m_SelectBank); addAndMakeVisible(m_SelectBankLabel);
@@ -75,6 +83,14 @@ void GlobalCtrls::timerCallback()
 
 void GlobalCtrls::resized()
 {
+    auto lcdTextColour = getLookAndFeel().findColour(LCDText::ColourIds::textColour).darker(0.1);
+    auto& font = FontLCD::defaultFont();
+
+    m_BankLabel.setFont(font.withPointHeight(BIG_LABEL_PT));
+    m_BankLabel.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
+    m_Bank.setFont(font.withPointHeight(BIG_LABEL_PT));
+    m_Bank.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
+
     auto bounds = getLocalBounds();
     auto button = StandardShapes::smallSquareButton;
     auto buttonRow = bounds.removeFromBottom(button.getHeight() - 5);
@@ -98,6 +114,21 @@ void GlobalCtrls::resized()
 
     m_SoundPatchManager.setBounds(bounds);
     m_BankPatchManager.setBounds(bounds);
+
+    bounds.removeFromTop(2);
+    const auto bankBounds = bounds.removeFromTop(BIG_LABEL_PT);
+
+    const auto bankLabelLength = juce::Rectangle<int>(
+            bankBounds.getX(), bankBounds.getY(),
+            BIG_LABEL_PT + m_BankLabel.getFont().getStringWidthFloat(m_BankLabel.getText()) + 5, bankBounds.getHeight()
+    );
+    const auto bankLength = juce::Rectangle<int>(
+            bankLabelLength.getRight() - BIG_LABEL_PT, bankBounds.getY(),
+            bankBounds.getWidth() - (bankBounds.getY() + BIG_LABEL_PT), bankBounds.getHeight()
+    );
+
+    m_BankLabel.setBounds(bankLabelLength);
+    m_Bank.setBounds(bankLength);
 }
 
 void GlobalCtrls::buttonClicked(juce::Button* btn)
@@ -146,6 +177,10 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
             m_SelectBank.setToggleState(false, juce::sendNotification);
         }
     }
+
+    const auto patchMgrVisible = m_SelectBank.getToggleState() || m_SelectSound.getToggleState();
+    m_BankLabel.setVisible(!patchMgrVisible);
+    m_Bank.setVisible(!patchMgrVisible);
 }
 
 void GlobalCtrls::changeListenerCallback(juce::ChangeBroadcaster* source)
