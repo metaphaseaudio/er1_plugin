@@ -125,13 +125,7 @@ void VoiceSelector::timerCallback()
     {
         const auto& voice = r_Voices[i];
         const auto& btn = m_Buttons[i];
-        if (voice->getDecayEnvValue() > 0.5)
-        {
-//            btn->setState(juce::Button::ButtonState::buttonOver);
-        }
-        else
-        {
-//            btn->setState(juce::Button::ButtonState::buttonNormal);
-        }
+        btn->brightness = voice->getDecayEnvValue();
+        btn->repaint();
     }
 }

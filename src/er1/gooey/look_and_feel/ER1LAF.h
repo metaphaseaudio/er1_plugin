@@ -19,7 +19,7 @@ public:
     (juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
      const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider) override;
 
-    void drawKorgPad(juce::Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown);
+    void drawKorgPad(juce::Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown, float brightnessAdjust=0.0f);
 
     void drawKorgButton
     (juce::Graphics& g, KorgButton& button, bool isMouseOverButton, bool isButtonDown);

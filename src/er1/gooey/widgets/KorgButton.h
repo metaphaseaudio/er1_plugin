@@ -13,6 +13,9 @@ public:
     KorgButton();
     explicit KorgButton(const juce::String& name);
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
+
+    float brightness = 0.0f; // For doing things like flashing buttons
+private:
 };
 
 class KorgToggleButton
@@ -22,6 +25,8 @@ public:
     KorgToggleButton();
     explicit KorgToggleButton(const juce::String& name);
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
+
+    float brightness = 0.0f; // For doing things like flashing buttons
 };
 
 

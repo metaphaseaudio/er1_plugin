@@ -56,7 +56,7 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     for (int i = 0; i < m_Voices.size(); i++)
     {
         auto& voice = m_Voices[i];
-        const auto is_ring_modulator = i + 1 < m_Voices.size() && m_Voices[i + 1]->isRingModCarrier();
+        const bool is_ring_modulator = ((i + 1) < m_Voices.size()) && m_Voices[i + 1]->isRingModCarrier();
         auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
         voice->processBlock(m_Tmp.getArrayOfWritePointers(), outData, m_Tmp.getReadPointer(0), toRender, startSample);
     }
