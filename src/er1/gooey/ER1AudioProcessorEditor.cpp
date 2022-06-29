@@ -21,7 +21,7 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_VoiceSelector(p.getMidiManager(), p.getAllSounds())
+    , m_VoiceSelector(p.getMidiManager(), p.getSynth().getVoices())
     , m_GlobalCtrls(p.getMidiManager(), p)
 {
     setLookAndFeel(&m_LAF);

@@ -9,19 +9,23 @@
 #include "../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../guts/MidiManager.h"
 #include "../widgets/Header.h"
+#include "../../guts/juce_synth/ER1Voice.h"
 
 
 class VoiceSelector
     : public juce::Component
     , public juce::ChangeBroadcaster
+    , public juce::Timer
 {
 public:
-    VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds);
+    VoiceSelector(MidiManager& midiManager, const std::vector<std::unique_ptr<ER1Voice>>& voices);
     void resized() override;
     int getSelected() const;
 
 private:
-    int selected = 0;
+    void timerCallback() override;
+
+    const std::vector<std::unique_ptr<ER1Voice>>& r_Voices;
     Header m_AnalogFooter, m_AudioFooter, m_PCMFooter;
     std::vector<std::unique_ptr<KorgToggleButton>> m_Buttons;
     std::vector<std::unique_ptr<KorgBooleanParameterButton>> m_RingButtons;

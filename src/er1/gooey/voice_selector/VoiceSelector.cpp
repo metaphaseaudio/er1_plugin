@@ -8,8 +8,9 @@
 #include "Arrows.h"
 
 
-VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArray<ER1ControlBlock>& sounds)
-    : m_AnalogFooter("PERCUSSION SYNTHESIZER")
+VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::unique_ptr<ER1Voice>>& voices)
+    : r_Voices(voices)
+    , m_AnalogFooter("PERCUSSION SYNTHESIZER")
     , m_AudioFooter("AUDIO")
     , m_PCMFooter("CH    OH    CR    CL")
 {
@@ -17,20 +18,20 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArr
     addAndMakeVisible(m_AudioFooter);
     addAndMakeVisible(m_PCMFooter);
 
-    for (auto& sound : sounds)
+    for (auto& voice : voices)
     {
-        auto& btn = m_Buttons.emplace_back(new KorgToggleButton(sound->config.name));
+        auto& btn = m_Buttons.emplace_back(new KorgToggleButton(voice->getControlBlock()->config.name));
         addAndMakeVisible(*btn);
         btn->setRadioGroupId(1);
         btn->onClick = [&](){
-            midiManager.setActiveVoice(sound);
+            midiManager.setActiveVoice(voice->getControlBlock());
             sendChangeMessage();
         };
 
 
-        if (sound->osc.enableRing != nullptr)
+        if (voice->getControlBlock()->osc.enableRing != nullptr)
         {
-            auto& ringBtn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(sound->osc.enableRing));
+            auto& ringBtn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(voice->getControlBlock()->osc.enableRing));
             addAndMakeVisible(*ringBtn);
             auto& uandr = m_Arrows.emplace_back(new Arrow::UpAndRight());
             addAndMakeVisible(*uandr);
@@ -40,6 +41,7 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, juce::ReferenceCountedArr
     }
 
     m_Buttons[0]->setToggleState(true, juce::sendNotification);
+    startTimerHz(30);
 }
 
 void VoiceSelector::resized()
@@ -115,4 +117,21 @@ int VoiceSelector::getSelected() const
             { return std::get<0>(i_btn); }
     }
     return -1;
+}
+
+void VoiceSelector::timerCallback()
+{
+    for (int i = 0; i < m_Buttons.size(); i++)
+    {
+        const auto& voice = r_Voices[i];
+        const auto& btn = m_Buttons[i];
+        if (voice->getDecayEnvValue() > 0.5)
+        {
+//            btn->setState(juce::Button::ButtonState::buttonOver);
+        }
+        else
+        {
+//            btn->setState(juce::Button::ButtonState::buttonNormal);
+        }
+    }
 }

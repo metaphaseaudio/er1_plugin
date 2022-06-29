@@ -68,6 +68,7 @@ public:
     ER1ControlBlock::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
     void triggerVoice(int num);
     juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
+    const ER1Synth& getSynth() const { return m_Synth; }
 
     nlohmann::json toJson() const override;
     void fromJson(const nlohmann::json& json) override;
