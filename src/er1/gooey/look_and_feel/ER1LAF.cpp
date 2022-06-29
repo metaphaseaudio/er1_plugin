@@ -6,6 +6,7 @@
 #include "ER1Colours.h"
 #include "../widgets/LCDText.h"
 #include "../fonts/FontLCD.h"
+#include "meta/util/math.h"
 
 
 using namespace juce;
@@ -113,7 +114,18 @@ void ER1LAF::drawKorgToggleButton
     auto toggleDown = button.getToggleState();
     auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-    drawPad(g, button, (toggleDown ? dwnColour : upColour).brighter(button.brightness));
+
+    auto brightnessAdjust = button.brightness;
+    auto colour = toggleDown ? dwnColour : upColour;
+    auto litColour = toggleDown ? upColour : dwnColour;
+    colour = juce::Colour::fromRGBA(
+        int(meta::Interpolate<float>::linear(colour.getRed(), litColour.getRed() , brightnessAdjust)),
+        int(meta::Interpolate<float>::linear(colour.getGreen(), litColour.getGreen(), brightnessAdjust)),
+        int(meta::Interpolate<float>::linear(colour.getBlue(), litColour.getBlue(), brightnessAdjust)),
+        colour.getAlpha()
+    );
+
+    drawPad(g, button, colour);
 }
 
 void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown, float brightnessAdjust)
@@ -121,7 +133,6 @@ void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool 
     auto dwnColour = isPadLit ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isPadLit ? ER1Colours::padUpOver : ER1Colours::padUp;
     auto colour = isPadDown ? dwnColour : upColour;
-    colour.
     drawPad(g, pad, colour.brighter(brightnessAdjust));
 }
 

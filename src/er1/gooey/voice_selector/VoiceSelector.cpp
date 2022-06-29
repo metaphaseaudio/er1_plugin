@@ -125,7 +125,7 @@ void VoiceSelector::timerCallback()
     {
         const auto& voice = r_Voices[i];
         const auto& btn = m_Buttons[i];
-        btn->brightness = voice->getDecayEnvValue();
+        btn->brightness = meta::Interpolate<float>::parabolic(0.0f, 1.0f, voice->getDecayEnvValue(), -5.0f);
         btn->repaint();
     }
 }
