@@ -22,7 +22,7 @@ static juce::StringArray ModulationNames =
 
 
 ER1ControlBlock::ER1ControlBlock(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel)
-    : config{"New Sound", midiNoteNumber, midiChannel}
+    : config{"New Sound", false, midiNoteNumber, midiChannel}
     , amp(amp)
     , osc(osc)
     , delay(delay)

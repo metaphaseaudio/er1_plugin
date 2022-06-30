@@ -21,6 +21,7 @@ LCDScreen::LCDScreen(ConfigParams& config)
     addAndMakeVisible(m_MidiNote); addAndMakeVisible(m_MidiNoteLabel);
     addAndMakeVisible(m_MidiChan); addAndMakeVisible(m_MidiChanLabel);
     addAndMakeVisible(m_AudioBus); addAndMakeVisible(m_AudioBusLabel);
+    addAndMakeVisible(m_NoteFollow);
 
     m_Name.setEditable(false, true); m_MidiNote.setEditable(false, true); m_MidiChan.setEditable(false, true); m_AudioBus.setEditable(false, true);
 
@@ -43,6 +44,9 @@ LCDScreen::LCDScreen(ConfigParams& config)
         r_Config.bus = std::min(meta::ER1::NumOutBuses - 1, std::max(0, m_AudioBus.getText().getIntValue()));
         m_AudioBus.setText(juce::String(r_Config.bus), juce::dontSendNotification);
     };
+
+    m_NoteFollow.onClick = [&]()
+        { r_Config.noteFollow = !r_Config.noteFollow; };
 
     refreshText(juce::dontSendNotification);
 }
@@ -85,7 +89,7 @@ void LCDScreen::resized()
     bounds.removeFromTop(3);
 
     bounds.removeFromTop(BIG_LABEL_PT); // Bank Name
-    bounds.removeFromTop(6);
+    bounds.removeFromTop(5);
 
     auto nameBounds = bounds.removeFromTop(BIG_LABEL_PT);
 
@@ -98,7 +102,7 @@ void LCDScreen::resized()
         nameBounds.getWidth() - (nameBounds.getY() + BIG_LABEL_PT), nameBounds.getHeight()
     );
 
-    bounds.removeFromTop(5);
+    bounds.removeFromTop(3);
 
     auto midiBounds = bounds.removeFromTop(STD_LABEL_PT);
 
@@ -133,6 +137,11 @@ void LCDScreen::resized()
     m_MidiNoteLabel.setBounds(noteLabelLength); m_MidiNote.setBounds(noteLength);
     m_MidiChanLabel.setBounds(chanLabelLength); m_MidiChan.setBounds(chanLength);
     m_AudioBusLabel.setBounds(audioLabelLength); m_AudioBus.setBounds(audioLength);
+
+    bounds.removeFromTop(3);
+    auto otherCtrlBounds = bounds.removeFromTop(STD_LABEL_PT);
+
+    m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(30));
 }
 
 void LCDScreen::refreshText(juce::NotificationType notify)

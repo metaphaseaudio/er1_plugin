@@ -20,5 +20,6 @@ private:
 
     ConfigParams& r_Config;
     LCDText m_Name, m_MidiNote, m_MidiChan, m_AudioBus;
+    juce::ToggleButton m_NoteFollow;
     juce::Label m_NameLabel, m_MidiNoteLabel, m_MidiChanLabel, m_AudioBusLabel;
 };

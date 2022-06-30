@@ -23,7 +23,7 @@ public:
     [[nodiscard]] ER1ControlBlock::Ptr getControlBlock() const { return p_Ctrls; }
     [[nodiscard]] float getDecayEnvValue() const { return m_Sound->getEnvValue(); }
 
-    [[ nodiscard ]] bool appliesToNote (int midiNoteNumber) const { return midiNoteNumber == p_Ctrls->config.note; };
+    [[ nodiscard ]] bool appliesToNote (int midiNoteNumber) const { return midiNoteNumber == p_Ctrls->config.note || p_Ctrls->config.noteFollow; };
     [[ nodiscard ]] bool appliesToChannel (int midiChannel) const { return midiChannel == p_Ctrls->config.chan; };
     [[ nodiscard ]] bool isRingModCarrier() const { return p_Ctrls->osc.enableRing != nullptr && p_Ctrls->osc.enableRing->get(); }
 
