@@ -5,6 +5,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../../widgets/LCDText.h"
+#include "../../widgets/LCDButton.h"
 #include "../../../guts/juce_synth/SoundParameterBlocks.h"
 
 class LCDScreen
@@ -20,6 +21,6 @@ private:
 
     ConfigParams& r_Config;
     LCDText m_Name, m_MidiNote, m_MidiChan, m_AudioBus;
-    juce::ToggleButton m_NoteFollow;
+    LCDToggleButton m_NoteFollow;
     juce::Label m_NameLabel, m_MidiNoteLabel, m_MidiChanLabel, m_AudioBusLabel;
 };

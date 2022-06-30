@@ -20,3 +20,19 @@ void LCDButton::paintButton(juce::Graphics& g, bool isMouseOverButton, bool isBu
     g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
 }
 
+LCDToggleButton::LCDToggleButton(const juce::String& name)
+    : juce::ToggleButton(name)
+{}
+
+void LCDToggleButton::paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown)
+{
+    const auto lineWidth = 1;
+    const auto toggleColour = getToggleState() ? juce::Colours::red : juce::Colours::red.darker(0.6);
+
+    g.setColour(isMouseOverButton ? toggleColour.brighter() : toggleColour);
+    g.drawRect(getLocalBounds(), lineWidth);
+
+    g.setColour(toggleColour);
+    g.setFont(FontLCD::defaultFont().withPointHeight(10));
+    g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
+}

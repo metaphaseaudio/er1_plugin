@@ -12,3 +12,12 @@ public:
     explicit LCDButton(const juce::String& name);
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 };
+
+
+class LCDToggleButton
+    : public juce::ToggleButton
+{
+public:
+    explicit LCDToggleButton(const juce::String& name);
+    void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
+};

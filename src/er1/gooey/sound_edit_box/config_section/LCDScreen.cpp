@@ -11,7 +11,7 @@
 
 
 LCDScreen::LCDScreen(ConfigParams& config)
-    : r_Config(config)
+    : r_Config(config), m_NoteFollow("follow")
     , m_Name("Sound name", ""), m_NameLabel("Sound Name Label", "Snd:")
     , m_MidiNote("Midi note", "1"), m_MidiNoteLabel("Midi note label", "Note:")
     , m_MidiChan("Midi chan", "1"), m_MidiChanLabel("Midi chan label", "Chan:")
@@ -139,9 +139,10 @@ void LCDScreen::resized()
     m_AudioBusLabel.setBounds(audioLabelLength); m_AudioBus.setBounds(audioLength);
 
     bounds.removeFromTop(3);
-    auto otherCtrlBounds = bounds.removeFromTop(STD_LABEL_PT);
+    bounds.removeFromLeft(2);
+    auto otherCtrlBounds = bounds.removeFromTop(12);
 
-    m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(30));
+    m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(50));
 }
 
 void LCDScreen::refreshText(juce::NotificationType notify)

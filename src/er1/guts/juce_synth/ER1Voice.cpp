@@ -32,6 +32,7 @@ void ER1Voice::updateParams()
         m_Sound->setModulationShape(static_cast<meta::ER1::Mod::Shape>(p_Ctrls->osc.modType->getIndex()));
         m_Sound->setModulationSpeed(p_Ctrls->osc.modSpeed->get());
         m_Sound->setModulationDepth(p_Ctrls->osc.modDepth->get());
+
         if (!p_Ctrls->config.noteFollow)
             { m_Sound->setPitch(meta::Interpolate<float>::parabolic(20.0f, 20000.0, p_Ctrls->osc.pitch->get(), 5)); }
     }
