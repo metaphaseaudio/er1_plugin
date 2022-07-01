@@ -33,6 +33,6 @@ void LCDToggleButton::paintButton(juce::Graphics& g, bool isMouseOverButton, boo
     g.drawRect(getLocalBounds(), lineWidth);
 
     g.setColour(toggleColour);
-    g.setFont(FontLCD::defaultFont().withPointHeight(10));
+    g.setFont(FontLCD::defaultFont().withPointHeight(9));
     g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
 }

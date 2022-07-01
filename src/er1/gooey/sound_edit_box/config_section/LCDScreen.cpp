@@ -89,7 +89,7 @@ void LCDScreen::resized()
     bounds.removeFromTop(3);
 
     bounds.removeFromTop(BIG_LABEL_PT); // Bank Name
-    bounds.removeFromTop(5);
+    bounds.removeFromTop(4);
 
     auto nameBounds = bounds.removeFromTop(BIG_LABEL_PT);
 
@@ -102,7 +102,7 @@ void LCDScreen::resized()
         nameBounds.getWidth() - (nameBounds.getY() + BIG_LABEL_PT), nameBounds.getHeight()
     );
 
-    bounds.removeFromTop(3);
+    bounds.removeFromTop(2);
 
     auto midiBounds = bounds.removeFromTop(STD_LABEL_PT);
 
@@ -139,10 +139,10 @@ void LCDScreen::resized()
     m_AudioBusLabel.setBounds(audioLabelLength); m_AudioBus.setBounds(audioLength);
 
     bounds.removeFromTop(3);
-    bounds.removeFromLeft(2);
+    bounds.removeFromLeft(4);
     auto otherCtrlBounds = bounds.removeFromTop(12);
 
-    m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(50));
+    m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(58));
 }
 
 void LCDScreen::refreshText(juce::NotificationType notify)

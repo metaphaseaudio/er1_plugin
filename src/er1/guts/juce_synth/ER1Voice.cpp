@@ -14,7 +14,14 @@ ER1Voice::ER1Voice(ER1ControlBlock::Ptr& sound, meta::ER1::BaseSound* voice)
 void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition)
 {
     if (p_Ctrls->config.noteFollow)
-        { m_Sound->setPitch(juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber)); }
+    {
+        constexpr float frequencyOfA = 440;
+        const auto pitch = p_Ctrls->osc.pitch != nullptr ? p_Ctrls->osc.pitch->get() : 0.5f;
+        const float noteNumber = float(midiNoteNumber) + meta::Interpolate<float>::linear(-12.0f, 12.0f, pitch);
+        const float midiPitch = frequencyOfA * std::pow(2.0, (noteNumber - 69) / 12.0);
+        m_Sound->setPitch(midiPitch);
+    }
+
     m_Sound->reset();
     m_Sound->start();
     m_Channel.setAccentGain(meta::Interpolate<float>::parabolic(0.1, 1.0, velocity, 1.5f));
