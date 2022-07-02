@@ -51,6 +51,14 @@ LCDScreen::LCDScreen(ConfigParams& config)
     m_NoteFollow.onClick = [&]()
         { r_Config.noteFollow = !r_Config.noteFollow; };
 
+    m_Mute.setToggleState(r_Config.mute, juce::dontSendNotification);
+    m_Mute.onClick = [&]()
+        { r_Config.mute = !r_Config.mute; };
+
+    m_Solo.setToggleState(r_Config.solo, juce::dontSendNotification);
+    m_Solo.onClick = [&]()
+        { r_Config.solo = !r_Config.solo; };
+
     refreshText(juce::dontSendNotification);
 }
 

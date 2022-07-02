@@ -69,5 +69,6 @@ void ER1Voice::processBlock(float** inData, float** outData, const float* lastDa
     // Skip render if the bus is out of scope.
     if (p_Ctrls->config.bus.load() >= m_BusCount){ return; }
     const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config.bus.load()));
+    if (p_Ctrls->config.mute) { outData = nullptr; }
     m_Channel.processBlock(tmpData, outData != nullptr ? outData + (2 * busIndex) : nullptr, samps, offset);
 }
