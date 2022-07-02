@@ -86,7 +86,6 @@ private:
     juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;
     ER1Synth m_Synth;
 
-    std::vector<juce::MidiMessage> m_QueuedMessages;
     juce::AudioBuffer<float> m_OversampleBuffer;
     std::unique_ptr<meta::ER1::Downsampler> m_Downsampler;
     //==============================================================================

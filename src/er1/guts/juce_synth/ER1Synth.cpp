@@ -76,3 +76,9 @@ void ER1Synth::prepareToPlay(double sampleRate, int busCount, int blockSize)
 
 ER1Voice* ER1Synth::addVoice(ER1Voice* voice)
     { return m_Voices.emplace_back(voice).get(); }
+
+void ER1Synth::triggerVoice(int i)
+{
+    auto& voice = m_Voices[i];
+    voice->startNote(64, 1.0f, 0.0f);
+}

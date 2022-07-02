@@ -19,6 +19,8 @@ struct ConfigParams
     std::atomic<unsigned int> note = 1;
     std::atomic<unsigned int> chan = 1;
     std::atomic<unsigned int> bus = 0;
+    std::atomic<bool> mute = false;
+    std::atomic<bool> solo = false;
 
     json asJSON() const
     {
@@ -26,7 +28,7 @@ struct ConfigParams
             {"name", name},
             {"note", note.load()},
             {"chan", chan.load()},
-            {"noteFollow", chan.load()},
+            {"noteFollow", noteFollow.load()},
             {"bus", bus.load()}
         });
     }

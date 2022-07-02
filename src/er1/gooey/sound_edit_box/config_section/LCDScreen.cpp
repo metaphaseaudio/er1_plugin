@@ -11,7 +11,7 @@
 
 
 LCDScreen::LCDScreen(ConfigParams& config)
-    : r_Config(config), m_NoteFollow("follow")
+    : r_Config(config), m_NoteFollow("follow"), m_Solo("solo"), m_Mute("mute")
     , m_Name("Sound name", ""), m_NameLabel("Sound Name Label", "Snd:")
     , m_MidiNote("Midi note", "1"), m_MidiNoteLabel("Midi note label", "Note:")
     , m_MidiChan("Midi chan", "1"), m_MidiChanLabel("Midi chan label", "Chan:")
@@ -22,6 +22,8 @@ LCDScreen::LCDScreen(ConfigParams& config)
     addAndMakeVisible(m_MidiChan); addAndMakeVisible(m_MidiChanLabel);
     addAndMakeVisible(m_AudioBus); addAndMakeVisible(m_AudioBusLabel);
     addAndMakeVisible(m_NoteFollow);
+    addAndMakeVisible(m_Solo);
+    addAndMakeVisible(m_Mute);
 
     m_Name.setEditable(false, true); m_MidiNote.setEditable(false, true); m_MidiChan.setEditable(false, true); m_AudioBus.setEditable(false, true);
 
@@ -45,6 +47,7 @@ LCDScreen::LCDScreen(ConfigParams& config)
         m_AudioBus.setText(juce::String(r_Config.bus), juce::dontSendNotification);
     };
 
+    m_NoteFollow.setToggleState(r_Config.noteFollow, juce::dontSendNotification);
     m_NoteFollow.onClick = [&]()
         { r_Config.noteFollow = !r_Config.noteFollow; };
 
@@ -139,10 +142,14 @@ void LCDScreen::resized()
     m_AudioBusLabel.setBounds(audioLabelLength); m_AudioBus.setBounds(audioLength);
 
     bounds.removeFromTop(3);
-    bounds.removeFromLeft(4);
+    bounds.removeFromLeft(15);
     auto otherCtrlBounds = bounds.removeFromTop(12);
 
     m_NoteFollow.setBounds(otherCtrlBounds.removeFromLeft(58));
+    otherCtrlBounds.removeFromLeft(2);
+    m_Mute.setBounds(otherCtrlBounds.removeFromLeft(58));
+    otherCtrlBounds.removeFromLeft(2);
+    m_Solo.setBounds(otherCtrlBounds.removeFromLeft(58));
 }
 
 void LCDScreen::refreshText(juce::NotificationType notify)

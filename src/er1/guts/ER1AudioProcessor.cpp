@@ -100,12 +100,6 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
     ScopedNoDenormals noDenormals;
     m_MidiManager.processBlock(midiMessages);
 
-    while (!m_QueuedMessages.empty())
-    {
-        midiMessages.addEvent(m_QueuedMessages.back(), 0);
-        m_QueuedMessages.pop_back();
-    }
-
     m_OversampleBuffer.clear();
 
     // Just copy the input data
@@ -156,9 +150,7 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 
 void ER1AudioProcessor::triggerVoice(int voice)
 {
-    const auto& chan = m_CtrlBlocks[voice]->config.chan;
-    const auto& note = m_CtrlBlocks[voice]->config.note;
-    m_QueuedMessages.push_back(juce::MidiMessage::noteOn(chan, note, 1.0f));
+    m_Synth.triggerVoice(voice);
 }
 
 void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
