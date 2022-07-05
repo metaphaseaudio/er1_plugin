@@ -13,7 +13,12 @@ ER1Synth::ER1Synth()
 
 void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi, int nSamps)
 {
-    for (auto& voice : m_Voices) { voice->updateParams(); }
+    bool isSolod = false;
+    for (auto& voice : m_Voices)
+    {
+        voice->updateParams();
+        if (voice->getControlBlock()->config.solo) { isSolod = true;}
+    }
 
     // Up-sample by linear interpolation the incoming audio. audio is on the first two chans coming in
     for (int c = 2; --c >= 0;)
@@ -38,6 +43,7 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
             auto& voice = m_Voices[i];
             const auto is_ring_modulator = i + 1 < m_Voices.size() && m_Voices[i + 1]->isRingModCarrier();
             auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
+            if (isSolod && !voice->getControlBlock()->config.solo) { outData = nullptr; }
             voice->processBlock(m_Tmp.getArrayOfWritePointers(), outData, m_Tmp.getReadPointer(0), toRender, startSample);
 
             if (msg.isNoteOn())
@@ -58,6 +64,7 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
         auto& voice = m_Voices[i];
         const bool is_ring_modulator = ((i + 1) < m_Voices.size()) && m_Voices[i + 1]->isRingModCarrier();
         auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
+        if (isSolod && !voice->getControlBlock()->config.solo) { outData = nullptr; }
         voice->processBlock(m_Tmp.getArrayOfWritePointers(), outData, m_Tmp.getReadPointer(0), toRender, startSample);
     }
 }

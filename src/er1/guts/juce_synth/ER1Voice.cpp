@@ -66,9 +66,11 @@ void ER1Voice::processBlock(float** inData, float** outData, const float* lastDa
     auto* tmpData = inData[m_Sound->wantsAudioChannel()];
     m_Sound->processBlock(tmpData, ringData, samps, offset);
 
-    // Skip render if the bus is out of scope.
-    if (p_Ctrls->config.bus.load() >= m_BusCount){ return; }
-    const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config.bus.load()));
+    // redirect the output to null if muted or the bus is out of range
     if (p_Ctrls->config.mute) { outData = nullptr; }
+    if (p_Ctrls->config.bus.load() >= m_BusCount){ outData = nullptr; }
+
+    const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config.bus.load()));
+
     m_Channel.processBlock(tmpData, outData != nullptr ? outData + (2 * busIndex) : nullptr, samps, offset);
 }
