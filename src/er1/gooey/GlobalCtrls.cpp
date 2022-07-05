@@ -10,10 +10,13 @@
 
 static juce::File getPatchDir(const std::string& dir)
 {
-    return juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory)
+    auto patchDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory)
     .getChildFile("metaphase")
     .getChildFile("er1")
     .getChildFile(dir);
+
+    if (!patchDir.exists()) { patchDir.createDirectory(); }
+    return patchDir;
 }
 
 
