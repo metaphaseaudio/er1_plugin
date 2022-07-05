@@ -264,7 +264,7 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     // Create params
     auto* pitch = new FloatParam(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
 
-    auto* decay = new FloatParam(name + "_decay", name + " Decay", 0.0f, 1.0f, 1.0f);
+    auto* decay = new FloatParam(name + "_decay", name + " Decay", 0.0f, 1.0f, 0.75f);
     auto* level = new FloatParam(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
     auto* pan = new FloatParam(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
     auto* lowBoost = new FloatParam(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);

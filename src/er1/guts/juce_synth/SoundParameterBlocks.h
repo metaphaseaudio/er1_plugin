@@ -15,10 +15,10 @@ using json = nlohmann::json;
 struct ConfigParams
 {
     std::string name = "New Sound";
-    std::atomic<bool> noteFollow = false;
     std::atomic<unsigned int> note = 1;
     std::atomic<unsigned int> chan = 1;
     std::atomic<unsigned int> bus = 0;
+    std::atomic<bool> noteFollow = false;
     std::atomic<bool> mute = false;
     std::atomic<bool> solo = false;
 
@@ -28,8 +28,10 @@ struct ConfigParams
             {"name", name},
             {"note", note.load()},
             {"chan", chan.load()},
+            {"bus", bus.load()},
             {"noteFollow", noteFollow.load()},
-            {"bus", bus.load()}
+            {"mute", mute.load()},
+            {"solo", solo.load()}
         });
     }
 
@@ -38,8 +40,10 @@ struct ConfigParams
         name = j.value("name", "New Sound");
         note = j.value("note", 1);
         chan = j.value("chan", 1);
-        noteFollow = j.value("noteFollow", false);
         bus = std::min(meta::ER1::NumOutBuses, std::max(0, j.value("bus", 0)));
+        noteFollow = j.value("noteFollow", false);
+        mute = j.value("mute", false);
+        solo = j.value("solo", false);
     }
 };
 
