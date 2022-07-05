@@ -70,15 +70,14 @@ void GlobalCtrls::timerCallback()
 {
     if (r_MidiManager.isListening())
     {
-        m_NoteListen.setState(
-            m_NoteListen.getState() == juce::Button::ButtonState::buttonDown
-                                    ? juce::Button::ButtonState::buttonNormal
-                                    : juce::Button::ButtonState::buttonDown);
+        m_NoteListen.brightness = m_NoteListen.brightness > 0.0f ? 0.0f : 1.0f;
     }
     else
     {
-        m_NoteListen.setState(juce::Button::ButtonState::buttonNormal);
+        m_NoteListen.brightness = 0.0f;
     }
+
+    m_NoteListen.repaint();
 }
 
 void GlobalCtrls::resized()
@@ -139,7 +138,8 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
         {
             r_MidiManager.stopListen();
             stopTimer();
-            m_NoteListen.setState(juce::Button::buttonNormal);
+            m_NoteListen.brightness = 0.0f;
+            m_NoteListen.repaint();
             return;
         }
 
