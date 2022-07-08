@@ -8,6 +8,7 @@
 #include "er1_dsp/sounds/PCMSound.h"
 #include "er1_dsp/ER1PCMSamples.h"
 #include <meta/midi/MidiLearnable.h>
+#include <juce_dsp/juce_dsp.h>
 
 
 using namespace juce;
@@ -75,6 +76,14 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+    juce::dsp::ProcessSpec spec = {
+            sampleRate * meta::ER1::Downsampler::OverSample,
+            (juce::uint32) samplesPerBlock,
+            (juce::uint32) (getTotalNumOutputChannels() * meta::ER1::Downsampler::OverSample)
+    };
+    m_DCFilter.state = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate, 5.0f);
+    m_DCFilter.prepare(spec);
+
     m_Downsampler = std::make_unique<meta::ER1::Downsampler>(sampleRate, getTotalNumOutputChannels());
     m_Synth.prepareToPlay(sampleRate, getTotalNumOutputChannels() / 2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
     m_OversampleBuffer.setSize(getTotalNumOutputChannels(), samplesPerBlock * meta::ER1::Downsampler::OverSample);
@@ -84,15 +93,13 @@ void ER1AudioProcessor::releaseResources() {}
 
 bool ER1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout) const
 {
-    int inChans = 0;
-    int outChans = 0;
-
-    for (const auto& bus : layout.inputBuses)
-        { inChans += bus.size(); }
     for (const auto& bus : layout.outputBuses)
-        { outChans += bus.size(); }
+        if (bus != AudioChannelSet::stereo())
+            return false;
 
-    return outChans <= getTotalNumOutputChannels() && inChans == 2;
+    return layout.inputBuses.size() == 1
+        && layout.inputBuses[0] == AudioChannelSet::stereo()
+        && layout.outputBuses.size() >= 1;
 }
 
 void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& midiMessages)
@@ -107,6 +114,10 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
     m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
 
     m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
+
+    juce::dsp::AudioBlock<float> block(m_OversampleBuffer, 0);
+    juce::dsp::ProcessContextReplacing<float> ctx(block);
+    m_DCFilter.process(ctx);
     m_Downsampler->downsampleBuffer(m_OversampleBuffer, buffer);
     midiMessages.clear();
 }
@@ -202,6 +213,7 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     sound->config.name = voiceIDStr.toStdString();
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
+    sound->config.bus = 0;
 
     addMidiLearn(sound);
     m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
@@ -245,7 +257,7 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     sound->config.name = voiceIDStr.toStdString();
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
-
+    sound->config.bus = 0;
 
     addMidiLearn(sound);
     m_Synth.addVoice(
@@ -295,7 +307,7 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     sound->config.name = name;
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
-
+    sound->config.bus = 0;
 
     addMidiLearn(sound);
     return m_Synth.addVoice(
@@ -401,6 +413,18 @@ void ER1AudioProcessor::fromJson(const json& j)
         if (learnable != nullptr && learnable->isLearned())
         { m_MidiManager.addToLearnedList(learnable); }
     }
+}
+
+bool ER1AudioProcessor::canAddBus(bool isInput) const
+{
+    if (isInput && getBusCount(true) < 1) { return true; }
+    return getBusCount(false) < meta::ER1::NumOutBuses;
+}
+
+bool ER1AudioProcessor::canRemoveBus(bool isInput) const
+{
+    if (isInput) { return false; }
+    return getBusCount(false) > 1;
 }
 
 

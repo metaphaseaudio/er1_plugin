@@ -11,6 +11,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
 #include <er1_dsp/Constants.h>
 #include <er1_dsp/Envelope.h>
 #include <meta/midi/MidiState.h>
@@ -30,10 +31,12 @@ public:
     //==============================================================================
     ER1AudioProcessor();
     ~ER1AudioProcessor() override = default;
-
     //==============================================================================
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
+
+    bool canAddBus(bool isInput) const override;
+    bool canRemoveBus(bool isInput) const override;
 
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
@@ -81,6 +84,8 @@ private:
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
+    using DCFilter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>>;
+    DCFilter m_DCFilter;
     MidiManager m_MidiManager;
 
     juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;
