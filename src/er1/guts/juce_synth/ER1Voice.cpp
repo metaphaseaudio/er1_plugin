@@ -29,7 +29,10 @@ void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWhe
 }
 
 void ER1Voice::setSampleRate(double newRate)
-    { m_Sound->setSampleRate(newRate); }
+{
+    m_Sound->setSampleRate(newRate);
+    m_Channel.setSampleRate(newRate);
+}
 
 void ER1Voice::updateParams()
 {
