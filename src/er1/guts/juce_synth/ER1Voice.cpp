@@ -44,7 +44,7 @@ void ER1Voice::updateParams()
         m_Sound->setModulationDepth(p_Ctrls->osc.modDepth->get());
 
         if (!p_Ctrls->config.noteFollow)
-            { m_Sound->setPitch(meta::Interpolate<float>::parabolic(20.0f, 20000.0, p_Ctrls->osc.pitch->get(), 5)); }
+            { m_Sound->setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, p_Ctrls->osc.pitch->get(), 5)); }
     }
 
     if (dynamic_cast<meta::ER1::PCMSound*>(m_Sound.get()) != nullptr)
