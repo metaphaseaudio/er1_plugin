@@ -11,12 +11,12 @@ ER1Synth::ER1Synth()
 {}
 
 
-void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi, int nSamps)
+void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi, int nSamps, float tempo)
 {
     bool isSolod = false;
     for (auto& voice : m_Voices)
     {
-        voice->updateParams();
+        voice->updateParams(tempo);
         if (voice->getControlBlock()->config.solo) { isSolod = true;}
     }
 
@@ -24,18 +24,18 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
     for (int c = 2; --c >= 0;)
     {
         // Copy the data into temp storage chans 1, 2
-        meta::linearUpsample(audioOut.getReadPointer(c), m_Tmp.getWritePointer(c + 1), nSamps, nSamps * meta::ER1::MainOscillator::OverSample);
+        meta::linearUpsample(audioOut.getReadPointer(c), m_Tmp.getWritePointer(c + 1), nSamps, nSamps * meta::ER1::Downsampler::OverSample);
     }
 
     audioOut.clear();
 
-    nSamps *= meta::ER1::MainOscillator::OverSample;
+    nSamps *= meta::ER1::Downsampler::OverSample;
 
     int startSample = 0;
 
     for (const auto event : midi)
     {
-        const int toRender = event.samplePosition * meta::ER1::MainOscillator::OverSample - startSample;
+        const int toRender = event.samplePosition * meta::ER1::Downsampler::OverSample - startSample;
         const auto msg = event.getMessage();
 
         for (int i = 0; i < m_Voices.size(); i++)

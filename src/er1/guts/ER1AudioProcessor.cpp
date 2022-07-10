@@ -77,10 +77,11 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     juce::dsp::ProcessSpec spec = {
-            sampleRate * meta::ER1::Downsampler::OverSample,
+            sampleRate,
             (juce::uint32) samplesPerBlock,
-            (juce::uint32) (getTotalNumOutputChannels() * meta::ER1::Downsampler::OverSample)
+            (juce::uint32) getTotalNumOutputChannels()
     };
+
     m_DCFilter.state = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate, 5.0f);
     m_DCFilter.prepare(spec);
 
@@ -106,19 +107,19 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 {
     ScopedNoDenormals noDenormals;
     m_MidiManager.processBlock(midiMessages);
-
+    juce::AudioPlayHead::CurrentPositionInfo positionInfo;
+    playHead.load()->getCurrentPosition(positionInfo);
     m_OversampleBuffer.clear();
 
     // Just copy the input data
     m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());
     m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
+    m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples(), positionInfo.bpm);
+    m_Downsampler->downsampleBuffer(m_OversampleBuffer, buffer);
 
-    m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples());
-
-    juce::dsp::AudioBlock<float> block(m_OversampleBuffer, 0);
+    juce::dsp::AudioBlock<float> block(buffer, 0);
     juce::dsp::ProcessContextReplacing<float> ctx(block);
     m_DCFilter.process(ctx);
-    m_Downsampler->downsampleBuffer(m_OversampleBuffer, buffer);
     midiMessages.clear();
 }
 

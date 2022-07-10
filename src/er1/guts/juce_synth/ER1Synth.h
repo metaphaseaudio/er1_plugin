@@ -14,7 +14,7 @@ public:
     ER1Synth();
     ER1Voice* addVoice(ER1Voice* voice);
     void prepareToPlay(double sampleRate, int busCount, int blockSize);
-    void processBlock(juce::AudioBuffer<float>& audio, juce::MidiBuffer midi, int nSamps);
+    void processBlock(juce::AudioBuffer<float>& audio, juce::MidiBuffer midi, int nSamps, float tempo);
     void triggerVoice(int i);
     [[nodiscard]] const std::vector<std::unique_ptr<ER1Voice>>& getVoices() const { return m_Voices; }
 

@@ -34,7 +34,7 @@ void ER1Voice::setSampleRate(double newRate)
     m_Channel.setSampleRate(newRate);
 }
 
-void ER1Voice::updateParams()
+void ER1Voice::updateParams(float tempo)
 {
     if (dynamic_cast<meta::ER1::AnalogSound*>(m_Sound.get()) != nullptr)
     {
@@ -56,7 +56,7 @@ void ER1Voice::updateParams()
     m_Channel.setLevel(p_Ctrls->amp.level->get());
     m_Channel.setPan(p_Ctrls->amp.pan->get());
     m_Channel.setTempoSync(true);
-    m_Channel.setTempo(120);
+    m_Channel.setTempo(tempo);
     m_Channel.setDelayTime(p_Ctrls->delay.time->get());
     m_Channel.setDelayDepth(p_Ctrls->delay.depth->get());
     m_Channel.setTempoSync(p_Ctrls->delay.sync->get());
