@@ -41,7 +41,6 @@ static juce::StringArray ModulationNames =
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
     : AudioProcessor(makeBusesProperties(1, meta::ER1::NumOutBuses))
-    , m_Downsampler(nullptr)
 {
     for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != meta::ER1::ANALOG_SOUND_COUNT); }
     for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
@@ -76,18 +75,17 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    juce::dsp::ProcessSpec spec = {
-            sampleRate,
-            (juce::uint32) samplesPerBlock,
-            (juce::uint32) getTotalNumOutputChannels()
-    };
 
-    m_DCFilter.state = juce::dsp::IIR::Coefficients<float>::makeHighPass(sampleRate, 5.0f);
-    m_DCFilter.prepare(spec);
+    const auto oversampleRate = sampleRate * meta::ER1::Downsampler::OverSample;
+    const auto oversampleSize = samplesPerBlock * meta::ER1::Downsampler::OverSample;
 
-    m_Downsampler = std::make_unique<meta::ER1::Downsampler>(sampleRate, getTotalNumOutputChannels());
-    m_Synth.prepareToPlay(sampleRate, getTotalNumOutputChannels() / 2, samplesPerBlock * meta::ER1::Downsampler::OverSample);
-    m_OversampleBuffer.setSize(getTotalNumOutputChannels(), samplesPerBlock * meta::ER1::Downsampler::OverSample);
+    m_Downsampler = std::make_unique<OverSample>(
+        getTotalNumOutputChannels(), meta::ER1::TWO_N_OVERSAMPLE, OverSample::FilterType::filterHalfBandPolyphaseIIR
+    );
+    m_Downsampler->initProcessing(samplesPerBlock);
+
+    m_Synth.prepareToPlay(oversampleRate, getTotalNumOutputChannels() / 2, oversampleSize);
+    m_OversampleBuffer.setSize(getTotalNumOutputChannels(), oversampleSize);
 }
 
 void ER1AudioProcessor::releaseResources() {}
@@ -108,31 +106,22 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
     ScopedNoDenormals noDenormals;
     m_MidiManager.processBlock(midiMessages);
     juce::AudioPlayHead::CurrentPositionInfo positionInfo;
-    playHead.load()->getCurrentPosition(positionInfo);
-    m_OversampleBuffer.clear();
+    auto ph = playHead.load();
 
-    // Just copy the input data
-    m_OversampleBuffer.copyFrom(0, 0, buffer, 0, 0, buffer.getNumSamples());
-    m_OversampleBuffer.copyFrom(1, 0, buffer, 1, 0, buffer.getNumSamples());
-    m_Synth.processBlock(m_OversampleBuffer, midiMessages, buffer.getNumSamples(), positionInfo.bpm);
-    m_Downsampler->downsampleBuffer(m_OversampleBuffer, buffer);
+    if (ph != nullptr)
+        playHead.load()->getCurrentPosition(positionInfo);
 
-    juce::dsp::AudioBlock<float> block(buffer, 0);
-    juce::dsp::ProcessContextReplacing<float> ctx(block);
-    m_DCFilter.process(ctx);
+    auto block = m_Downsampler->processSamplesUp(juce::dsp::AudioBlock<float>(buffer));
+    m_Synth.processBlock(block, midiMessages, positionInfo.bpm);
+    auto outBlock = juce::dsp::AudioBlock<float>(buffer);
+    m_Downsampler->processSamplesDown(outBlock);
+
     midiMessages.clear();
 }
 
 //==============================================================================
-bool ER1AudioProcessor::hasEditor() const
-{
-    return true; // (change this to false if you choose to not supply an editor)
-}
-
-AudioProcessorEditor *ER1AudioProcessor::createEditor()
-{
-    return new ER1AudioProcessorEditor(*this);
-}
+bool ER1AudioProcessor::hasEditor() const { return true; }
+AudioProcessorEditor *ER1AudioProcessor::createEditor() { return new ER1AudioProcessorEditor(*this); }
 
 //==============================================================================
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)

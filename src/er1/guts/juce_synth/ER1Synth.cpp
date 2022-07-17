@@ -10,9 +10,17 @@ ER1Synth::ER1Synth()
     : m_Tmp(3, 44100)
 {}
 
-
-void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer midi, int nSamps, float tempo)
+void ER1Synth::processBlock(juce::dsp::AudioBlock<float>& audio, const juce::MidiBuffer& midi, float tempo)
 {
+    std::vector<float*> tmp;
+    for (int c = 0; c < audio.getNumChannels(); c++)
+        { tmp.push_back(audio.getChannelPointer(c)); }
+
+    juce::AudioBuffer<float> audioOut;
+    audioOut.setDataToReferTo(tmp.data(), audio.getNumChannels(), audio.getNumSamples());
+
+    ///////////////////////////////////////////////////////////////////////////
+
     bool isSolod = false;
     for (auto& voice : m_Voices)
     {
@@ -20,16 +28,12 @@ void ER1Synth::processBlock(juce::AudioBuffer<float>& audioOut, juce::MidiBuffer
         if (voice->getControlBlock()->config.solo) { isSolod = true;}
     }
 
-    // Up-sample by linear interpolation the incoming audio. audio is on the first two chans coming in
-    for (int c = 2; --c >= 0;)
-    {
-        // Copy the data into temp storage chans 1, 2
-        meta::linearUpsample(audioOut.getReadPointer(c), m_Tmp.getWritePointer(c + 1), nSamps, nSamps * meta::ER1::Downsampler::OverSample);
-    }
+    m_Tmp.copyFrom(0, 0, audio.getChannelPointer(0), audio.getNumSamples());
+    m_Tmp.copyFrom(1, 0, audio.getChannelPointer(1), audio.getNumSamples());
 
     audioOut.clear();
 
-    nSamps *= meta::ER1::Downsampler::OverSample;
+    auto nSamps = audio.getNumSamples();
 
     int startSample = 0;
 
@@ -73,11 +77,11 @@ void ER1Synth::prepareToPlay(double sampleRate, int busCount, int blockSize)
 {
     for (auto& voice : m_Voices)
     {
-        voice->setSampleRate(sampleRate * meta::ER1::Downsampler::OverSample);
+        voice->setSampleRate(sampleRate);
         voice->setMaxBusCount(busCount);
     }
 
-    m_Tmp.setSize(3, blockSize * meta::ER1::Downsampler::OverSample);
+    m_Tmp.setSize(3, blockSize);
     m_Tmp.clear();
 }
 

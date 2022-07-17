@@ -15,6 +15,7 @@
 #include <er1_dsp/Constants.h>
 #include <er1_dsp/Envelope.h>
 #include <meta/midi/MidiState.h>
+#include <meta/dsp/Decimate.h>
 #include "juce_synth/ER1Synth.h"
 #include "juce_synth/ER1ControlBlock.h"
 #include "juce_synth/ER1Voice.h"
@@ -84,15 +85,16 @@ private:
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
-    using DCFilter = juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>>;
-    DCFilter m_DCFilter;
+    using OverSample = juce::dsp::Oversampling<float>;
+    std::unique_ptr<OverSample> m_Downsampler;
+    juce::dsp::AudioBlock<float> m_OversampleBlock;
+
     MidiManager m_MidiManager;
 
     juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;
     ER1Synth m_Synth;
 
     juce::AudioBuffer<float> m_OversampleBuffer;
-    std::unique_ptr<meta::ER1::Downsampler> m_Downsampler;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };
