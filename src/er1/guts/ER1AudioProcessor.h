@@ -85,7 +85,9 @@ private:
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
+    std::atomic<bool> m_EnableAntialiasing = false;
     using OverSample = juce::dsp::Oversampling<float>;
+    meta::Decimate<float, meta::ER1::Downsampler::OverSample, 1> m_Decimate;
     std::unique_ptr<OverSample> m_Downsampler;
     juce::dsp::AudioBlock<float> m_OversampleBlock;
 

@@ -75,17 +75,13 @@ void ER1AudioProcessor::changeProgramName(int index, const String &newName) {}
 //==============================================================================
 void ER1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-
     const auto oversampleRate = sampleRate * meta::ER1::Downsampler::OverSample;
     const auto oversampleSize = samplesPerBlock * meta::ER1::Downsampler::OverSample;
-
     m_Downsampler = std::make_unique<OverSample>(
         getTotalNumOutputChannels(), meta::ER1::TWO_N_OVERSAMPLE, OverSample::FilterType::filterHalfBandPolyphaseIIR
     );
     m_Downsampler->initProcessing(samplesPerBlock);
-
     m_Synth.prepareToPlay(oversampleRate, getTotalNumOutputChannels() / 2, oversampleSize);
-    m_OversampleBuffer.setSize(getTotalNumOutputChannels(), oversampleSize);
 }
 
 void ER1AudioProcessor::releaseResources() {}
@@ -113,8 +109,17 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 
     auto block = m_Downsampler->processSamplesUp(juce::dsp::AudioBlock<float>(buffer));
     m_Synth.processBlock(block, midiMessages, positionInfo.bpm);
-    auto outBlock = juce::dsp::AudioBlock<float>(buffer);
-    m_Downsampler->processSamplesDown(outBlock);
+
+    if (m_EnableAntialiasing)
+    {
+        auto outBlock = juce::dsp::AudioBlock<float>(buffer);
+        m_Downsampler->processSamplesDown(outBlock);
+    }
+    else
+    {
+        for (int c = block.getNumChannels(); --c >= 0;)
+            { m_Decimate(block.getChannelPointer(c), buffer.getWritePointer(c), block.getNumSamples()); }
+    }
 
     midiMessages.clear();
 }
