@@ -14,6 +14,7 @@ class ER1Voice
 public:
     ER1Voice(ER1ControlBlock::Ptr& sound, meta::ER1::BaseSound* voice);
     void startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition);
+    void stop();
     void updateParams(float tempo);
     void setSampleRate(double sr);
     void setMaxBusCount(int busCount) { m_BusCount = busCount; }

@@ -77,6 +77,7 @@ void ER1Synth::prepareToPlay(double sampleRate, int busCount, int blockSize)
 {
     for (auto& voice : m_Voices)
     {
+        voice->stop();
         voice->setSampleRate(sampleRate);
         voice->setMaxBusCount(busCount);
     }

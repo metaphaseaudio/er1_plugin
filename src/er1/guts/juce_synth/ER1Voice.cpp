@@ -77,3 +77,10 @@ void ER1Voice::processBlock(float** inData, float** outData, const float* lastDa
 
     m_Channel.processBlock(tmpData, outData != nullptr ? outData + (2 * busIndex) : nullptr, samps, offset);
 }
+
+
+void ER1Voice::stop()
+{
+    m_Sound->reset();
+    m_Channel.reset();
+}
