@@ -51,8 +51,8 @@ void ER1Voice::updateParams(float tempo)
         { m_Sound->setPitch(p_Ctrls->osc.pitch->get()); }
 
     m_Sound->setDecay(p_Ctrls->amp.decay->get());
+    m_Sound->setLowBoost(p_Ctrls->amp.lowBoost->get());
 
-    m_Channel.setLowBoost(p_Ctrls->amp.lowBoost->get());
     m_Channel.setLevel(p_Ctrls->amp.level->get());
     m_Channel.setPan(p_Ctrls->amp.pan->get());
     m_Channel.setTempoSync(true);

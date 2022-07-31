@@ -175,7 +175,7 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     auto* decay = new FloatParam(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
     auto* level = new FloatParam(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
     auto* pan = new FloatParam(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", -1.0f, 1.0f, 0.0f);
 
     auto* time = new FloatParam(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
     auto* depth = new FloatParam(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
@@ -224,7 +224,7 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     auto* decay = new FloatParam(voiceIDStr + "_decay", voiceIDStr + " Decay", 0.0f, 1.0f, 0.5f);
     auto* level = new FloatParam(voiceIDStr + "_level", voiceIDStr + " Level", 0.0f, 1.0f, 0.5f);
     auto* pan = new FloatParam(voiceIDStr + "_pan", voiceIDStr + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(voiceIDStr + "_low_boost", voiceIDStr + " Low Boost", -1.0f, 1.0f, 0.0f);
 
     auto* time = new FloatParam(voiceIDStr + "_time", voiceIDStr + " Time", 0.0f, 1.0f, 0.5f);
     auto* depth = new FloatParam(voiceIDStr + "_depth", voiceIDStr + " Depth", 0.0f, 0.9f, 0.0f);
@@ -274,7 +274,7 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     auto* decay = new FloatParam(name + "_decay", name + " Decay", 0.0f, 1.0f, 0.75f);
     auto* level = new FloatParam(name + "_level", name + " Level", 0.0f, 1.0f, 0.5f);
     auto* pan = new FloatParam(name + "_pan", name + " Pan", -1.0f, 1.0f, 0.0f);
-    auto* lowBoost = new FloatParam(name + "_low_boost", name + " Low Boost", 0.0f, 1.0f, 0.0f);
+    auto* lowBoost = new FloatParam(name + "_low_boost", name + " Low Boost", -1.0f, 1.0f, 0.0f);
 
     auto* time = new FloatParam(name + "_time", name + " Time", 0.0f, 1.0f, 0.5f);
     auto* depth = new FloatParam(name + "_depth", name + " Depth", 0.0f, 0.9f, 0.0f);
