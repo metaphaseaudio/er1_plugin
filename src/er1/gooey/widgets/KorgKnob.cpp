@@ -20,6 +20,7 @@ KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, flo
     auto interval = std::abs(range.start - range.end) / granularity;
     setRange(juce::Range<double>(range.start, range.end), interval);
     setValue(*param, juce::NotificationType::dontSendNotification);
+    setDoubleClickReturnValue(true, param->getNormalisableRange().convertFrom0to1(0.5));
 
     juce::Slider::addListener(this);
 
