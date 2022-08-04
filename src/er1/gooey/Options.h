@@ -31,6 +31,7 @@ public:
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
 private:
+    GlobalOptions& r_Opts;
     std::vector<std::unique_ptr<juce::Component>> m_Components;
 };
 
