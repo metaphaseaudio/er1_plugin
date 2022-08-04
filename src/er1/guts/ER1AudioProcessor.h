@@ -20,6 +20,7 @@
 #include "juce_synth/ER1ControlBlock.h"
 #include "juce_synth/ER1Voice.h"
 #include "MidiManager.h"
+#include "GlobalOptions.h"
 
 //==============================================================================
 /**
@@ -69,6 +70,8 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     MidiManager& getMidiManager() { return m_MidiManager; }
+    GlobalOptions& getOptions() { return m_Opts; }
+
     ER1ControlBlock::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
     void triggerVoice(int num);
     juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
@@ -85,7 +88,7 @@ private:
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
 
-    std::atomic<bool> m_EnableAntialiasing = true;
+    GlobalOptions m_Opts;
     using OverSample = juce::dsp::Oversampling<float>;
     meta::Decimate<float, meta::ER1::Downsampler::OverSample, 1> m_Decimate;
     std::unique_ptr<OverSample> m_Downsampler;

@@ -6,7 +6,7 @@
 #include <meta/util/range.h>
 
 
-KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float granularity)
+KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float defaultPosition, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
 {
@@ -20,7 +20,7 @@ KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, flo
     auto interval = std::abs(range.start - range.end) / granularity;
     setRange(juce::Range<double>(range.start, range.end), interval);
     setValue(*param, juce::NotificationType::dontSendNotification);
-    setDoubleClickReturnValue(true, param->getNormalisableRange().convertFrom0to1(0.5));
+    setDoubleClickReturnValue(true, defaultPosition);
 
     juce::Slider::addListener(this);
 

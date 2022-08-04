@@ -110,7 +110,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
     auto block = m_Downsampler->processSamplesUp(juce::dsp::AudioBlock<float>(buffer));
     m_Synth.processBlock(block, midiMessages, positionInfo.bpm);
 
-    if (m_EnableAntialiasing)
+    if (!m_Opts.enableAntialiasing)
     {
         auto outBlock = juce::dsp::AudioBlock<float>(buffer);
         m_Downsampler->processSamplesDown(outBlock);
@@ -346,8 +346,10 @@ void ER1AudioProcessor::addMidiLearn(ER1ControlBlock* ctrls)
 nlohmann::json ER1AudioProcessor::toJson() const
 {
     json j = {
-            {"midi_management", m_MidiManager.getState()}
+        {"midi_management", m_MidiManager.getState()},
+        {"options", m_Opts.toJson()}
     };
+
     j["analog"] = json::array();
     j["audio"] = json::array();
     j["pcm"] = json::array();
@@ -394,6 +396,9 @@ void ER1AudioProcessor::fromJson(const json& j)
             auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT];
             ctrls->fromJson(j["pcm"][i]);
         }
+
+        if (j.contains("options"))
+            { m_Opts.fromJson(j); }
     }
     catch (json::exception& err)
     {

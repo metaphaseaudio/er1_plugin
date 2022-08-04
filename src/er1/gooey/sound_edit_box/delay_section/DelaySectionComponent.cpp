@@ -16,8 +16,8 @@ using namespace juce;
 
 DelaySectionComponent::DelaySectionComponent(DelayParams& params)
     : m_Header("DELAY")
-    , m_Depth(params.depth), m_DepthLabel("Depth Label", "Depth")
-    , m_Time(params.time), m_TimeLabel("Time Label", "Time")
+    , m_Depth(params.depth, 0.0f), m_DepthLabel("Depth Label", "Depth")
+    , m_Time(params.time, 0.5f), m_TimeLabel("Time Label", "Time")
     , m_Sync(params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
 {
 

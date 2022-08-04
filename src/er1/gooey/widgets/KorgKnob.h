@@ -14,7 +14,7 @@ class KorgKnob
     , meta::TimedParameterListener
 {
 public:
-    explicit KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float granularity=1000.0f);
+    explicit KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float defaultPosition, float granularity=1000.0f);
     void handleNewParameterValue() override;
     void sliderValueChanged(juce::Slider* slider) override;
     void mouseDown(const juce::MouseEvent& e) override;

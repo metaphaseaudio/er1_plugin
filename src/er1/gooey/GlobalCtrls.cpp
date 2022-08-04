@@ -15,7 +15,8 @@ static juce::File getPatchDir(const std::string& dir)
     .getChildFile("er1")
     .getChildFile(dir);
 
-    if (!patchDir.exists()) { patchDir.createDirectory(); }
+    if (!patchDir.exists())
+        { patchDir.createDirectory(); }
     return patchDir;
 }
 
@@ -23,6 +24,7 @@ static juce::File getPatchDir(const std::string& dir)
 GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     : m_SoundPatchManager(mgr.getActiveVoice(), getPatchDir("sounds"), "Sound", "*.er1snd")
     , m_BankPatchManager(&proc, getPatchDir("banks"), "Bank", "*.er1bnk")
+    , m_OptionsManager(proc.getOptions())
     , r_MidiManager(mgr)
     , m_Bank("Bank", "Default")
     , m_BankLabel("Bank Label", "BNK:")
@@ -31,6 +33,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
 
     addChildComponent(m_SoundPatchManager);
     addChildComponent(m_BankPatchManager);
+    addChildComponent(m_OptionsManager);
 
     m_NoteListenLabel.setText("LISTEN", juce::dontSendNotification);
     m_LiveModeLabel.setText("OPTIONS", juce::dontSendNotification);
@@ -112,6 +115,7 @@ void GlobalCtrls::resized()
 
     m_SoundPatchManager.setBounds(bounds);
     m_BankPatchManager.setBounds(bounds);
+    m_OptionsManager.setBounds(bounds);
 
     bounds.removeFromTop(2);
     const auto bankBounds = bounds.removeFromTop(BIG_LABEL_PT);
@@ -176,9 +180,11 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
             m_SelectSound.setToggleState(false, juce::sendNotification);
             m_SelectBank.setToggleState(false, juce::sendNotification);
         }
+
+        m_OptionsManager.setVisible(m_Options.getToggleState());
     }
 
-    const auto patchMgrVisible = m_SelectBank.getToggleState() || m_SelectSound.getToggleState();
+    const auto patchMgrVisible = m_SelectBank.getToggleState() || m_SelectSound.getToggleState() || m_Options.getToggleState();
     m_BankLabel.setVisible(!patchMgrVisible);
     m_Bank.setVisible(!patchMgrVisible);
 }

@@ -9,6 +9,7 @@
 #include "widgets/KorgButton.h"
 #include "widgets/LCDText.h"
 #include "../guts/ER1AudioProcessor.h"
+#include "Options.h"
 
 
 class GlobalCtrls
@@ -30,6 +31,7 @@ private:
 
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
+    OptionsComponent m_OptionsManager;
     LCDText m_Bank;
     juce::Label m_LiveModeLabel, m_NoteListenLabel, m_SelectSoundLabel, m_SelectBankLabel, m_BankLabel;
     KorgToggleButton m_NoteListen, m_SelectSound, m_SelectBank, m_Options;
