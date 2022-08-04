@@ -438,3 +438,14 @@ void ER1LAF::drawLabel(juce::Graphics& g, juce::Label& label)
 
     g.drawRect (label.getLocalBounds());
 }
+
+
+void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)
+{
+    LookAndFeel_V4::drawToggleButton(g, btn, isHighlighted, isDown);
+}
+
+Font LCDLAF::getLabelFont(Label& label)
+{
+    return LookAndFeel_V2::getLabelFont(label);
+}

@@ -15,7 +15,6 @@ ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::Cha
     : m_Label(label, label)
     , m_Opt(option)
 {
-    setVisible(true);
     addAndMakeVisible(m_Label);
     addAndMakeVisible(m_OptToggle);
     m_OptToggle.addListener(this);
@@ -25,19 +24,9 @@ ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::Cha
 void ToggleOptionComponent::resized()
 {
     auto localBounds = getLocalBounds();
-    m_Label.setBounds(localBounds.removeFromLeft(m_Label.getFont().getStringWidthFloat(m_Label.getText()) + 5));
+    m_Label.setBounds(localBounds.removeFromLeft(m_Label.getFont().getStringWidthFloat(m_Label.getText()) + 15));
     m_OptToggle.setBounds(localBounds.removeFromLeft(localBounds.getHeight()));
 }
-
-class GreenComp : juce::Component
-{
-public:
-    void paint(juce::Graphics& g) override
-    {
-        g.setColour(juce::Colours::green);
-        g.fillAll();
-    }
-};
 
 
 OptionsListBoxModel::OptionsListBoxModel(GlobalOptions& opts)
@@ -55,7 +44,6 @@ juce::Component* OptionsListBoxModel::refreshComponentForRow(int rowNumber, bool
     if (rowNumber >= m_Components.size()) { return nullptr; }
     if (existingComponentToUpdate != nullptr) { return existingComponentToUpdate; }
     return m_Components[rowNumber].release();
-//    new GreenComp();
 }
 
 OptionsComponent::OptionsComponent(GlobalOptions& opts)

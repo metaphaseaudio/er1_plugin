@@ -49,3 +49,12 @@ private:
     std::unique_ptr<juce::Drawable> folderImage, documentImage;
     void drawPad(juce::Graphics& g, const juce::Component& area, const juce::Colour& internalColour);
 };
+
+class LCDLAF
+    : public ER1LAF
+{
+public:
+    juce::Font getLabelFont(juce::Label& label) override;
+
+    void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
+};
