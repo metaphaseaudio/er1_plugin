@@ -54,6 +54,7 @@ class LCDLAF
     : public ER1LAF
 {
 public:
+    LCDLAF();
     juce::Font getLabelFont(juce::Label& label) override;
 
     void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;

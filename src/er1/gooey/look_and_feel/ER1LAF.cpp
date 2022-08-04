@@ -442,10 +442,31 @@ void ER1LAF::drawLabel(juce::Graphics& g, juce::Label& label)
 
 void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)
 {
-    LookAndFeel_V4::drawToggleButton(g, btn, isHighlighted, isDown);
+    const auto lineWidth = 1;
+    const auto toggleColour = btn.getToggleState() ? juce::Colours::red : juce::Colours::red.darker(0.6);
+
+    const auto localBounds = btn.getLocalBounds().reduced(1);
+    g.setColour(isHighlighted ? toggleColour.brighter() : toggleColour);
+    g.drawRect(btn.getLocalBounds(), lineWidth);
+
+    g.setColour(toggleColour);
+    g.setFont(FontLCD::defaultFont().withPointHeight(9));
+
+    if (btn.getToggleState())
+    {
+        const auto indicatorBounds = localBounds.withX(localBounds.getX() + 1);
+        g.drawFittedText("x", indicatorBounds, juce::Justification::centred, 1);
+    }
 }
 
 Font LCDLAF::getLabelFont(Label& label)
 {
-    return LookAndFeel_V2::getLabelFont(label);
+    const auto font = label.getFont();
+    return FontLCD::defaultFont().withPointHeight(font.getHeightInPoints());
+}
+
+LCDLAF::LCDLAF()
+{
+    setColour(juce::Label::ColourIds::backgroundColourId, ER1Colours::lcdRed);
+    setColour(juce::Label::ColourIds::textColourId, juce::Colours::red);
 }

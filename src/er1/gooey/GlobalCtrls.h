@@ -10,6 +10,7 @@
 #include "widgets/LCDText.h"
 #include "../guts/ER1AudioProcessor.h"
 #include "Options.h"
+#include "look_and_feel/ER1LAF.h"
 
 
 class GlobalCtrls
@@ -29,6 +30,7 @@ private:
 
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
+    LCDLAF m_LCDLAF;
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
     OptionsComponent m_OptionsManager;

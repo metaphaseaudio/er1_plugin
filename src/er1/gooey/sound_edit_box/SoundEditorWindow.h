@@ -23,7 +23,7 @@ class SoundEditorWindow
     , public juce::ChangeListener
 {
 public:
-    explicit SoundEditorWindow(ER1ControlBlock::Ptr sound);
+    explicit SoundEditorWindow(GlobalOptions& opts, ER1ControlBlock::Ptr sound);
     void resized() override;
 
 private:

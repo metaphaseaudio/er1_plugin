@@ -14,14 +14,18 @@
 
 using namespace juce;
 
-OscSectionComponent::OscSectionComponent(OscParams& params)
-    : m_Header("OSCILLATOR")
+OscSectionComponent::OscSectionComponent(GlobalOptions& opts, OscParams& params)
+    : r_Opts(opts)
+    , m_Header("OSCILLATOR")
     , m_Pitch(params.pitch, 0.4f), m_PitchLabel("Pitch Label", "Pitch")
     , m_ModDepth(params.modDepth, 0.0f), m_ModDepthLabel("Mod Depth Label", "Mod Depth")
     , m_ModSpeed(params.modSpeed, 0.5f, 8000), m_ModSpeedLabel("Mod Speed Label", "Mod Speed")
     , m_ModType(params.modType), m_ModTypeLabel("Mod Type Label", "Mod Type")
     , m_OscType(params.oscType), m_OscTypeLabel("Osc Type Label", "Osc Type")
 {
+    r_Opts.rotary_knobs.addChangeListener(this);
+    changeListenerCallback(&r_Opts.rotary_knobs);
+
     m_PitchLabel.setJustificationType(juce::Justification::centred);
     m_ModSpeedLabel.setJustificationType(juce::Justification::centred);
     m_ModDepthLabel.setJustificationType(juce::Justification::centred);
@@ -64,4 +68,12 @@ void OscSectionComponent::resized()
     m_ModDepthLabel.setBounds(labelBounds); m_ModDepth.setBounds(ctrlBounds);
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+}
+
+void OscSectionComponent::changeListenerCallback(ChangeBroadcaster* source)
+{
+    bool shouldBeRotary = r_Opts.rotary_knobs.load();
+    m_Pitch.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_ModDepth.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_ModSpeed.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
 }

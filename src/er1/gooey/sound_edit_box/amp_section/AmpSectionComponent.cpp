@@ -14,13 +14,16 @@
 
 using namespace juce;
 
-AmpSectionComponent::AmpSectionComponent(AmpParams& params)
+AmpSectionComponent::AmpSectionComponent(GlobalOptions& opts, AmpParams& params)
     : m_Header("AMP")
     , m_Decay(params.decay, 0.5f), m_DecayLabel("Decay Label", "Decay")
     , m_Level(params.level, 0.6f), m_LevelLabel("Level Label", "Level")
     , m_Pan(params.pan, 0.0f), m_PanLabel("Pan Label", "Pan")
     , m_LowBoost(params.lowBoost, 0.0f), m_LowBoostLabel("Low Boost Label", "Low Boost")
+    , r_Opts(opts)
 {
+    r_Opts.rotary_knobs.addChangeListener(this);
+    changeListenerCallback(&r_Opts.rotary_knobs);
 
     m_DecayLabel.setJustificationType(juce::Justification::centred);
     m_LevelLabel.setJustificationType(juce::Justification::centred);
@@ -63,4 +66,13 @@ void AmpSectionComponent::resized()
     m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
     ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
     labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+}
+
+void AmpSectionComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    bool shouldBeRotary = r_Opts.rotary_knobs.load();
+    m_Decay.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_Level.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_Pan.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_LowBoost.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
 }

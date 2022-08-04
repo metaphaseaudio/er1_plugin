@@ -5,11 +5,11 @@
 #include "SoundEditorWindow.h"
 #include "../look_and_feel/ER1Colours.h"
 
-SoundEditorWindow::SoundEditorWindow(ER1ControlBlock::Ptr sound)
+SoundEditorWindow::SoundEditorWindow(GlobalOptions& opts, ER1ControlBlock::Ptr sound)
     : m_VoiceSetup(sound->config)
-    , m_OscSection(sound->osc)
-    , m_AmpSection(sound->amp)
-    , m_DelaySection(sound->delay)
+    , m_OscSection(opts, sound->osc)
+    , m_AmpSection(opts, sound->amp)
+    , m_DelaySection(opts, sound->delay)
 {
     addAndMakeVisible(&m_VoiceSetup);
     addAndMakeVisible(&m_OscSection);

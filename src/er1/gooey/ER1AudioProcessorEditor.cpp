@@ -28,7 +28,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
-        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getSound(i)));
+        m_SoundEditorWindows.emplace_back(new SoundEditorWindow(p.getOptions(), p.getSound(i)));
         auto* window = m_SoundEditorWindows.at(i).get();
         p.getMidiManager().addChangeListener(window);
         addChildComponent(window);

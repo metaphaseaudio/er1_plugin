@@ -20,6 +20,7 @@ public:
     void fromJson(const nlohmann::json& json) override;
     nlohmann::json toJson() const override;
 
+    void hardReset();
     void saveAsDefault();
     void loadDefault();
 

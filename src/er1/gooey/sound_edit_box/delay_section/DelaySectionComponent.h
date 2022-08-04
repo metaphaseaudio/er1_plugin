@@ -16,21 +16,26 @@
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../../guts/MidiManager.h"
 #include "../../widgets/Header.h"
+#include "../../../guts/GlobalOptions.h"
 
 
 class DelaySectionComponent
     : public juce::Component
+    , juce::ChangeListener
 {
 public:
-    explicit DelaySectionComponent(DelayParams& params);
+    explicit DelaySectionComponent(GlobalOptions& opts, DelayParams& params);
     ~DelaySectionComponent() override = default;
     void resized() override;
 
 private:
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+
     Header m_Header;
     KorgKnob m_Time;  juce::Label m_TimeLabel;
     KorgKnob m_Depth; juce::Label m_DepthLabel;
     KorgBooleanParameterButton m_Sync; juce::Label m_SyncLabel;
+    GlobalOptions& r_Opts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelaySectionComponent)
 };

@@ -23,9 +23,10 @@ ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::Cha
 
 void ToggleOptionComponent::resized()
 {
-    auto localBounds = getLocalBounds();
-    m_Label.setBounds(localBounds.removeFromLeft(m_Label.getFont().getStringWidthFloat(m_Label.getText()) + 15));
-    m_OptToggle.setBounds(localBounds.removeFromLeft(localBounds.getHeight()));
+    auto localBounds = getLocalBounds().reduced(1);
+    localBounds.removeFromRight(1);
+    m_OptToggle.setBounds(localBounds.removeFromRight(localBounds.getHeight()));
+    m_Label.setBounds(localBounds);
 }
 
 
@@ -47,18 +48,36 @@ juce::Component* OptionsListBoxModel::refreshComponentForRow(int rowNumber, bool
 }
 
 OptionsComponent::OptionsComponent(GlobalOptions& opts)
-    : m_Options(opts)
+    : r_Opts(opts)
+    , m_Options(opts)
     , m_OptionsListBox("Options", nullptr)
+    , m_Save("Save defaults")
+    , m_Load("Load defaults")
 {
     m_OptionsListBox.setModel(&m_Options);
+    m_OptionsListBox.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
+
+    m_Save.addListener(this);
+    m_Load.addListener(this);
+
+    addAndMakeVisible(m_Save);
+    addAndMakeVisible(m_Load);
     addAndMakeVisible(m_OptionsListBox);
 }
 
 void OptionsComponent::resized()
 {
     auto bounds = getLocalBounds();
-    bounds.removeFromBottom(12);
+    auto buttonBounds = bounds.removeFromBottom(12);
+    buttonBounds.removeFromLeft(1);
+    buttonBounds.removeFromRight(1);
+    m_Load.setBounds(buttonBounds.removeFromLeft((buttonBounds.getWidth() - 2) / 2));
+    buttonBounds.removeFromLeft(2);
+    m_Save.setBounds(buttonBounds);
+
+    m_OptionsListBox.setRowHeight(16);
     m_OptionsListBox.setBounds(bounds.reduced(2));
+
 }
 
 void OptionsComponent::paint(juce::Graphics& g)
@@ -70,4 +89,10 @@ void OptionsComponent::paint(juce::Graphics& g)
     bounds.removeFromBottom(12);
     g.setColour(juce::Colours::red.darker());
     g.drawRect(bounds.reduced(1), 1);
+}
+
+void OptionsComponent::buttonClicked(juce::Button* button)
+{
+    if (button == &m_Load){ r_Opts.loadDefault(); }
+    if (button == &m_Save){ r_Opts.saveAsDefault(); }
 }

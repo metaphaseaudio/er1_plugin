@@ -57,6 +57,19 @@ void GlobalOptions::loadDefault()
             fromJson(j);
         }
         catch (nlohmann::json::exception& err)
-        { std::cout << "Failed to load default state file" << std::endl; }
+        {
+            std::cout << "Failed to load default state file, using built-in default" << std::endl;
+            hardReset();
+        }
     }
+    else
+    {
+        hardReset();
+    }
+}
+
+void GlobalOptions::hardReset()
+{
+    enableAntialiasing = false;
+    rotary_knobs = false;
 }

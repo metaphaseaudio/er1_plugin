@@ -17,16 +17,20 @@
 #include "../../../guts/juce_synth/ER1ControlBlock.h"
 #include "../../../guts/MidiManager.h"
 #include "../../widgets/Header.h"
+#include "../../../guts/GlobalOptions.h"
 
 
 class OscSectionComponent
     : public juce::Component
+    , juce::ChangeListener
 {
 public:
-    explicit OscSectionComponent(OscParams& params);
+    explicit OscSectionComponent(GlobalOptions& opts, OscParams& params);
     void resized() override;
 
 private:
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+
     Header m_Header;
     KorgKnob m_Pitch;    juce::Label m_PitchLabel;
     KorgKnob m_ModDepth; juce::Label m_ModDepthLabel;
@@ -34,6 +38,7 @@ private:
 
     KorgComboBox  m_ModType;  juce::Label m_ModTypeLabel;
     KorgComboBox  m_OscType;  juce::Label m_OscTypeLabel;
+    GlobalOptions& r_Opts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscSectionComponent)
 };

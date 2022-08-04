@@ -14,12 +14,15 @@
 
 using namespace juce;
 
-DelaySectionComponent::DelaySectionComponent(DelayParams& params)
+DelaySectionComponent::DelaySectionComponent(GlobalOptions& opts, DelayParams& params)
     : m_Header("DELAY")
     , m_Depth(params.depth, 0.0f), m_DepthLabel("Depth Label", "Depth")
     , m_Time(params.time, 0.5f), m_TimeLabel("Time Label", "Time")
     , m_Sync(params.sync), m_SyncLabel("Sync Label", "Tempo\nSync")
+    , r_Opts(opts)
 {
+    r_Opts.rotary_knobs.addChangeListener(this);
+    changeListenerCallback(&r_Opts.rotary_knobs);
 
     m_DepthLabel.setJustificationType(juce::Justification::centred);
     m_TimeLabel.setJustificationType(juce::Justification::centred);
@@ -58,4 +61,11 @@ void DelaySectionComponent::resized()
     labelBounds.setHeight(2 * labelHeight);
     btnBounds.setPosition(ctrlBounds.getCentreX() - btnBounds.getWidth() / 2, ctrlBounds.getCentreY() - btnBounds.getWidth() / 2);
     m_SyncLabel.setBounds(labelBounds); m_Sync.setBounds(btnBounds);
+}
+
+void DelaySectionComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    bool shouldBeRotary = r_Opts.rotary_knobs.load();
+    m_Depth.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
+    m_Time.setSliderStyle(shouldBeRotary ? juce::Slider::SliderStyle::Rotary : juce::Slider::SliderStyle::RotaryVerticalDrag);
 }

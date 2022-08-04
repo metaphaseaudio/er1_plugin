@@ -5,6 +5,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../guts/GlobalOptions.h"
+#include "widgets/LCDButton.h"
 
 class ToggleOptionComponent
     : public juce::Component
@@ -38,6 +39,7 @@ private:
 
 class OptionsComponent
     : public juce::Component
+    , juce::Button::Listener
 {
 public:
     explicit OptionsComponent(GlobalOptions& opts);
@@ -45,7 +47,11 @@ public:
     void paint(juce::Graphics& g) override;
 
 private:
+
+    void buttonClicked(juce::Button* button) override;
+
     OptionsListBoxModel m_Options;
     juce::ListBox m_OptionsListBox;
-
+    LCDButton m_Save, m_Load;
+    GlobalOptions& r_Opts;
 };

@@ -31,6 +31,10 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
 {
     setInterceptsMouseClicks(false, true);
 
+    m_SoundPatchManager.setLookAndFeel(&m_LCDLAF);
+    m_BankPatchManager.setLookAndFeel(&m_LCDLAF);
+    m_OptionsManager.setLookAndFeel(&m_LCDLAF);
+
     addChildComponent(m_SoundPatchManager);
     addChildComponent(m_BankPatchManager);
     addChildComponent(m_OptionsManager);
