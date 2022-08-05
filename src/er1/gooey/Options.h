@@ -10,6 +10,7 @@
 class ToggleOptionComponent
     : public juce::Component
     , juce::Button::Listener
+    , juce::ChangeListener
 {
 public:
     ToggleOptionComponent(const std::string& label, meta::ChangeBroadcastingProperty<bool>& option);
@@ -17,6 +18,8 @@ public:
     void resized() override;
 
 private:
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+
     juce::Label m_Label;
     juce::ToggleButton m_OptToggle;
     meta::ChangeBroadcastingProperty<bool>& m_Opt;

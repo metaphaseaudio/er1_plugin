@@ -28,5 +28,6 @@ public:
     meta::ChangeBroadcastingProperty<bool> rotary_knobs;
     
 private:
+
     static juce::File getDefaultsPath();
 };

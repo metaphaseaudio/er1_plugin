@@ -36,6 +36,8 @@ juce::File GlobalOptions::getDefaultsPath()
 void GlobalOptions::saveAsDefault()
 {
     const auto defaults = getDefaultsPath();
+    if (!defaults.exists())
+        { defaults.create(); }
     auto stream = defaults.createOutputStream();
     stream->setPosition(0);
     stream->truncate();

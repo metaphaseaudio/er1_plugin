@@ -5,12 +5,6 @@
 #include "Options.h"
 #include "look_and_feel/ER1Colours.h"
 
-
-void ToggleOptionComponent::buttonClicked(juce::Button* button)
-{
-    m_Opt = m_OptToggle.getToggleState();
-}
-
 ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::ChangeBroadcastingProperty<bool>& option)
     : m_Label(label, label)
     , m_Opt(option)
@@ -18,6 +12,7 @@ ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::Cha
     addAndMakeVisible(m_Label);
     addAndMakeVisible(m_OptToggle);
     m_OptToggle.addListener(this);
+    m_Opt.addChangeListener(this);
     m_OptToggle.setToggleState(option.load(), juce::NotificationType::dontSendNotification);
 }
 
@@ -28,6 +23,12 @@ void ToggleOptionComponent::resized()
     m_OptToggle.setBounds(localBounds.removeFromRight(localBounds.getHeight()));
     m_Label.setBounds(localBounds);
 }
+
+void ToggleOptionComponent::buttonClicked(juce::Button* button)
+    { m_Opt = m_OptToggle.getToggleState(); }
+
+void ToggleOptionComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
+    { m_OptToggle.setToggleState(m_Opt.load(), juce::NotificationType::dontSendNotification); }
 
 
 OptionsListBoxModel::OptionsListBoxModel(GlobalOptions& opts)
