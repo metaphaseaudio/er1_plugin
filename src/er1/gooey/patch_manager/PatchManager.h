@@ -5,7 +5,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../widgets/LCDButton.h"
-#include "../../guts/LearnableSerializeableParam.h"
+#include "../../guts/Patch.h"
 
 
 class PatchManager
@@ -16,10 +16,12 @@ class PatchManager
     , juce::Button::Listener
 {
 public:
-    PatchManager(Serializeable* target, const juce::File& startingDir, const std::string& name, const std::string& customSuffix="*.json");
+    PatchManager(Patch* target, const juce::File& startingDir, const std::string& name, const std::string& customSuffix="*.json");
     ~PatchManager() override;
     void paint(juce::Graphics& g) override;
     void resized() override;
+
+    void changeTarget(Patch* target);
 
 private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
@@ -27,7 +29,6 @@ private:
 
     void startRenameSelected();
     void refreshAndSetSelected(juce::File& f);
-    void saveStateToFile(const juce::File& f);
 
     void textEditorFocusLost(juce::TextEditor& editor) override;
 
@@ -37,7 +38,7 @@ private:
 
     void buttonClicked(juce::Button* btn) override;
 
-    Serializeable* p_Target;
+    Patch* p_Target;
     std::string m_Suffix;
     juce::TextEditor m_Editor;
     juce::WildcardFileFilter m_WildcardFilter;

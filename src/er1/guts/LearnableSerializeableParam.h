@@ -13,7 +13,6 @@ public:
     [[nodiscard]] virtual nlohmann::json toJson() const = 0;
 };
 
-
 template <typename ParamType>
 class LearnableSerializeable
     : public ParamType

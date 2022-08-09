@@ -57,7 +57,7 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 	g.fillRect(bezel);
     g.reduceClipRegion(bezel);
 
-    Image bg = ImageCache::getFromMemory(Images::bg_png, Images::bg_pngSize);
+    Image bg = ImageCache::getFromMemory(Images::bg_2_png, Images::bg_2_pngSize);
     g.drawImage(bg, getLocalBounds().toFloat());
 }
 
@@ -84,9 +84,10 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     {
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
         const auto selected = m_VoiceSelector.getSelected();
-
         if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
-        m_SoundEditorWindows[m_VoiceSelector.getSelected()]->setVisible(true);
+
+        m_GlobalCtrls.setVoice(processor.getSynth().getVoices()[selected]->getControlBlock());
+        m_SoundEditorWindows[selected]->setVisible(true);
         processor.triggerVoice(selected);
     }
 

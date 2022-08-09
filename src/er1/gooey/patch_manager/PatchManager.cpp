@@ -14,7 +14,8 @@ static std::string stripStar(const std::string& x)
     return rv;
 }
 
-PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir, const std::string& name,  const std::string& customSuffix)
+
+PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const std::string& name,  const std::string& customSuffix)
     : p_Target(target)
     , m_Suffix(stripStar(customSuffix))
     , m_WildcardFilter{"*.json;" + customSuffix +";", "*", "Bank Patch Filter"}
@@ -37,7 +38,6 @@ PatchManager::PatchManager(Serializeable* target, const juce::File& startingDir,
     m_FileListComponent.addListener(this);
     m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
     m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
-
 
     addAndMakeVisible(m_FileListComponent);
     addAndMakeVisible(m_New);
@@ -118,7 +118,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
         }
 
         new_file.create();
-        saveStateToFile(new_file);
+        p_Target->savePatch(new_file);
         refreshAndSetSelected(new_file);
         startRenameSelected();
     }
@@ -127,7 +127,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
     {
         const auto selected_i = m_FileListComponent.getSelectedRows()[0];
         const auto selected_file = m_DirList.getFile(selected_i);
-        saveStateToFile(selected_file);
+        p_Target->savePatch(selected_file);
     }
 
     else if (btn == &m_Delete)
@@ -188,26 +188,30 @@ void PatchManager::selectionChanged()
     const auto selected_i = m_FileListComponent.getSelectedRows()[0];
     const auto file = m_DirList.getFile(selected_i);
     if (!file.exists()) { return; }
-    const auto reader = file.createInputStream();
-
-    try
-    {
-        auto j = nlohmann::json::parse(reader->readEntireStreamAsString().toStdString());
-        p_Target->fromJson(j);
-        sendChangeMessage();
-    }
-    catch (nlohmann::json::exception& err)
-        { std::cout << err.what() << std::endl; }
-
+    p_Target->loadPatch(file);
+    sendChangeMessage();
 }
 
-void PatchManager::saveStateToFile(const juce::File& f)
+
+void PatchManager::changeTarget(Patch* target)
 {
-    const auto string_data = p_Target->toJson().dump(4);
-    auto stream = f.createOutputStream();
-    stream->setPosition(0);
-    stream->truncate();
-    stream->writeString(string_data);
-    stream->flush();
-    stream.reset(nullptr);
+    p_Target = target;
+    juce::File selected;
+
+    for (auto i = 0; i <= m_DirList.getNumFiles(); i++)
+    {
+        const auto test = m_DirList.getFile(i);
+
+        if (test.getFileNameWithoutExtension().toStdString() == p_Target->name)
+        {
+            selected = test;
+            break;
+        }
+    }
+
+    if (selected.exists())
+    {
+        refreshAndSetSelected(selected);
+    }
 }
+

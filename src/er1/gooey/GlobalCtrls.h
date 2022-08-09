@@ -24,6 +24,8 @@ public:
     GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc);
     void resized() override;
 
+    void setVoice(JSONPatch* patch) { m_SoundPatchManager.changeTarget(patch); }
+
 private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;

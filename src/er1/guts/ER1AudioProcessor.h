@@ -21,13 +21,14 @@
 #include "juce_synth/ER1Voice.h"
 #include "MidiManager.h"
 #include "GlobalOptions.h"
+#include "Patch.h"
 
 //==============================================================================
 /**
 */
 class ER1AudioProcessor
     : public juce::AudioProcessor
-    , public Serializeable
+    , public JSONPatch
 {
 public:
     //==============================================================================
