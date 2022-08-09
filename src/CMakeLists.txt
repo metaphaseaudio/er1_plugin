@@ -35,7 +35,6 @@ add_subdirectory(shared/json)
 juce_add_plugin(ER-1
         VERSION 1.0
         COMPANY_NAME Metaphase
-#        IS_SYNTH TRUE
         NEEDS_MIDI_INPUT TRUE
         VST_NUM_MIDI_INS 1
         PLUGIN_MANUFACTURER_CODE Mtap
@@ -68,6 +67,25 @@ target_link_libraries(ER-1
         er1dsp
         metaphase_core
 )
+
+install(
+    TARGETS ER-1_VST3
+    LIBRARY
+    DESTINATION metaphase
+    COMPONENT vst3
+)
+
+set(CPACK_PACKAGE_NAME "Metaphase ER-1")
+set(CPACK_PACKAGE_VENDOR "Metaphase Audio")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ER-1 VST3 Plug-in")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "Common Files\\VST3")
+set(CPACK_NSIS_IGNORE_LICENSE_PAGE TRUE)
+set(CPACK_COMPONENTS_ALL vst3)
+include(CPack)
 
 option(BUILD_TESTS "BUILD_TESTS" OFF)
 if (BUILD_TESTS)
