@@ -93,6 +93,20 @@ void PatchManager::fileDoubleClicked(const juce::File& f)
         { startRenameSelected(); }
 }
 
+std::string PatchManager::safeName() const
+{
+    auto new_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
+    int copy = 0;
+
+    while (new_file.exists())
+    {
+        copy++;
+        new_file = m_DirList.getDirectory().getChildFile(juce::String(p_Target->name) + "(" + juce::String(copy) + ")" + m_Suffix);
+    }
+
+    return new_file.getFileNameWithoutExtension().toStdString();
+}
+
 void PatchManager::buttonClicked(juce::Button* btn)
 {
     if (btn == &m_ChangeDir)
@@ -109,13 +123,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
     else if (btn == &m_New)
     {
-        auto new_file = m_DirList.getDirectory().getChildFile("new_patch" + m_Suffix);
-        int copy = 0;
-        while (new_file.exists())
-        {
-            copy++;
-            new_file = m_DirList.getDirectory().getChildFile("new_patch_" + juce::String(copy) + m_Suffix);
-        }
+        auto new_file = m_DirList.getDirectory().getChildFile(safeName() + m_Suffix);
 
         new_file.create();
         p_Target->savePatch(new_file);
@@ -125,9 +133,9 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
     else if (btn == &m_Save)
     {
-        const auto selected_i = m_FileListComponent.getSelectedRows()[0];
-        const auto selected_file = m_DirList.getFile(selected_i);
-        p_Target->savePatch(selected_file);
+        const auto new_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
+        p_Target->savePatch(new_file);
+        refreshAndSetSelected(new_file);
     }
 
     else if (btn == &m_Delete)
@@ -167,6 +175,7 @@ void PatchManager::textEditorFocusLost(juce::TextEditor& editor)
     auto file = m_DirList.getFile(selected_i);
     auto newFile = file.getParentDirectory().getChildFile(newName).withFileExtension(m_Suffix);
     file.moveFileTo(newFile);
+    m_Editor.setVisible(false);
     refreshAndSetSelected(newFile);
 }
 
@@ -177,7 +186,7 @@ void PatchManager::refreshAndSetSelected(const juce::File& f)
     while (m_DirList.isStillLoading()) {};
 
     m_FileListComponent.updateContent();
-    m_FileListComponent.setSelectedFile(f);
+    m_FileListComponent.setSelectedRows(juce::SparseSet<int>(), juce::dontSendNotification);
     for (int i = 0; i < m_DirList.getNumFiles(); i++)
     {
         if (m_DirList.getFile(i) == f)
@@ -189,16 +198,17 @@ void PatchManager::refreshAndSetSelected(const juce::File& f)
         }
     }
 
-
     m_FileListComponent.repaint();
 }
 
 void PatchManager::selectionChanged()
 {
-    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
-    const auto file = m_DirList.getFile(selected_i);
-    if (!file.exists()) { return; }
-    p_Target->loadPatch(file);
+    if (m_FileListComponent.getNumSelectedFiles())
+    {
+        const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+        const auto file = m_DirList.getFile(selected_i);
+        p_Target->loadPatch(file);
+    }
     sendChangeMessage();
 }
 
@@ -208,3 +218,4 @@ void PatchManager::changeTarget(Patch* target)
     const auto target_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
     refreshAndSetSelected(target_file);
 }
+

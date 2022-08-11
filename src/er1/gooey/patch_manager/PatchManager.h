@@ -27,6 +27,7 @@ private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
     void selectionChanged() override;
 
+    std::string safeName() const;
     void startRenameSelected();
     void refreshAndSetSelected(const juce::File& f);
 

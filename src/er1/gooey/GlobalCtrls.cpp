@@ -60,6 +60,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     m_SelectSoundLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
 
     m_Bank.setEditable(false, true);
+    m_Bank.onTextChange = [&]() { proc.name =  m_Bank.getText().toStdString(); };
 
     addAndMakeVisible(m_BankLabel); addAndMakeVisible(m_Bank);
     addAndMakeVisible(m_NoteListen); addAndMakeVisible(m_NoteListenLabel);
