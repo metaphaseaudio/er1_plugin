@@ -1,0 +1,764 @@
+{
+    "analog": [
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6499999761581421
+                },
+                "level": {
+                    "value": 0.5999999642372131
+                },
+                "lowBoost": {
+                    "value": 0.48499998450279236
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 1,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.675000011920929
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.7799999713897705
+                },
+                "mod_type": 7,
+                "osc_type": 0,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.0
+                }
+            },
+            "patch_name": "Classikick"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 2,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.7749999761581421
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.75
+                },
+                "mod_type": 0,
+                "osc_type": 0,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.5299999713897705
+                }
+            },
+            "patch_name": "Error Bonk"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.3199999928474426
+                },
+                "level": {
+                    "value": 0.2199999988079071
+                },
+                "lowBoost": {
+                    "value": 1.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 2,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.7799999713897705
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.08999999612569809
+                },
+                "mod_type": 6,
+                "osc_type": 0,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.7599999904632568
+                }
+            },
+            "patch_name": "oh baby"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6699999570846558
+                },
+                "level": {
+                    "value": 0.11999999731779099
+                },
+                "lowBoost": {
+                    "value": 0.8899999856948853
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 1,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.5649999976158142
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.3799999952316284
+                },
+                "mod_type": 7,
+                "osc_type": 2,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.029999999329447746
+                }
+            },
+            "patch_name": "health loss"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6699999570846558
+                },
+                "level": {
+                    "value": 0.11999999731779099
+                },
+                "lowBoost": {
+                    "value": 0.8899999856948853
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 1,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.5649999976158142
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.3799999952316284
+                },
+                "mod_type": 7,
+                "osc_type": 2,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.09999999403953552
+                }
+            },
+            "patch_name": "health loss 2"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6699999570846558
+                },
+                "level": {
+                    "value": 0.11999999731779099
+                },
+                "lowBoost": {
+                    "value": 0.8899999856948853
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 1,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.5649999976158142
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.3799999952316284
+                },
+                "mod_type": 7,
+                "osc_type": 2,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.14000000059604645
+                }
+            },
+            "patch_name": "health loss 3"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 7,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 1.0
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 1.0
+                },
+                "mod_type": 5,
+                "osc_type": 1,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.19999998807907104
+                }
+            },
+            "patch_name": "Slapstick"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5799999833106995
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 1.0
+                },
+                "pan": {
+                    "value": 0.6800000071525574
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 8,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.22999998927116394
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "value": 0.8449999690055847
+                },
+                "mod_speed": {
+                    "value": 0.9399999976158142
+                },
+                "mod_type": 5,
+                "osc_type": 3,
+                "pitch": {
+                    "value": 0.0
+                }
+            },
+            "patch_name": "western punch"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.699999988079071
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.5
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 9,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.7555555701255798
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.05999999865889549
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "value": 0.7199999690055847
+                },
+                "mod_speed": {
+                    "value": 0.429999977350235
+                },
+                "mod_type": 0,
+                "osc_type": 0,
+                "pitch": {
+                    "value": 0.38999998569488525
+                }
+            },
+            "patch_name": "Dr. Who"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 1.0
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.75
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 2,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.23333333432674408
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.09999999403953552
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.7749999761581421
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.4099999964237213
+                },
+                "mod_type": 5,
+                "osc_type": 0,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.5299999713897705
+                }
+            },
+            "patch_name": "70's Computer"
+        }
+    ],
+    "audio": [
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 11,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "enable_ring": false
+            },
+            "patch_name": "new sound"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 12,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": null,
+            "patch_name": "new sound"
+        }
+    ],
+    "midi_management": null,
+    "options": {
+        "enableAntialiasing": false,
+        "rotary_knobs": false
+    },
+    "patch_name": "Alien Invaders",
+    "pcm": [
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.5699999928474426
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.5
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 13,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "pitch": {
+                    "value": 0.4909090995788574
+                }
+            },
+            "patch_name": "new sound"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.7699999809265137
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.5
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 14,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "pitch": {
+                    "value": 0.5127272605895996
+                }
+            },
+            "patch_name": "new sound"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 1.0
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.5
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 15,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "pitch": {
+                    "value": 0.5054545402526855
+                }
+            },
+            "patch_name": "new sound"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 1.0
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.5
+                },
+                "pan": {
+                    "value": 0.6399999856948853
+                }
+            },
+            "config": {
+                "bus": 0,
+                "chan": 1,
+                "mute": false,
+                "note": 16,
+                "noteFollow": false,
+                "solo": false
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.4333333373069763
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "pitch": {
+                    "value": 0.5018181800842285
+                }
+            },
+            "patch_name": "new sound"
+        }
+    ]
+} 
