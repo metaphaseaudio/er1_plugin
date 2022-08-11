@@ -6,7 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
 #include "ER1Voice.h"
-#include "ER1ControlBlock.h"
+#include "ER1SoundPatch.h"
 
 
 class ER1Synth

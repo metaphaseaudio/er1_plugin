@@ -6,7 +6,7 @@
 #include "er1_dsp/sounds/AnalogSound.h"
 #include "er1_dsp/sounds/PCMSound.h"
 
-ER1Voice::ER1Voice(ER1ControlBlock::Ptr& sound, meta::ER1::BaseSound* voice)
+ER1Voice::ER1Voice(ER1SoundPatch::Ptr& sound, meta::ER1::BaseSound* voice)
     : p_Ctrls(sound)
     , m_Sound(voice)
 {}

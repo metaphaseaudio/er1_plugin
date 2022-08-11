@@ -8,11 +8,9 @@
 #include "../../look_and_feel/StandardShapes.h"
 
 
-ConfigSectionComponent::ConfigSectionComponent( ConfigParams& params)
+ConfigSectionComponent::ConfigSectionComponent(ER1SoundPatch& params)
     : m_Screen(params)
-{
-    addAndMakeVisible(m_Screen);
-}
+{ addAndMakeVisible(m_Screen); }
 
 void ConfigSectionComponent::resized()
 {

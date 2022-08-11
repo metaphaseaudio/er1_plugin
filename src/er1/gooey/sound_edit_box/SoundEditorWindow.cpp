@@ -5,8 +5,8 @@
 #include "SoundEditorWindow.h"
 #include "../look_and_feel/ER1Colours.h"
 
-SoundEditorWindow::SoundEditorWindow(GlobalOptions& opts, ER1ControlBlock::Ptr sound)
-    : m_VoiceSetup(sound->config)
+SoundEditorWindow::SoundEditorWindow(GlobalOptions& opts, ER1SoundPatch::Ptr sound)
+    : m_VoiceSetup(*sound)
     , m_OscSection(opts, sound->osc)
     , m_AmpSection(opts, sound->amp)
     , m_DelaySection(opts, sound->delay)

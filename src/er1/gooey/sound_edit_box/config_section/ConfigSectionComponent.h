@@ -12,7 +12,7 @@ class ConfigSectionComponent
     : public juce::Component
 {
 public:
-    explicit ConfigSectionComponent(ConfigParams& params);
+    explicit ConfigSectionComponent(ER1SoundPatch& params);
     void paint(juce::Graphics& g) override;
     void resized() override;
 

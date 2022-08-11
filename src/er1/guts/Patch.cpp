@@ -4,15 +4,9 @@
 
 #include "Patch.h"
 
-Patch::Patch()
-    : name("")
-{
 
-}
-
-Patch::Patch(const std::string& name)
-    : name(name)
-{}
+Patch::Patch(const juce::File& loaded)
+    { loadPatch(loaded); }
 
 void Patch::savePatch(const juce::File& f)
 {
@@ -28,23 +22,36 @@ void Patch::loadPatch(const juce::File& file)
 {
     const auto reader = file.createInputStream();
     setData(reader->readEntireStreamAsString().toStdString());
+    name = file.getFileNameWithoutExtension().toStdString();
 }
 
 
 std::string JSONPatch::getData()
 {
     auto j = toJson();
-    j["patch_name"] = name;
-    return toJson().dump(4);
+    return j.dump(4);
 }
+
 void JSONPatch::setData(const std::string& data)
 {
     try
     {
         auto j = nlohmann::json::parse(data);
-        name = j.value("patch_name", "");
         fromJson(j);
     }
     catch (nlohmann::json::exception& err)
-    { std::cout << err.what() << std::endl; }
+        { std::cout << err.what() << std::endl; }
+}
+
+void JSONPatch::fromJson(const nlohmann::json& json)
+{
+    name = json.value("patch_name", "new sound");
+    fromJsonInternal(json);
+}
+
+nlohmann::json JSONPatch::toJson() const
+{
+    auto rv = toJsonInternal();
+    rv["patch_name"] = name;
+    return rv;
 }

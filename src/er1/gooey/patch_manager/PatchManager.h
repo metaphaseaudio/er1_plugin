@@ -28,7 +28,7 @@ private:
     void selectionChanged() override;
 
     void startRenameSelected();
-    void refreshAndSetSelected(juce::File& f);
+    void refreshAndSetSelected(const juce::File& f);
 
     void textEditorFocusLost(juce::TextEditor& editor) override;
 

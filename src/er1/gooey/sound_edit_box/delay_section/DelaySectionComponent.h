@@ -13,7 +13,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgButton.h"
-#include "../../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../../guts/juce_synth/ER1SoundPatch.h"
 #include "../../../guts/MidiManager.h"
 #include "../../widgets/Header.h"
 #include "../../../guts/GlobalOptions.h"

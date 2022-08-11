@@ -14,7 +14,7 @@
 #include "../../widgets/KorgButton.h"
 #include "../../widgets/KorgKnob.h"
 #include "../../widgets/KorgComboBox.h"
-#include "../../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../../guts/juce_synth/ER1SoundPatch.h"
 #include "../../../guts/MidiManager.h"
 #include "../../widgets/Header.h"
 #include "../../../guts/GlobalOptions.h"

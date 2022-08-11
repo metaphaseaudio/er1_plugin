@@ -205,9 +205,8 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.name = voiceIDStr.toStdString();
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
     sound->config.bus = 0;
@@ -249,9 +248,8 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.name = voiceIDStr.toStdString();
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
     sound->config.bus = 0;
@@ -299,9 +297,8 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, con
     AmpParams amp = {decay, level, pan, lowBoost};
     DelayParams delay = {time, depth, sync};
 
-    m_CtrlBlocks.add(new ER1ControlBlock(osc, amp, delay, 1, 1));
+    m_CtrlBlocks.add(new ER1SoundPatch(name, osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.name = name;
     sound->config.chan = 1;
     sound->config.note = m_CtrlBlocks.size();
     sound->config.bus = 0;
@@ -330,7 +327,7 @@ AudioProcessor::BusesProperties ER1AudioProcessor::makeBusesProperties(int inBus
     return rv;
 }
 
-void ER1AudioProcessor::addMidiLearn(ER1ControlBlock* ctrls)
+void ER1AudioProcessor::addMidiLearn(ER1SoundPatch* ctrls)
 {
     if (ctrls->osc.pitch != nullptr) { ctrls->osc.pitch->addMidiLearnListener(&m_MidiManager); }
     if (ctrls->osc.modSpeed != nullptr) { ctrls->osc.modSpeed->addMidiLearnListener(&m_MidiManager); }
@@ -345,7 +342,7 @@ void ER1AudioProcessor::addMidiLearn(ER1ControlBlock* ctrls)
     ctrls->delay.time->addMidiLearnListener(&m_MidiManager);
 }
 
-nlohmann::json ER1AudioProcessor::toJson() const
+nlohmann::json ER1AudioProcessor::toJsonInternal() const
 {
     json j = {
         {"midi_management", m_MidiManager.getState()},
@@ -377,7 +374,7 @@ nlohmann::json ER1AudioProcessor::toJson() const
     return j;
 }
 
-void ER1AudioProcessor::fromJson(const json& j)
+void ER1AudioProcessor::fromJsonInternal(const json& j)
 {
     try
     {

@@ -15,7 +15,7 @@
 #include "../widgets/LCDText.h"
 #include "../widgets/DividerLine.h"
 #include "../../guts/ER1AudioProcessor.h"
-#include "../../guts/juce_synth/ER1ControlBlock.h"
+#include "../../guts/juce_synth/ER1SoundPatch.h"
 
 
 class SoundEditorWindow
@@ -23,7 +23,7 @@ class SoundEditorWindow
     , public juce::ChangeListener
 {
 public:
-    explicit SoundEditorWindow(GlobalOptions& opts, ER1ControlBlock::Ptr sound);
+    explicit SoundEditorWindow(GlobalOptions& opts, ER1SoundPatch::Ptr sound);
     void resized() override;
 
 private:

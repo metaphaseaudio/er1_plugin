@@ -2,7 +2,7 @@
 // Created by Matt on 10/18/2020.
 //
 
-#include "ER1ControlBlock.h"
+#include "ER1SoundPatch.h"
 
 static juce::StringArray OscNames =
 {
@@ -21,16 +21,19 @@ static juce::StringArray ModulationNames =
 };
 
 
-ER1ControlBlock::ER1ControlBlock(OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int midiChannel)
-    : config{"New Sound", false, midiNoteNumber, midiChannel}
+ER1SoundPatch::ER1SoundPatch(std::string name, OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int
+midiChannel)
+    : config{false, midiNoteNumber, midiChannel}
     , amp(amp)
     , osc(osc)
     , delay(delay)
-{}
-
-void ER1ControlBlock::printStatus()
 {
-    std::cout << config.name << std::endl;
+    name = name;
+}
+
+void ER1SoundPatch::printStatus()
+{
+    std::cout << name << std::endl;
     std::cout << "Note: " << config.note << std::endl;
     std::cout << "Chan: " << config.chan << std::endl;
     std::cout << "Shape: " << osc.oscType->getCurrentValueAsText() << std::endl;
@@ -52,7 +55,7 @@ void ER1ControlBlock::printStatus()
     std::cout << std::endl;
 }
 
-json ER1ControlBlock::toJson() const
+json ER1SoundPatch::toJsonInternal() const
 {
     return json({
         {"config", config.asJSON()},
@@ -62,7 +65,7 @@ json ER1ControlBlock::toJson() const
     });
 }
 
-void ER1ControlBlock::fromJson(const json& j)
+void ER1SoundPatch::fromJsonInternal(const json& j)
 {
     try
     {

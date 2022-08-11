@@ -17,7 +17,7 @@
 #include <meta/midi/MidiState.h>
 #include <meta/dsp/Decimate.h>
 #include "juce_synth/ER1Synth.h"
-#include "juce_synth/ER1ControlBlock.h"
+#include "juce_synth/ER1SoundPatch.h"
 #include "juce_synth/ER1Voice.h"
 #include "MidiManager.h"
 #include "GlobalOptions.h"
@@ -73,18 +73,18 @@ public:
     MidiManager& getMidiManager() { return m_MidiManager; }
     GlobalOptions& getOptions() { return m_Opts; }
 
-    ER1ControlBlock::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
+    ER1SoundPatch::Ptr getSound(int i) { return m_CtrlBlocks[i]; }
     void triggerVoice(int num);
-    juce::ReferenceCountedArray<ER1ControlBlock>& getAllSounds() { return m_CtrlBlocks; }
+    juce::ReferenceCountedArray<ER1SoundPatch>& getAllSounds() { return m_CtrlBlocks; }
     const ER1Synth& getSynth() const { return m_Synth; }
 
-    nlohmann::json toJson() const override;
-    void fromJson(const nlohmann::json& json) override;
+    nlohmann::json toJsonInternal() const override;
+    void fromJsonInternal(const nlohmann::json& json) override;
 
 private:
     static BusesProperties makeBusesProperties(int inBusses, int outBusses);
 
-    void addMidiLearn(ER1ControlBlock* ctrls);
+    void addMidiLearn(ER1SoundPatch* ctrls);
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
     ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
@@ -96,7 +96,7 @@ private:
 
     MidiManager m_MidiManager;
 
-    juce::ReferenceCountedArray<ER1ControlBlock> m_CtrlBlocks;
+    juce::ReferenceCountedArray<ER1SoundPatch> m_CtrlBlocks;
     ER1Synth m_Synth;
 
     juce::AudioBuffer<float> m_OversampleBuffer;

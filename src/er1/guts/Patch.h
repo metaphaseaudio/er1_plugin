@@ -10,8 +10,8 @@
 class Patch
 {
 public:
-    Patch();
-    explicit Patch(const std::string& name);
+    Patch() = default;
+    explicit Patch(const juce::File& loaded);
 
     void savePatch(const juce::File& file);
     void loadPatch(const juce::File& file);
@@ -28,7 +28,15 @@ class JSONPatch
     : public Serializeable
     , public Patch
 {
+public:
+    void fromJson(const nlohmann::json& json) final;
+    [[nodiscard]] nlohmann::json toJson() const final;
+
 protected:
     std::string getData() override;
     void setData(const std::string& data) override;
+
+    // We have to do it this way because patches must be named
+    virtual void fromJsonInternal(const nlohmann::json& json) = 0;
+    virtual nlohmann::json toJsonInternal() const = 0;
 };

@@ -10,8 +10,8 @@
 #define STD_LABEL_PT 12
 
 
-LCDScreen::LCDScreen(ConfigParams& config)
-    : r_Config(config), m_NoteFollow("follow"), m_Solo("solo"), m_Mute("mute")
+LCDScreen::LCDScreen(ER1SoundPatch& config)
+    : r_LivePatch(config), m_NoteFollow("follow"), m_Solo("solo"), m_Mute("mute")
     , m_Name("Sound name", ""), m_NameLabel("Sound Name Label", "Snd:")
     , m_MidiNote("Midi note", "1"), m_MidiNoteLabel("Midi note label", "Note:")
     , m_MidiChan("Midi chan", "1"), m_MidiChanLabel("Midi chan label", "Chan:")
@@ -31,33 +31,36 @@ LCDScreen::LCDScreen(ConfigParams& config)
     m_MidiChan.setJustificationType(juce::Justification::right);
     m_AudioBus.setJustificationType(juce::Justification::right);
 
-    m_Name.onTextChange = [&](){ r_Config.name = m_Name.getText().toStdString(); };
+    m_Name.onTextChange = [&](){
+        r_LivePatch.name = m_Name.getText().toStdString();
+    };
+
     m_MidiNote.onTextChange = [&](){
-        r_Config.note = std::min(127, std::max(0, m_MidiNote.getText().getIntValue()));
-        m_MidiNote.setText(juce::String(r_Config.note), juce::dontSendNotification);
+        r_LivePatch.config.note = std::min(127, std::max(0, m_MidiNote.getText().getIntValue()));
+        m_MidiNote.setText(juce::String(r_LivePatch.config.note), juce::dontSendNotification);
     };
 
     m_MidiChan.onTextChange = [&](){
-        r_Config.chan = std::min(16, std::max(1, m_MidiChan.getText().getIntValue()));
-        m_MidiChan.setText(juce::String(r_Config.chan), juce::dontSendNotification);
+        r_LivePatch.config.chan = std::min(16, std::max(1, m_MidiChan.getText().getIntValue()));
+        m_MidiChan.setText(juce::String(r_LivePatch.config.chan), juce::dontSendNotification);
     };
 
     m_AudioBus.onTextChange = [&](){
-        r_Config.bus = std::min(meta::ER1::NumOutBuses - 1, std::max(0, m_AudioBus.getText().getIntValue()));
-        m_AudioBus.setText(juce::String(r_Config.bus), juce::dontSendNotification);
+        r_LivePatch.config.bus = std::min(meta::ER1::NumOutBuses - 1, std::max(0, m_AudioBus.getText().getIntValue()));
+        m_AudioBus.setText(juce::String(r_LivePatch.config.bus), juce::dontSendNotification);
     };
 
-    m_NoteFollow.setToggleState(r_Config.noteFollow, juce::dontSendNotification);
+    m_NoteFollow.setToggleState(r_LivePatch.config.noteFollow, juce::dontSendNotification);
     m_NoteFollow.onClick = [&]()
-        { r_Config.noteFollow = !r_Config.noteFollow; };
+        { r_LivePatch.config.noteFollow = !r_LivePatch.config.noteFollow; };
 
-    m_Mute.setToggleState(r_Config.mute, juce::dontSendNotification);
+    m_Mute.setToggleState(r_LivePatch.config.mute, juce::dontSendNotification);
     m_Mute.onClick = [&]()
-        { r_Config.mute = !r_Config.mute; };
+        { r_LivePatch.config.mute = !r_LivePatch.config.mute; };
 
-    m_Solo.setToggleState(r_Config.solo, juce::dontSendNotification);
+    m_Solo.setToggleState(r_LivePatch.config.solo, juce::dontSendNotification);
     m_Solo.onClick = [&]()
-        { r_Config.solo = !r_Config.solo; };
+        { r_LivePatch.config.solo = !r_LivePatch.config.solo; };
 
     refreshText(juce::dontSendNotification);
 }
@@ -108,6 +111,7 @@ void LCDScreen::resized()
         nameBounds.getX(), nameBounds.getY(),
         BIG_LABEL_PT + m_NameLabel.getFont().getStringWidthFloat(m_NameLabel.getText()) + 5, nameBounds.getHeight()
     );
+
     const auto nameLength = juce::Rectangle<int>(
         nameLabelLength.getRight() - 8, nameBounds.getY(),
         nameBounds.getWidth() - (nameBounds.getY() + BIG_LABEL_PT), nameBounds.getHeight()
@@ -162,8 +166,8 @@ void LCDScreen::resized()
 
 void LCDScreen::refreshText(juce::NotificationType notify)
 {
-    if (!m_Name.isBeingEdited()) { m_Name.setText(r_Config.name, notify); }
-    if (!m_MidiChan.isBeingEdited()) { m_MidiChan.setText(juce::String(r_Config.chan).toStdString(), notify); }
-    if (!m_MidiNote.isBeingEdited()) { m_MidiNote.setText(juce::String(r_Config.note).toStdString(), notify); }
-    if (!m_AudioBus.isBeingEdited()) { m_AudioBus.setText(juce::String(r_Config.bus).toStdString(), notify); }
+    if (!m_Name.isBeingEdited()) { m_Name.setText(r_LivePatch.name, notify); }
+    if (!m_MidiChan.isBeingEdited()) { m_MidiChan.setText(juce::String(r_LivePatch.config.chan).toStdString(), notify); }
+    if (!m_MidiNote.isBeingEdited()) { m_MidiNote.setText(juce::String(r_LivePatch.config.note).toStdString(), notify); }
+    if (!m_AudioBus.isBeingEdited()) { m_AudioBus.setText(juce::String(r_LivePatch.config.bus).toStdString(), notify); }
 }

@@ -7,7 +7,7 @@
 #include <map>
 #include <meta/midi/MidiLearnable.h>
 #include <nlohmann/json.hpp>
-#include "juce_synth/ER1ControlBlock.h"
+#include "juce_synth/ER1SoundPatch.h"
 
 
 class MidiManager
@@ -28,8 +28,8 @@ public:
     void startListen() { m_IsListening = true; }
     void stopListen() { m_IsListening = false; }
     [[nodiscard]] bool isListening() const { return m_IsListening.load(); }
-    void setActiveVoice(ER1ControlBlock* sound) { m_ActiveVoice = sound; }
-    ER1ControlBlock* getActiveVoice() const { return m_ActiveVoice; }
+    void setActiveVoice(ER1SoundPatch* sound) { m_ActiveVoice = sound; }
+    ER1SoundPatch* getActiveVoice() const { return m_ActiveVoice; }
 
     nlohmann::json getState() const;
     void setState(const nlohmann::json& newState);
@@ -38,7 +38,7 @@ public:
 private:
     std::vector<meta::MidiLearnBroadcaster*> m_LearnedList;
     std::atomic<meta::MidiLearnBroadcaster*> m_CurrentlyLearning;
-    std::atomic<ER1ControlBlock*> m_ActiveVoice;
+    std::atomic<ER1SoundPatch*> m_ActiveVoice;
     std::atomic<bool> m_IsListening;
     std::map<MidiCtrlNumber, std::string> m_GlobalLearnMap;
     juce::MidiKeyboardState m_State;
