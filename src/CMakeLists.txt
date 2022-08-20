@@ -7,6 +7,7 @@ set(VERSION ${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR})
 add_definitions(-DER1_VERSION="${ER1_VERSION_MAJOR}.${ER1_VERSION_MINOR}")
 set(JUCE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/shared/JUCE)
 include(${CMAKE_CURRENT_SOURCE_DIR}/shared/MUDS/cmake_snippets/CPP17Boilerplate.cmake)
+include(${MUDS_ROOT}/cmake_snippets/PackageAudioPlugIn.cmake)
 
 #-----------------------------------------------------------------------------
 # Build the VST SDK
@@ -77,8 +78,7 @@ install(
 
 set(ER1_PRESET_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install_extras/presets/)
 file(GLOB_RECURSE ER1_PRESET_FILES "${ER1_PRESET_DATA_DIR}/*")
-message("${CMAKE_CURRENT_SOURCE_DIR}/${ER1_PRESET_DATA_DIR}")
-message("${ER1_PRESET_FILES}")
+
 install(
     FILES ${ER1_PRESET_FILES}
     DESTINATION  er1_presets
@@ -92,9 +92,15 @@ set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Common Files\\VST3")
+
+set(CPACK_COMPONENT_VST3_DISPLAY_NAME "VST3")
+
+set(CPACK_NSIS_PACKAGE_NAME "Metaphase ER-1")
 set(CPACK_NSIS_IGNORE_LICENSE_PAGE TRUE)
 set(CPACK_COMPONENTS_ALL vst3 presets)
+
 include(CPack)
 
 option(BUILD_TESTS "BUILD_TESTS" OFF)
