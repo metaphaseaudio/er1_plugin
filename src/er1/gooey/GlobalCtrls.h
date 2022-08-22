@@ -26,6 +26,11 @@ public:
 
     void setVoice(JSONPatch* patch) { m_SoundPatchManager.changeTarget(patch); }
 
+    juce::File getCurrentSoundFolder() const { return m_SoundPatchManager.getCurrentDirectory(); }
+    juce::File getCurrentBankFolder() const { return m_BankPatchManager.getCurrentDirectory(); }
+    void setCurrentSoundFolder(const juce::File& dir) { m_SoundPatchManager.changeDir(dir); }
+    void setCurrentBankFolder(const juce::File& dir) { m_BankPatchManager.changeDir(dir); }
+
 private:
     void buttonClicked(juce::Button* btn) override;
     void timerCallback() override;

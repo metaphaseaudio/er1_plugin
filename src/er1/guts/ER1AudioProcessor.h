@@ -28,6 +28,7 @@
 */
 class ER1AudioProcessor
     : public juce::AudioProcessor
+    , public juce::ChangeBroadcaster
     , public JSONPatch
 {
 public:
@@ -78,6 +79,12 @@ public:
     juce::ReferenceCountedArray<ER1SoundPatch>& getAllSounds() { return m_CtrlBlocks; }
     const ER1Synth& getSynth() const { return m_Synth; }
 
+    juce::File getBankPresetFolder() const { return m_BankPresetFolder; };
+    juce::File getSoundPresetFolder() const { return m_SoundPresetFolder; };
+
+    void setBankPresetFolder(const juce::File& folder);
+    void setSoundPresetFolder(const juce::File& folder);
+
     nlohmann::json toJsonInternal() const override;
     void fromJsonInternal(const nlohmann::json& json) override;
 
@@ -87,7 +94,7 @@ private:
     void addMidiLearn(ER1SoundPatch* ctrls);
     void addAnalogVoice(int voiceNumber, bool canBeRingCarrier);
     void addAudioVoice(int voiceNumber, bool canBeRingCarrier);
-    ER1Voice* addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate);
+    ER1Voice* addPCMVoice(std::string name, const char* data, int nData, float dataSampleRate);
 
     GlobalOptions m_Opts;
     using OverSample = juce::dsp::Oversampling<float>;
@@ -98,6 +105,7 @@ private:
 
     juce::ReferenceCountedArray<ER1SoundPatch> m_CtrlBlocks;
     ER1Synth m_Synth;
+    juce::File m_BankPresetFolder, m_SoundPresetFolder;
 
     juce::AudioBuffer<float> m_OversampleBuffer;
     //==============================================================================

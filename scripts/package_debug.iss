@@ -21,7 +21,7 @@ AppPublisher={#PluginPublisher}
 AppPublisherURL={#PluginURL}
 AppSupportURL={#PluginURL}
 AppUpdatesURL={#PluginURL}
-DefaultDirName={autopf}\Metaphase
+DefaultDirName={autocf}\Metaphase
 DefaultGroupName={#PluginName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
@@ -54,6 +54,7 @@ Name: "Presets"; Description: "Preset files"; Types: full
 var
   VST3DirPage: TInputDirWizardPage;
   PresetDirPage: TInputDirWizardPage;
+  DefaultCommonFiles: String;
 
 procedure InitializeWizard;
 begin
@@ -65,9 +66,8 @@ begin
   VST3DirPage.Add('VST-3 Installation Path');
   PresetDirPage.Add('Preset Installation Path');
   
-  VST3DirPage.Values[0] := GetPreviousData('VST3Dir', 'VST3')
-  PresetDirPage.Values[0] := GetPreviousData('PresetDir', '')   
-  
+  VST3DirPage.Values[0] := GetPreviousData('VST3Dir', ExpandConstant('{autocf64}/VST3'))
+  PresetDirPage.Values[0] := GetPreviousData('PresetDir', ExpandConstant('{autodocs}/metaphase/er_1'))  
 end;
 
 

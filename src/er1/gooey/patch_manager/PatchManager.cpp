@@ -16,7 +16,7 @@ static std::string stripStar(const std::string& x)
 
 
 PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const std::string& name,  const std::string& customSuffix)
-    : p_Target(target)
+    : p_Target(nullptr)
     , m_Suffix(stripStar(customSuffix))
     , m_WildcardFilter{"*.json;" + customSuffix +";", "*", "Bank Patch Filter"}
     , m_DirectoryThread(name)
@@ -50,6 +50,8 @@ PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const s
     m_New.addListener(this);
     m_Save.addListener(this);
     m_Delete.addListener(this);
+
+    changeTarget(target);
 }
 
 void PatchManager::paint(juce::Graphics& g)
@@ -217,5 +219,10 @@ void PatchManager::changeTarget(Patch* target)
     p_Target = target;
     const auto target_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
     refreshAndSetSelected(target_file);
+}
+
+void PatchManager::changeDir(const juce::File& dir)
+{
+    m_DirList.setDirectory(dir, true, true);
 }
 

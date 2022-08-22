@@ -22,6 +22,8 @@ public:
     void resized() override;
 
     void changeTarget(Patch* target);
+    juce::File getCurrentDirectory() const { return m_DirList.getDirectory(); };
+    void changeDir(const juce::File& dir);
 
 private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;

@@ -24,6 +24,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     , m_VoiceSelector(p.getMidiManager(), p.getSynth().getVoices())
     , m_GlobalCtrls(p.getMidiManager(), p)
 {
+    processor.addChangeListener(this);
     setLookAndFeel(&m_LAF);
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
@@ -46,6 +47,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
+    processor.removeChangeListener(this);
 }
 
 //==============================================================================
@@ -92,5 +94,16 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     }
 
     if (source == &m_GlobalCtrls)
-        { repaint(); }
+    {
+        processor.setBankPresetFolder(m_GlobalCtrls.getCurrentBankFolder());
+        processor.setSoundPresetFolder(m_GlobalCtrls.getCurrentSoundFolder());
+        repaint();
+    }
+
+    if (source == &processor)
+    {
+        m_GlobalCtrls.setCurrentBankFolder(processor.getBankPresetFolder());
+        m_GlobalCtrls.setCurrentSoundFolder(processor.getSoundPresetFolder());
+    }
+
 }

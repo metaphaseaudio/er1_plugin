@@ -37,10 +37,24 @@ static juce::StringArray ModulationNames =
 };
 
 
+static juce::File getPatchDir(const std::string& dir)
+{
+    auto patchDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory)
+            .getChildFile("metaphase")
+            .getChildFile("er1")
+            .getChildFile(dir);
+
+    if (!patchDir.exists())
+    { patchDir.createDirectory(); }
+    return patchDir;
+}
+
 
 //==============================================================================
 ER1AudioProcessor::ER1AudioProcessor()
     : AudioProcessor(makeBusesProperties(1, meta::ER1::NumOutBuses))
+    , m_BankPresetFolder(getPatchDir("banks"))
+    , m_SoundPresetFolder(getPatchDir("sounds"))
 {
     for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != meta::ER1::ANALOG_SOUND_COUNT); }
     for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
@@ -135,7 +149,9 @@ void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)
 {
     MemoryOutputStream stream(destData, true);
 
-    const auto j = toJson();
+    auto j = toJson();
+    j["bank_dir"] = m_BankPresetFolder.getFullPathName().toStdString();
+    j["sound_dir"] = m_SoundPresetFolder.getFullPathName().toStdString();
     stream.writeString(j.dump(4));
 }
 
@@ -149,6 +165,8 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         json j = json::parse(stream.readString().toStdString());
 
         fromJson(j);
+        setBankPresetFolder(j.value("bank_dir", getPatchDir("banks")));
+        setSoundPresetFolder(j.value("sound_dir", getPatchDir("sounds")));
     }
     catch (json::exception& err)
     {
@@ -266,7 +284,7 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     );
 }
 
-ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, const int nData, float dataSampleRate)
+ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, int nData, float dataSampleRate)
 {
     // Create params
     auto* pitch = new FloatParam(name + "_pitch", name + " Pitch", 0.25f, 3.0f, 1.0f);
@@ -424,6 +442,18 @@ bool ER1AudioProcessor::canRemoveBus(bool isInput) const
 {
     if (isInput) { return false; }
     return getBusCount(false) > 1;
+}
+
+void ER1AudioProcessor::setBankPresetFolder(const File& folder)
+{
+    m_BankPresetFolder = folder;
+    sendChangeMessage();
+}
+
+void ER1AudioProcessor::setSoundPresetFolder(const File& folder)
+{
+    m_SoundPresetFolder = folder;
+    sendChangeMessage();
 }
 
 

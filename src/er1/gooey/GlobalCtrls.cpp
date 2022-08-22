@@ -8,22 +8,10 @@
 
 #define BIG_LABEL_PT 19
 
-static juce::File getPatchDir(const std::string& dir)
-{
-    auto patchDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory)
-    .getChildFile("metaphase")
-    .getChildFile("er1")
-    .getChildFile(dir);
-
-    if (!patchDir.exists())
-        { patchDir.createDirectory(); }
-    return patchDir;
-}
-
 
 GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
-    : m_SoundPatchManager(mgr.getActiveVoice(), getPatchDir("sounds"), "Sound", "*.er1snd")
-    , m_BankPatchManager(&proc, getPatchDir("banks"), "Bank", "*.er1bnk")
+    : m_SoundPatchManager(mgr.getActiveVoice(), proc.getSoundPresetFolder(), "Sound", "*.er1snd")
+    , m_BankPatchManager(&proc, proc.getBankPresetFolder(), "Bank", "*.er1bnk")
     , m_OptionsManager(proc.getOptions())
     , r_MidiManager(mgr)
     , m_Bank("Bank", "Default")
