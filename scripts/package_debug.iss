@@ -49,6 +49,9 @@ Name: "{group}\{cm:UninstallProgram,{#PluginName}}"; Filename: "{uninstallexe}"
 Name: "VST3"; Description: "VST-3 Plug-in"; Types: full
 Name: "Presets"; Description: "Preset files"; Types: full
 
+[Registry]
+Root: HKCU; Subkey: "Software\Metaphase\ER1"; Flags: uninsdeletekey; ValueType: string; ValueName: "PresetInstallPath"; ValueData: "{code:GetPresetDir}";
+
 
 [Code]
 var
@@ -67,7 +70,7 @@ begin
   PresetDirPage.Add('Preset Installation Path');
   
   VST3DirPage.Values[0] := GetPreviousData('VST3Dir', ExpandConstant('{autocf64}/VST3'))
-  PresetDirPage.Values[0] := GetPreviousData('PresetDir', ExpandConstant('{autodocs}/metaphase/er_1'))  
+  PresetDirPage.Values[0] := GetPreviousData('PresetDir', ExpandConstant('{userdocs}/metaphase/er1'))  
 end;
 
 
