@@ -41,8 +41,9 @@ static juce::File getPatchDir(const std::string& dir)
 {
     const auto defaultDir = juce::File(juce::WindowsRegistry::getValue(
             "HKEY_CURRENT_USER\\SOFTWARE\\Metaphase\\ER1\\PresetInstallPath",
-            juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory).getFullPathName()git
-            ));
+            juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory).getFullPathName()
+        )
+    );
 
     auto patchDir = defaultDir
             .getChildFile("metaphase")
@@ -74,6 +75,8 @@ ER1AudioProcessor::ER1AudioProcessor()
 
     cr->addToChokeList(cl);
     cl->addToChokeList(cr);
+
+    loadDefaultPatch();
 }
 
 
@@ -177,6 +180,10 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }
+
+//
+//    if (name == getDefaultPatchName())
+//        { loadDefaultPatch(); }
 }
 
 void ER1AudioProcessor::triggerVoice(int voice)
@@ -460,6 +467,20 @@ void ER1AudioProcessor::setSoundPresetFolder(const File& folder)
     m_SoundPresetFolder = folder;
     sendChangeMessage();
 }
+
+void ER1AudioProcessor::loadDefaultPatch()
+{
+    // If we're just dealing with a default, we might as well try to load a patch from the patch directory
+    auto itr = juce::RangedDirectoryIterator(getPatchDir("banks"), false);
+    for (auto& entry : itr)
+    {
+        auto file = entry.getFile();
+        loadPatch(file);
+        sendChangeMessage();
+        break;
+    }
+}
+
 
 
 //==============================================================================

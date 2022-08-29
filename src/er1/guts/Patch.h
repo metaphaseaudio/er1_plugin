@@ -16,9 +16,14 @@ public:
     void savePatch(const juce::File& file);
     void loadPatch(const juce::File& file);
 
-    std::string name;
+    virtual std::string getDefaultPatchName() const { return "<default>"; }
+
+    std::string getPatchName() const { return m_PatchName; }
+    void setPatchName(const std::string& newName);
 
 protected:
+    std::string m_PatchName;
+
     virtual std::string getData() = 0;
     virtual void setData(const std::string& data) = 0;
 };

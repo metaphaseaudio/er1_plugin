@@ -32,7 +32,7 @@ LCDScreen::LCDScreen(ER1SoundPatch& config)
     m_AudioBus.setJustificationType(juce::Justification::right);
 
     m_Name.onTextChange = [&](){
-        r_LivePatch.name = m_Name.getText().toStdString();
+        r_LivePatch.setPatchName(m_Name.getText().toStdString());
     };
 
     m_MidiNote.onTextChange = [&](){
@@ -166,7 +166,7 @@ void LCDScreen::resized()
 
 void LCDScreen::refreshText(juce::NotificationType notify)
 {
-    if (!m_Name.isBeingEdited()) { m_Name.setText(r_LivePatch.name, notify); }
+    if (!m_Name.isBeingEdited()) { m_Name.setText(r_LivePatch.getPatchName(), notify); }
     if (!m_MidiChan.isBeingEdited()) { m_MidiChan.setText(juce::String(r_LivePatch.config.chan).toStdString(), notify); }
     if (!m_MidiNote.isBeingEdited()) { m_MidiNote.setText(juce::String(r_LivePatch.config.note).toStdString(), notify); }
     if (!m_AudioBus.isBeingEdited()) { m_AudioBus.setText(juce::String(r_LivePatch.config.bus).toStdString(), notify); }

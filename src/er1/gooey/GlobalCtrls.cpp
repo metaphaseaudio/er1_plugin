@@ -48,7 +48,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     m_SelectSoundLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
 
     m_Bank.setEditable(false, true);
-    m_Bank.onTextChange = [&]() { proc.name =  m_Bank.getText().toStdString(); };
+    m_Bank.onTextChange = [&]() { proc.setPatchName(m_Bank.getText().toStdString()); };
 
     addAndMakeVisible(m_BankLabel); addAndMakeVisible(m_Bank);
     addAndMakeVisible(m_NoteListen); addAndMakeVisible(m_NoteListenLabel);
@@ -183,4 +183,12 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
 }
 
 void GlobalCtrls::changeListenerCallback(juce::ChangeBroadcaster* source)
-    { sendChangeMessage(); }
+{
+    sendChangeMessage();
+}
+
+void GlobalCtrls::setBankName(const std::string& bank)
+{
+    m_Bank.setText(bank, juce::dontSendNotification);
+    repaint();
+}

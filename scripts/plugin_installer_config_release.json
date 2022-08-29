@@ -1,0 +1,22 @@
+{
+  "output_dir": "C:\\Users\\Matt\\code\\er1_plugin",
+  "name": "ER-1",
+  "version_string": "1.0.0",
+  "publisher": "Metaphase" ,
+  "url": "metaphaseaudio.com",
+  "components": [
+    {
+      "name": "VST3",
+      "source": "C:\\Users\\Matt\\code\\er1_plugin\\cmake-build-release\\ER-1_artefacts\\Release\\VST3\\ER-1.vst3\\Contents\\x86_64-win\\ER-1.vst3",
+      "default_install_dir": "{autocf64}/VST3",
+      "description": "VST-3 Plug-in"
+    },
+    {
+      "name": "Presets",
+      "source": "C:\\Users\\Matt\\code\\er1_plugin\\src\\install_extras\\presets\\*",
+      "default_install_dir": "{userdocs}/metaphase/er1",
+      "description": "Preset files"
+    }
+  ],
+  "languages": ["english"]
+}

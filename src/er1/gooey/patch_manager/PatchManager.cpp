@@ -97,13 +97,13 @@ void PatchManager::fileDoubleClicked(const juce::File& f)
 
 std::string PatchManager::safeName() const
 {
-    auto new_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
+    auto new_file = m_DirList.getDirectory().getChildFile(p_Target->getPatchName() + m_Suffix);
     int copy = 0;
 
     while (new_file.exists())
     {
         copy++;
-        new_file = m_DirList.getDirectory().getChildFile(juce::String(p_Target->name) + "(" + juce::String(copy) + ")" + m_Suffix);
+        new_file = m_DirList.getDirectory().getChildFile(juce::String(p_Target->getPatchName()) + "(" + juce::String(copy) + ")" + m_Suffix);
     }
 
     return new_file.getFileNameWithoutExtension().toStdString();
@@ -135,7 +135,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
 
     else if (btn == &m_Save)
     {
-        const auto new_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
+        const auto new_file = m_DirList.getDirectory().getChildFile(p_Target->getPatchName() + m_Suffix);
         p_Target->savePatch(new_file);
         refreshAndSetSelected(new_file);
     }
@@ -217,7 +217,7 @@ void PatchManager::selectionChanged()
 void PatchManager::changeTarget(Patch* target)
 {
     p_Target = target;
-    const auto target_file = m_DirList.getDirectory().getChildFile(p_Target->name + m_Suffix);
+    const auto target_file = m_DirList.getDirectory().getChildFile(p_Target->getPatchName() + m_Suffix);
     refreshAndSetSelected(target_file);
 }
 

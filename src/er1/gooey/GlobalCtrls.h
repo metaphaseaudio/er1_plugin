@@ -28,8 +28,10 @@ public:
 
     juce::File getCurrentSoundFolder() const { return m_SoundPatchManager.getCurrentDirectory(); }
     juce::File getCurrentBankFolder() const { return m_BankPatchManager.getCurrentDirectory(); }
-    void setCurrentSoundFolder(const juce::File& dir) { m_SoundPatchManager.changeDir(dir); }
-    void setCurrentBankFolder(const juce::File& dir) { m_BankPatchManager.changeDir(dir); }
+    void setCurrentSoundFolder(const juce::File& dir) { m_SoundPatchManager.changeDir(dir); repaint(); }
+    void setCurrentBankFolder(const juce::File& dir) { m_BankPatchManager.changeDir(dir); repaint(); }
+
+    void setBankName(const std::string& name);
 
 private:
     void buttonClicked(juce::Button* btn) override;

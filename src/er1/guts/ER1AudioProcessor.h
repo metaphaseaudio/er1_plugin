@@ -88,6 +88,8 @@ public:
     nlohmann::json toJsonInternal() const override;
     void fromJsonInternal(const nlohmann::json& json) override;
 
+    void loadDefaultPatch();
+
 private:
     static BusesProperties makeBusesProperties(int inBusses, int outBusses);
 

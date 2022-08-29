@@ -20,7 +20,7 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
 
     for (auto& voice : voices)
     {
-        auto& btn = m_Buttons.emplace_back(new KorgToggleButton(voice->getControlBlock()->name));
+        auto& btn = m_Buttons.emplace_back(new KorgToggleButton(voice->getControlBlock()->getPatchName()));
         addAndMakeVisible(*btn);
         btn->setRadioGroupId(1);
         btn->onClick = [&](){

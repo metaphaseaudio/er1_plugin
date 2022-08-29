@@ -22,7 +22,12 @@ void Patch::loadPatch(const juce::File& file)
 {
     const auto reader = file.createInputStream();
     setData(reader->readEntireStreamAsString().toStdString());
-    name = file.getFileNameWithoutExtension().toStdString();
+    m_PatchName = file.getFileNameWithoutExtension().toStdString();
+}
+
+void Patch::setPatchName(const std::string& newName)
+{
+    m_PatchName = newName;
 }
 
 
@@ -45,13 +50,13 @@ void JSONPatch::setData(const std::string& data)
 
 void JSONPatch::fromJson(const nlohmann::json& json)
 {
-    name = json.value("patch_name", "new sound");
+    m_PatchName = json.value("patch_name", "<default>");
     fromJsonInternal(json);
 }
 
 nlohmann::json JSONPatch::toJson() const
 {
     auto rv = toJsonInternal();
-    rv["patch_name"] = name;
+    rv["patch_name"] = m_PatchName;
     return rv;
 }

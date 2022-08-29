@@ -33,7 +33,7 @@ midiChannel)
 
 void ER1SoundPatch::printStatus()
 {
-    std::cout << name << std::endl;
+    std::cout << m_PatchName << std::endl;
     std::cout << "Note: " << config.note << std::endl;
     std::cout << "Chan: " << config.chan << std::endl;
     std::cout << "Shape: " << osc.oscType->getCurrentValueAsText() << std::endl;

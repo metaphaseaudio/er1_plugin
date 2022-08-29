@@ -104,6 +104,7 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     {
         m_GlobalCtrls.setCurrentBankFolder(processor.getBankPresetFolder());
         m_GlobalCtrls.setCurrentSoundFolder(processor.getSoundPresetFolder());
+        m_GlobalCtrls.setBankName(processor.getPatchName());
     }
 
 }
