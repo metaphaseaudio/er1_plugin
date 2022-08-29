@@ -641,7 +641,7 @@
                     "value": 0.4909090995788574
                 }
             },
-            "patch_name": "new sound"
+            "patch_name": "Close Hat"
         },
         {
             "amp": {
@@ -680,7 +680,7 @@
                     "value": 0.5127272605895996
                 }
             },
-            "patch_name": "new sound"
+            "patch_name": "Open Hat"
         },
         {
             "amp": {
@@ -719,7 +719,7 @@
                     "value": 0.5054545402526855
                 }
             },
-            "patch_name": "new sound"
+            "patch_name": "Crash"
         },
         {
             "amp": {
@@ -746,7 +746,7 @@
             },
             "delay": {
                 "depth": {
-                    "value": 0.4333333373069763
+                    "value": 0.0
                 },
                 "sync": true,
                 "time": {
@@ -758,7 +758,7 @@
                     "value": 0.5018181800842285
                 }
             },
-            "patch_name": "new sound"
+            "patch_name": "Clap"
         }
     ]
 } 
