@@ -105,7 +105,7 @@ void ER1LAF::drawKorgButton
 {
     auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
     auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-    drawPad(g, button, (isButtonDown ? dwnColour : upColour).brighter(button.brightness));
+    drawPad(g, static_cast<juce::Button&>(button), (isButtonDown ? dwnColour : upColour).brighter(button.brightness));
 }
 
 void ER1LAF::drawKorgToggleButton
@@ -125,7 +125,7 @@ void ER1LAF::drawKorgToggleButton
         colour.getAlpha()
     );
 
-    drawPad(g, button, colour);
+    drawPad(g, static_cast<juce::Button&>(button), colour);
 }
 
 void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown, float brightnessAdjust)

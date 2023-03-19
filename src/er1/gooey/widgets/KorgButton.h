@@ -6,6 +6,16 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "meta/vst/TimedParameterListener.h"
 
+class DoubleClickable
+    : public juce::Component
+{
+public:
+    DoubleClickable() : onDoubleClick([](const juce::MouseEvent&){}) {};
+    std::function<void(const juce::MouseEvent& event)> onDoubleClick;
+
+};
+
+
 class KorgButton
     : public juce::Button
 {
@@ -27,6 +37,10 @@ public:
     void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 
     float brightness = 0.0f; // For doing things like flashing buttons
+    std::function<void(const juce::MouseEvent& event)> onDoubleClick = [](const juce::MouseEvent&) {};
+
+protected:
+    void mouseDoubleClick(const juce::MouseEvent& event) override { onDoubleClick(event); };
 };
 
 

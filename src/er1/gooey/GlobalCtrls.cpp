@@ -70,7 +70,11 @@ void GlobalCtrls::timerCallback()
     if (r_MidiManager.isListening())
         { m_NoteListen.brightness = m_NoteListen.brightness > 0.0f ? 0.0f : 1.0f; }
     else
-        { m_NoteListen.brightness = 0.0f; }
+    {
+        stopTimer();
+        m_NoteListen.setToggleState(false, juce::dontSendNotification);
+        m_NoteListen.brightness = 0.0f;
+    }
 
     m_NoteListen.repaint();
 }
