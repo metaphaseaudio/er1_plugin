@@ -11,6 +11,7 @@
 
 using namespace juce;
 
+
 static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
 {
     auto xml = parseXML (data);
@@ -30,7 +31,6 @@ ER1LAF::ER1LAF()
     setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
     setColour(LCDText::ColourIds::textColour, juce::Colours::red);
 }
-
 
 void ER1LAF::drawRotarySlider
 (juce::Graphics &g, int x, int y, int width, int height, float sliderPos,
@@ -438,6 +438,10 @@ void ER1LAF::drawLabel(juce::Graphics& g, juce::Label& label)
 
     g.drawRect (label.getLocalBounds());
 }
+
+const WidgetManager::WidgetInfo&
+ER1LAF::getWidgetInfo(WidgetManager::WidgetID widget_id, WidgetManager::WidgetVariant variant, int index) const
+{ return m_Widgets.getWidgetInfo(widget_id, variant, index); }
 
 
 void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)

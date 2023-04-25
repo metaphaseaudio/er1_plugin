@@ -3,12 +3,13 @@
 //
 
 #include "KorgKnob.h"
+#include "../look_and_feel/ER1LAF.h"
 #include <meta/util/range.h>
 
-
-KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, float defaultPosition, float granularity)
+KorgKnob::KorgKnob(WidgetManager::WidgetID id, LearnableSerializeable<juce::AudioParameterFloat>* param, float defaultPosition, float granularity)
     : Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
     , meta::TimedParameterListener(param)
+    , m_WidgetID(id)
 {
     if (param == nullptr)
     {
@@ -26,6 +27,11 @@ KorgKnob::KorgKnob(LearnableSerializeable<juce::AudioParameterFloat>* param, flo
 
     onDragStart   = [this]() { sliderStartedDragging(); };
     onDragEnd     = [this]() { sliderStoppedDragging(); };
+
+    auto& widget = getWidget();
+    auto dimension = widget.filmstrip.getFrameDimensions();
+    setSize(dimension.getWidth(), dimension.getHeight());
+    setTopLeftPosition(widget.position);
 }
 
 void KorgKnob::handleNewParameterValue()
@@ -84,4 +90,18 @@ void KorgKnob::mouseDown(const juce::MouseEvent& e)
         if (result == 1) { dynamic_cast<meta::MidiLearnBroadcaster*>(p_Parameter)->sendLearn(); }
         if (result == 2) { dynamic_cast<meta::MidiLearnBroadcaster*>(p_Parameter)->sendUnlearn(); }
     });
+}
+
+void KorgKnob::paint(juce::Graphics& graphics)
+{
+    auto& widget = getWidget();
+    int frame = valueToProportionOfLength(getValue()) * (widget.filmstrip.getNFrames() - 1);
+    graphics.drawImage(widget.filmstrip.getFrame(frame), getLocalBounds().toFloat());
+}
+
+const WidgetManager::WidgetInfo& KorgKnob::getWidget() const
+{
+    auto& laf = getLookAndFeel();
+    auto er1_laf = dynamic_cast<ER1LAF*>(&laf);
+    return er1_laf->getWidgetInfo(m_WidgetID, WidgetManager::WidgetVariant::standard, 0);
 }

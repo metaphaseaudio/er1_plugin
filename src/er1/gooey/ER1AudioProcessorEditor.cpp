@@ -26,6 +26,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 {
     processor.addChangeListener(this);
     setLookAndFeel(&m_LAF);
+    juce::LookAndFeel::setDefaultLookAndFeel(&m_LAF);
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
@@ -41,7 +42,8 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     getChildComponent(0)->setVisible(true);
     m_GlobalCtrls.addChangeListener(this);
     m_VoiceSelector.addChangeListener(this);
-    setSize(600, 380);
+
+    setSize(960, 540);
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -59,18 +61,19 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 	g.fillRect(bezel);
     g.reduceClipRegion(bezel);
 
+    auto file = juce::File(R"(C:\Users\Matt\code\rendered_ui_images\0001.png)");
+    auto img = std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
     Image bg = ImageCache::getFromMemory(Images::bg_2_png, Images::bg_2_pngSize);
-    g.drawImage(bg, getLocalBounds().toFloat());
+    g.drawImage(*img, getLocalBounds().toFloat());
 }
 
 void ER1AudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds().reduced(7);
-
     auto internalBounds = bounds.removeFromTop(245);
 
     for (auto& window : m_SoundEditorWindows)
-        { window->setBounds(internalBounds); }
+        { window->setBounds(getLocalBounds()); }
 
     auto upper_bounds = internalBounds.removeFromTop(120);
     m_GlobalCtrls.setBounds(upper_bounds.removeFromLeft(220));
@@ -106,5 +109,4 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         m_GlobalCtrls.setCurrentSoundFolder(processor.getSoundPresetFolder());
         m_GlobalCtrls.setBankName(processor.getPatchName());
     }
-
 }

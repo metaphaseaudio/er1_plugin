@@ -16,10 +16,10 @@ using namespace juce;
 
 AmpSectionComponent::AmpSectionComponent(GlobalOptions& opts, AmpParams& params)
     : m_Header("AMP")
-    , m_Decay(params.decay, 0.5f), m_DecayLabel("Decay Label", "Decay")
-    , m_Level(params.level, 0.6f), m_LevelLabel("Level Label", "Level")
-    , m_Pan(params.pan, 0.0f), m_PanLabel("Pan Label", "Pan")
-    , m_LowBoost(params.lowBoost, 0.0f), m_LowBoostLabel("Low Boost Label", "Low Boost")
+    , m_Decay(WidgetManager::WidgetID::decay, params.decay, 0.5f), m_DecayLabel("Decay Label", "Decay")
+    , m_Level(WidgetManager::WidgetID::level, params.level, 0.6f), m_LevelLabel("Level Label", "Level")
+    , m_Pan(WidgetManager::WidgetID::pan, params.pan, 0.0f), m_PanLabel("Pan Label", "Pan")
+    , m_LowBoost(WidgetManager::WidgetID::low_boost, params.lowBoost, 0.0f), m_LowBoostLabel("Low Boost Label", "Low Boost")
     , r_Opts(opts)
 {
     r_Opts.rotary_knobs.addChangeListener(this);
@@ -40,32 +40,32 @@ AmpSectionComponent::AmpSectionComponent(GlobalOptions& opts, AmpParams& params)
 
 void AmpSectionComponent::resized()
 {
-    const auto labelHeight = 22;
-    const auto margin = 10;
-
-    auto bounds = getLocalBounds();
-    m_Header.setBounds(bounds.removeFromTop(labelHeight));
-    bounds = bounds.reduced(2);
-
-    auto ctrlBounds = StandardShapes::largeDial;
-    auto labelBounds = bounds.removeFromTop(labelHeight).removeFromLeft(ctrlBounds.getWidth());
-    ctrlBounds.setPosition(bounds.getBottomLeft().x, labelBounds.getBottom());
-
-    m_DecayLabel.setBounds(labelBounds); m_Decay.setBounds(ctrlBounds);
-    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
-    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
-
-    m_LevelLabel.setBounds(labelBounds); m_Level.setBounds(ctrlBounds);
-    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
-    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
-
-    m_PanLabel.setBounds(labelBounds); m_Pan.setBounds(ctrlBounds);
-    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
-    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
-
-    m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
-    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
-    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+//    const auto labelHeight = 22;
+//    const auto margin = 10;
+//
+//    auto bounds = getLocalBounds();
+//    m_Header.setBounds(bounds.removeFromTop(labelHeight));
+//    bounds = bounds.reduced(2);
+//
+//    auto ctrlBounds = StandardShapes::largeDial;
+//    auto labelBounds = bounds.removeFromTop(labelHeight).removeFromLeft(ctrlBounds.getWidth());
+//    ctrlBounds.setPosition(bounds.getBottomLeft().x, labelBounds.getBottom());
+//
+//    m_DecayLabel.setBounds(labelBounds); m_Decay.setBounds(ctrlBounds);
+//    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+//    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+//
+//    m_LevelLabel.setBounds(labelBounds); m_Level.setBounds(ctrlBounds);
+//    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+//    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+//
+//    m_PanLabel.setBounds(labelBounds); m_Pan.setBounds(ctrlBounds);
+//    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+//    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
+//
+//    m_LowBoostLabel.setBounds(labelBounds); m_LowBoost.setBounds(ctrlBounds);
+//    ctrlBounds.setPosition(ctrlBounds.getRight() + margin, labelBounds.getBottom());
+//    labelBounds.setPosition(labelBounds.getRight() + margin, labelBounds.getTopRight().y);
 }
 
 void AmpSectionComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
