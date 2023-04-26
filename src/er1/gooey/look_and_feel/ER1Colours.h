@@ -5,6 +5,7 @@
 #pragma once
 
 #include <meta/gooey/ConstexprColour.h>
+#include "WidgetManager.h"
 
 class ER1Colours
 {

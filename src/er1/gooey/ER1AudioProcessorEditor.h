@@ -40,7 +40,7 @@ private:
     ER1AudioProcessor& processor;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     DividerLine m_Divider;
-    VoiceSelector m_VoiceSelector;
-    GlobalCtrls m_GlobalCtrls;
+    std::unique_ptr<VoiceSelector> p_VoiceSelector;
+    std::unique_ptr<GlobalCtrls> p_GlobalCtrls;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

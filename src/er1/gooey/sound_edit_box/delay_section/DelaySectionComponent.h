@@ -26,7 +26,6 @@ class DelaySectionComponent
 public:
     explicit DelaySectionComponent(GlobalOptions& opts, DelayParams& params);
     ~DelaySectionComponent() override = default;
-    void resized() override;
 
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;

@@ -39,7 +39,8 @@ static juce::StringArray ModulationNames =
 
 static juce::File getPatchDir(const std::string& dir)
 {
-    const auto defaultDir = juce::File(juce::WindowsRegistry::getValue(
+    const auto defaultDir = juce::File(
+            juce::WindowsRegistry::getValue(
             "HKEY_CURRENT_USER\\SOFTWARE\\Metaphase\\ER1\\PresetInstallPath",
             juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory).getFullPathName()
         )

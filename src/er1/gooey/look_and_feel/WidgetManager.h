@@ -22,16 +22,13 @@ public:
         // Knob names
         pitch = 0, mod_speed, mod_depth, level, decay, pan, low_boost, delay_time, delay_depth,
         // Button names
-        listen, sound, bank, options, ring_btn, tempo_sync, sound_btn
+        bank, listen, options, ring_btn, sound, sound_btn, tempo_sync,
     };
 
     enum WidgetVariant
     {
-        // Button lighting types
-        standard = 0,
-        lit,
-        brighter,
-        hover
+        // Button lighting types + a default in "standard"
+        standard = 0, lit, brighter, hover
     };
 
     WidgetManager();

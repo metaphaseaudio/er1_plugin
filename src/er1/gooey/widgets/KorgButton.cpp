@@ -4,28 +4,55 @@
 
 #include "KorgButton.h"
 #include "../look_and_feel/ER1LAF.h"
+#include "../look_and_feel/ER1Colours.h"
 
 
-KorgButton::KorgButton()
+const WidgetManager::WidgetVariant padUp = WidgetManager::WidgetVariant::lit;
+const WidgetManager::WidgetVariant padDwn = WidgetManager::WidgetVariant::lit;
+const WidgetManager::WidgetVariant padUpOver = WidgetManager::WidgetVariant::hover;
+const WidgetManager::WidgetVariant padDwnOver = WidgetManager::WidgetVariant::brighter;
+
+
+KorgButton::KorgButton(WidgetManager::WidgetID id, int index)
     : juce::Button("")
+    , m_WidgetID(id)
+    , m_Index(index)
 {};
 
-KorgButton::KorgButton(const juce::String& name)
+KorgButton::KorgButton(WidgetManager::WidgetID id, int index, const juce::String& name)
     : juce::Button(name)
+    , m_WidgetID(id)
+    , m_Index(index)
 {}
 
-KorgToggleButton::KorgToggleButton()
+KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index)
     : juce::ToggleButton("")
-{};
+    , m_WidgetID(id)
+    , m_Index(index)
+{
+    auto& widget = dynamic_cast<ER1LAF*>(&getLookAndFeel())->getWidgetInfo(m_WidgetID, WidgetManager::WidgetVariant::lit, m_Index);
+    setSize(widget.filmstrip.getFrameDimensions().getWidth(), widget.filmstrip.getFrameDimensions().getHeight());
+    setTopLeftPosition(widget.position);
+};
 
-KorgToggleButton::KorgToggleButton(const juce::String& name)
+KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index, const juce::String& name)
     : juce::ToggleButton(name)
-{}
+    , m_WidgetID(id)
+    , m_Index(index)
+{
+    auto& widget = dynamic_cast<ER1LAF*>(&getLookAndFeel())->getWidgetInfo(m_WidgetID, WidgetManager::WidgetVariant::lit, m_Index);
+    setSize(widget.filmstrip.getFrameDimensions().getWidth(), widget.filmstrip.getFrameDimensions().getHeight());
+    setTopLeftPosition(widget.position);
+}
+
 
 void KorgToggleButton::paintButton(juce::Graphics &g, bool isMouseOverButton, bool isButtonDown)
 {
-    static_cast<ER1LAF&>(getLookAndFeel()).drawKorgToggleButton
-            (g, *this, isMouseOverButton, isButtonDown);
+    auto toggleLit = getToggleState();
+    auto variant = isMouseOverButton ? WidgetManager::WidgetVariant::brighter : WidgetManager::WidgetVariant::lit;
+    auto& widget = dynamic_cast<ER1LAF&>(getLookAndFeel()).getWidgetInfo(m_WidgetID, variant, m_Index);
+    auto frame = (widget.filmstrip.getNFrames() - 1) * (toggleLit ? brightness : 1.0 - brightness);
+    g.drawImage(widget.filmstrip.getFrame(int(frame)), getLocalBounds().toFloat());
 }
 
 
@@ -35,8 +62,9 @@ void KorgButton::paintButton(juce::Graphics &g, bool isMouseOverButton, bool isB
         (g, *this, isMouseOverButton, isButtonDown);
 }
 
-KorgBooleanParameterButton::KorgBooleanParameterButton(juce::AudioParameterBool* param)
+KorgBooleanParameterButton::KorgBooleanParameterButton(WidgetManager::WidgetID id, int index, juce::AudioParameterBool* param)
     : TimedParameterListener(param)
+    , KorgToggleButton(id, index)
 {
     if (param == nullptr) { setEnabled(false); }
     handleNewParameterValue();

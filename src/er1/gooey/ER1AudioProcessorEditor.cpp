@@ -10,6 +10,8 @@
 
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
+
+#include <memory>
 #include "BGImage.h"
 #include "Images.h"
 #include "look_and_feel/StandardShapes.h"
@@ -21,12 +23,13 @@ using namespace juce;
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , m_VoiceSelector(p.getMidiManager(), p.getSynth().getVoices())
-    , m_GlobalCtrls(p.getMidiManager(), p)
 {
     processor.addChangeListener(this);
     setLookAndFeel(&m_LAF);
     juce::LookAndFeel::setDefaultLookAndFeel(&m_LAF);
+
+    p_VoiceSelector = std::make_unique<VoiceSelector>(p.getMidiManager(), p.getSynth().getVoices());
+    p_GlobalCtrls = std::make_unique<GlobalCtrls>(p.getMidiManager(), p);
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
@@ -36,12 +39,12 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
         addChildComponent(window);
     }
 
-    addAndMakeVisible(m_VoiceSelector);
+    addAndMakeVisible(p_VoiceSelector.get());
     addAndMakeVisible(m_Divider);
-    addAndMakeVisible((m_GlobalCtrls));
+    addAndMakeVisible(p_GlobalCtrls.get());
     getChildComponent(0)->setVisible(true);
-    m_GlobalCtrls.addChangeListener(this);
-    m_VoiceSelector.addChangeListener(this);
+    p_GlobalCtrls->addChangeListener(this);
+    p_VoiceSelector->addChangeListener(this);
 
     setSize(960, 540);
 }
@@ -69,44 +72,37 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 
 void ER1AudioProcessorEditor::resized()
 {
-    auto bounds = getLocalBounds().reduced(7);
-    auto internalBounds = bounds.removeFromTop(245);
-
     for (auto& window : m_SoundEditorWindows)
         { window->setBounds(getLocalBounds()); }
 
-    auto upper_bounds = internalBounds.removeFromTop(120);
-    m_GlobalCtrls.setBounds(upper_bounds.removeFromLeft(220));
-
-    bounds.removeFromTop(5);
-    m_Divider.setBounds(bounds.removeFromTop(5));
-    m_VoiceSelector.setBounds(bounds);
+    p_GlobalCtrls->setBounds(getLocalBounds());
+    p_VoiceSelector->setBounds(getLocalBounds());
 }
 
 void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-    if (source == &m_VoiceSelector)
+    if (source == p_VoiceSelector.get())
     {
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
-        const auto selected = m_VoiceSelector.getSelected();
+        const auto selected = p_VoiceSelector->getSelected();
         if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
 
-        m_GlobalCtrls.setVoice(processor.getSynth().getVoices()[selected]->getControlBlock());
+        p_GlobalCtrls->setVoice(processor.getSynth().getVoices()[selected]->getControlBlock());
         m_SoundEditorWindows[selected]->setVisible(true);
         processor.triggerVoice(selected);
     }
 
-    if (source == &m_GlobalCtrls)
+    if (source == p_GlobalCtrls.get())
     {
-        processor.setBankPresetFolder(m_GlobalCtrls.getCurrentBankFolder());
-        processor.setSoundPresetFolder(m_GlobalCtrls.getCurrentSoundFolder());
+        processor.setBankPresetFolder(p_GlobalCtrls->getCurrentBankFolder());
+        processor.setSoundPresetFolder(p_GlobalCtrls->getCurrentSoundFolder());
         repaint();
     }
 
     if (source == &processor)
     {
-        m_GlobalCtrls.setCurrentBankFolder(processor.getBankPresetFolder());
-        m_GlobalCtrls.setCurrentSoundFolder(processor.getSoundPresetFolder());
-        m_GlobalCtrls.setBankName(processor.getPatchName());
+        p_GlobalCtrls->setCurrentBankFolder(processor.getBankPresetFolder());
+        p_GlobalCtrls->setCurrentSoundFolder(processor.getSoundPresetFolder());
+        p_GlobalCtrls->setBankName(processor.getPatchName());
     }
 }

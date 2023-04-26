@@ -16,6 +16,10 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     , r_MidiManager(mgr)
     , m_Bank("Bank", "Default")
     , m_BankLabel("Bank Label", "BNK:")
+    , m_NoteListen(WidgetManager::WidgetID::listen, 0)
+    , m_SelectSound(WidgetManager::WidgetID::sound, 0)
+    , m_SelectBank(WidgetManager::WidgetID::bank, 0)
+    , m_Options(WidgetManager::WidgetID::options, 0)
 {
     setInterceptsMouseClicks(false, true);
 
@@ -101,10 +105,10 @@ void GlobalCtrls::resized()
 
     const auto btnWidth = buttonRow.getWidth() / 4;
 
-    m_NoteListen.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_NoteListenLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-    m_SelectSound.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectSoundLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-    m_SelectBank.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectBankLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-    m_Options.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+//    m_NoteListen.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_NoteListenLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+//    m_SelectSound.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectSoundLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+//    m_SelectBank.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectBankLabel.setBounds(labelRow.removeFromLeft(btnWidth));
+//    m_Options.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
 
     bounds = getLocalBounds().reduced(5);
     bounds.removeFromBottom(button.getHeight());

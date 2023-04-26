@@ -28,6 +28,7 @@ WidgetManager::WidgetManager()
 
     std::map<std::string, WidgetVariant> variantMap = {
         { "standard" , standard },
+        { "lit", lit },
         { "brighter" , brighter },
         { "hover" , hover }
     };
@@ -38,6 +39,7 @@ WidgetManager::WidgetManager()
                        .getChildFile("widgets.zip");
 
     auto zip = juce::ZipFile(widgetZipFile);
+    std::vector<juce::ZipFile::ZipEntry> zipEntries;
     for (int i = zip.getNumEntries(); --i >= 0;)
     {
         auto entryInfo = zip.getEntry(i);

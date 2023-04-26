@@ -118,6 +118,7 @@ void ER1LAF::drawKorgToggleButton
     auto brightnessAdjust = button.brightness;
     auto colour = toggleDown ? dwnColour : upColour;
     auto litColour = toggleDown ? upColour : dwnColour;
+
     colour = juce::Colour::fromRGBA(
         int(meta::Interpolate<float>::linear(colour.getRed(), litColour.getRed() , brightnessAdjust)),
         int(meta::Interpolate<float>::linear(colour.getGreen(), litColour.getGreen(), brightnessAdjust)),

@@ -19,17 +19,14 @@ class VoiceSelector
 {
 public:
     VoiceSelector(MidiManager& midiManager, const std::vector<std::unique_ptr<ER1Voice>>& voices);
-    void resized() override;
     int getSelected() const;
 
 private:
     void timerCallback() override;
 
     const std::vector<std::unique_ptr<ER1Voice>>& r_Voices;
-    Header m_AnalogFooter, m_AudioFooter, m_PCMFooter;
     std::vector<std::unique_ptr<KorgToggleButton>> m_Buttons;
     std::vector<std::unique_ptr<KorgBooleanParameterButton>> m_RingButtons;
-    std::vector<std::unique_ptr<juce::Component>> m_Arrows;
 };
 
 
