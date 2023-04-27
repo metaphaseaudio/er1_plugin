@@ -16,7 +16,6 @@
 #include "Images.h"
 #include "look_and_feel/StandardShapes.h"
 
-
 using namespace juce;
 
 //==============================================================================

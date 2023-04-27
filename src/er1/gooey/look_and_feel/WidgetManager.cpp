@@ -40,8 +40,24 @@ WidgetManager::WidgetManager()
 
     auto zip = juce::ZipFile(widgetZipFile);
     std::vector<juce::ZipFile::ZipEntry> zipEntries;
+
+    // I want to get rid of this stupid crap, the data should be arranged in a way that's pre-sorted.
+    std::vector<std::tuple<int, std::string>> nameIndexPairs;
     for (int i = zip.getNumEntries(); --i >= 0;)
+        { nameIndexPairs.emplace_back(i, zip.getEntry(i)->filename.toStdString()); }
+
+    std::sort(nameIndexPairs.begin(), nameIndexPairs.end(), [](auto x, auto y){
+        auto tokens_x = meta::StringHelpers::split(std::get<1>(x), "-");
+        auto tokens_y = meta::StringHelpers::split(std::get<1>(y), "-");
+        auto xI = std::stoi(tokens_x.at(2));
+        auto yI = std::stoi(tokens_y.at(2));
+
+        return xI < yI;
+    });
+
+    for(auto pair : nameIndexPairs)
     {
+        auto i = std::get<0>(pair);
         auto entryInfo = zip.getEntry(i);
         std::unique_ptr<juce::InputStream> entryStream(zip.createStreamForEntry(i));
         auto tokens = meta::StringHelpers::split(entryInfo->filename.toStdString(), "-");
@@ -61,7 +77,7 @@ WidgetManager::WidgetManager()
             juce::Point<int>(y, x)})
         );
 
-//        jassert(widgetIndex + 1 == m_WidgetInfo[widgetName][variant].size());
+        jassert(widgetIndex + 1 == m_WidgetInfo[widgetName][variant].size());
     }
 }
 

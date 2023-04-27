@@ -13,7 +13,7 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
 {
     setInterceptsMouseClicks(false, true);
 
-    for (int i = voices.size(); --i > 0;)
+    for (int i = 0; i < voices.size(); i++)
     {
         auto& voice = voices.at(i);
         auto& btn = m_Buttons.emplace_back(new KorgToggleButton(WidgetManager::WidgetID::sound_btn, i, voice->getControlBlock()->getPatchName()));
