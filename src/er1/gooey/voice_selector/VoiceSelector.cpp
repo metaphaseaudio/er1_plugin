@@ -13,6 +13,7 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
 {
     setInterceptsMouseClicks(false, true);
 
+    int ring_i = 0;
     for (int i = 0; i < voices.size(); i++)
     {
         auto& voice = voices.at(i);
@@ -24,15 +25,14 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
             sendChangeMessage();
         };
 
-//        if (voice->getControlBlock()->osc.enableRing != nullptr)
-//        {
-//            auto& ringBtn = m_RingButtons.emplace_back(new KorgBooleanParameterButton(voice->getControlBlock()->osc.enableRing));
-//            addAndMakeVisible(*ringBtn);
-//            auto& uandr = m_Arrows.emplace_back(new Arrow::UpAndRight());
-//            addAndMakeVisible(*uandr);
-//            auto& landd = m_Arrows.emplace_back(new Arrow::UpAndRight(true));
-//            addAndMakeVisible(*landd);
-//        }
+        if (voice->getControlBlock()->osc.enableRing != nullptr)
+        {
+            auto& ringBtn = m_RingButtons.emplace_back(
+                new KorgBooleanParameterButton(WidgetManager::WidgetID::ring_btn, ring_i, voice->getControlBlock()->osc.enableRing)
+            );
+            addAndMakeVisible(*ringBtn);
+            ring_i++;
+        }
     }
 
     m_Buttons[0]->setToggleState(true, juce::sendNotification);

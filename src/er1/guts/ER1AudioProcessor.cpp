@@ -41,7 +41,7 @@ static juce::File getPatchDir(const std::string& dir)
 {
     const auto defaultDir = juce::File(
             juce::WindowsRegistry::getValue(
-            "HKEY_CURRENT_USER\\SOFTWARE\\Metaphase\\ER1\\PresetInstallPath",
+            R"(HKEY_CURRENT_USER\SOFTWARE\Metaphase\ER1\PresetInstallPath)",
             juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory).getFullPathName()
         )
     );
@@ -63,7 +63,8 @@ ER1AudioProcessor::ER1AudioProcessor()
     , m_BankPresetFolder(getPatchDir("banks"))
     , m_SoundPresetFolder(getPatchDir("sounds"))
 {
-    for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, (1 + i) % 2 == 0 && i + 1 != meta::ER1::ANALOG_SOUND_COUNT); }
+    // The first voice gets skipped as a ring carrier, but every other voice after that can be.
+    for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++) { addAnalogVoice(i, i > 0 && i % 2 == 0); }
     for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT; i++) { addAudioVoice(i, i == 0); }
 
     auto ch = addPCMVoice("Closed Hat", ER1PCMSamples::closed_hat_wav, ER1PCMSamples::closed_hat_wavSize, 32000);
@@ -181,10 +182,6 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
     {
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }
-
-//
-//    if (name == getDefaultPatchName())
-//        { loadDefaultPatch(); }
 }
 
 void ER1AudioProcessor::triggerVoice(int voice)
