@@ -140,7 +140,7 @@ void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& int
 {
     auto bounds = area.getLocalBounds().reduced(5).toFloat();
     auto calcCurve = [](const juce::Rectangle<float>& area, int x) {
-        return (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
+        return (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(x))) / 2.0f;
     };
     auto curve = (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
 
