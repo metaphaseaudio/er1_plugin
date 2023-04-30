@@ -31,34 +31,14 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     addChildComponent(m_BankPatchManager);
     addChildComponent(m_OptionsManager);
 
-    m_NoteListenLabel.setText("LISTEN", juce::dontSendNotification);
-    m_LiveModeLabel.setText("OPTIONS", juce::dontSendNotification);
-    m_SelectBankLabel.setText("BANK", juce::dontSendNotification);
-    m_SelectSoundLabel.setText("SOUND", juce::dontSendNotification);
-
-    m_NoteListenLabel.setJustificationType(juce::Justification::centred);
-    m_LiveModeLabel.setJustificationType(juce::Justification::centred);
-    m_SelectBankLabel.setJustificationType(juce::Justification::centred);
-    m_SelectSoundLabel.setJustificationType(juce::Justification::centred);
-
-    m_NoteListenLabel.setFont(m_NoteListenLabel.getFont().withPointHeight(8));
-    m_LiveModeLabel.setFont(m_LiveModeLabel.getFont().withPointHeight(8));
-    m_SelectBankLabel.setFont(m_SelectBankLabel.getFont().withPointHeight(8));
-    m_SelectSoundLabel.setFont(m_SelectSoundLabel.getFont().withPointHeight(8));
-
-    m_NoteListenLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-    m_LiveModeLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-    m_SelectBankLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-    m_SelectSoundLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-
     m_Bank.setEditable(false, true);
     m_Bank.onTextChange = [&]() { proc.setPatchName(m_Bank.getText().toStdString()); };
 
     addAndMakeVisible(m_BankLabel); addAndMakeVisible(m_Bank);
-    addAndMakeVisible(m_NoteListen); addAndMakeVisible(m_NoteListenLabel);
-    addAndMakeVisible(m_Options); addAndMakeVisible(m_LiveModeLabel);
-    addAndMakeVisible(m_SelectBank); addAndMakeVisible(m_SelectBankLabel);
-    addAndMakeVisible(m_SelectSound); addAndMakeVisible(m_SelectSoundLabel);
+    addAndMakeVisible(m_NoteListen);
+    addAndMakeVisible(m_Options);
+    addAndMakeVisible(m_SelectBank);
+    addAndMakeVisible(m_SelectSound);
 
     m_SoundPatchManager.addChangeListener(this);
     m_BankPatchManager.addChangeListener(this);
@@ -94,25 +74,11 @@ void GlobalCtrls::resized()
     m_Bank.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
 
     auto bounds = getLocalBounds();
-    auto button = StandardShapes::smallSquareButton;
-    auto buttonRow = bounds.removeFromBottom(button.getHeight() - 5);
-    auto labelRow = bounds.removeFromBottom(20);
-    labelRow = labelRow.withY(labelRow.getY() + 9);
-    labelRow.removeFromLeft(5);
-    labelRow.removeFromRight(5);
-    buttonRow.removeFromLeft(5);
-    buttonRow.removeFromRight(5);
+    bounds.removeFromTop(50);
+    bounds.removeFromLeft(108);
+    bounds = bounds.removeFromTop(93);
+    bounds = bounds.removeFromLeft(286);
 
-    const auto btnWidth = buttonRow.getWidth() / 4;
-
-//    m_NoteListen.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_NoteListenLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-//    m_SelectSound.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectSoundLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-//    m_SelectBank.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_SelectBankLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-//    m_Options.setBounds(buttonRow.removeFromLeft(btnWidth).reduced(2)); m_LiveModeLabel.setBounds(labelRow.removeFromLeft(btnWidth));
-
-    bounds = getLocalBounds().reduced(5);
-    bounds.removeFromBottom(button.getHeight());
-    bounds = bounds.reduced(2);
 
     m_SoundPatchManager.setBounds(bounds);
     m_BankPatchManager.setBounds(bounds);
@@ -132,6 +98,7 @@ void GlobalCtrls::resized()
 
     m_BankLabel.setBounds(bankLabelLength);
     m_Bank.setBounds(bankLength);
+
 }
 
 void GlobalCtrls::buttonClicked(juce::Button* btn)

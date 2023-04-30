@@ -41,9 +41,10 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
 
 int VoiceSelector::getSelected() const
 {
-    for (const auto& i_btn : meta::enumerate(m_Buttons)) {
+    for (const auto& i_btn : meta::enumerate(m_Buttons))
+    {
         if (std::get<1>(i_btn)->getToggleState())
-            { return std::get<0>(i_btn); }
+            { return int(std::get<0>(i_btn)); }
     }
     return -1;
 }

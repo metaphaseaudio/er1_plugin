@@ -4,6 +4,8 @@
 
 #include "Options.h"
 #include "look_and_feel/ER1Colours.h"
+#include <meta/gooey/PerspectiveImageEffectFilter.h>
+
 
 ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::ChangeBroadcastingProperty<bool>& option)
     : m_Label(label, label)
@@ -54,9 +56,10 @@ OptionsComponent::OptionsComponent(GlobalOptions& opts)
     , m_OptionsListBox("Options", nullptr)
     , m_Save("Save defaults")
     , m_Load("Load defaults")
+    , m_PerspectiveFilter(new meta::PerspectiveImageEffectFilter())
 {
     m_OptionsListBox.setModel(&m_Options);
-    m_OptionsListBox.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
+    m_OptionsListBox.setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
 
     m_Save.addListener(this);
     m_Load.addListener(this);
@@ -64,6 +67,8 @@ OptionsComponent::OptionsComponent(GlobalOptions& opts)
     addAndMakeVisible(m_Save);
     addAndMakeVisible(m_Load);
     addAndMakeVisible(m_OptionsListBox);
+
+    setComponentEffect(m_PerspectiveFilter.get());
 }
 
 void OptionsComponent::resized()

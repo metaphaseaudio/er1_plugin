@@ -26,9 +26,10 @@ void SoundEditorWindow::resized()
     m_OscSection.setBounds(getLocalBounds());
     m_AmpSection.setBounds(getLocalBounds());
     m_DelaySection.setBounds(getLocalBounds());
-    auto bounds = getLocalBounds();
-    auto upper_bounds = bounds.removeFromTop(120);
-    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(220));
+    m_VoiceSetup.setBounds(getLocalBounds());
+//    auto bounds = getLocalBounds();
+//    auto upper_bounds = bounds.removeFromTop(120);
+//    m_VoiceSetup.setBounds(upper_bounds.removeFromLeft(220));
 //    upper_bounds.removeFromLeft(5);
 //    m_OscSection.setBounds(upper_bounds);
 //

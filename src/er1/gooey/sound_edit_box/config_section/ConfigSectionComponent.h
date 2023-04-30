@@ -13,7 +13,6 @@ class ConfigSectionComponent
 {
 public:
     explicit ConfigSectionComponent(ER1SoundPatch& params);
-    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:

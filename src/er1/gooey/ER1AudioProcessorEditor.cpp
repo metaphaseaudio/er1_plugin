@@ -58,11 +58,6 @@ ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 void ER1AudioProcessorEditor::paint (Graphics& g)
 {
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
-	const auto bezel = getLocalBounds().reduced(3);
-	g.setColour(juce::Colours::silver);
-	g.fillRect(bezel);
-    g.reduceClipRegion(bezel);
-
     auto file = juce::File(R"(C:\Users\Matt\code\rendered_ui_images\0001.png)");
     auto img = std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
     Image bg = ImageCache::getFromMemory(Images::bg_2_png, Images::bg_2_pngSize);

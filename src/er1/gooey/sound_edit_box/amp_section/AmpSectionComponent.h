@@ -26,16 +26,15 @@ public:
     explicit AmpSectionComponent(GlobalOptions& opts, AmpParams& params);
 
     ~AmpSectionComponent() override = default;
-    void resized() override;
 
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
     Header m_Header;
-    KorgKnob m_Decay;    juce::Label m_DecayLabel;
-    KorgKnob m_Level;    juce::Label m_LevelLabel;
-    KorgKnob m_Pan;      juce::Label m_PanLabel;
-    KorgKnob m_LowBoost; juce::Label m_LowBoostLabel;
+    KorgKnob m_Decay;
+    KorgKnob m_Level;
+    KorgKnob m_Pan;
+    KorgKnob m_LowBoost;
     GlobalOptions& r_Opts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AmpSectionComponent)

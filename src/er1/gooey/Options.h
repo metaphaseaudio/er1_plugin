@@ -53,6 +53,7 @@ private:
 
     void buttonClicked(juce::Button* button) override;
 
+    std::unique_ptr<juce::ImageEffectFilter> m_PerspectiveFilter;
     OptionsListBoxModel m_Options;
     juce::ListBox m_OptionsListBox;
     LCDButton m_Save, m_Load;

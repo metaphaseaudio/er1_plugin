@@ -37,7 +37,7 @@ PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const s
     m_FileListComponent.setRowHeight(14);
     m_FileListComponent.addListener(this);
     m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
-    m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, ER1Colours::lcdRed);
+    m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
 
     addAndMakeVisible(m_FileListComponent);
     addAndMakeVisible(m_New);
@@ -56,9 +56,6 @@ PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const s
 
 void PatchManager::paint(juce::Graphics& g)
 {
-    g.setColour(ER1Colours::lcdRed);
-    g.fillAll();
-
     auto bounds = getLocalBounds();
     bounds.removeFromBottom(12);
     g.setColour(juce::Colours::red.darker());
@@ -72,13 +69,13 @@ void PatchManager::resized()
     m_FileListComponent.setBounds(bounds.reduced(2));
 
     buttonRow.removeFromLeft(1);
-    m_ChangeDir.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.20));
+    m_ChangeDir.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4.0) * 0.20));
     buttonRow.removeFromLeft(2);
-    m_New.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.25));
+    m_New.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4.0) * 0.25));
     buttonRow.removeFromLeft(2);
-    m_Save.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4) * 0.25));
+    m_Save.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4.0) * 0.25));
     buttonRow.removeFromLeft(2);
-    m_Delete.setBounds(buttonRow.removeFromLeft(((bounds.getWidth() - 4) * 0.333) - 1));
+    m_Delete.setBounds(buttonRow.removeFromLeft(((bounds.getWidth() - 4.0) * 0.333) - 1));
 }
 
 PatchManager::~PatchManager()

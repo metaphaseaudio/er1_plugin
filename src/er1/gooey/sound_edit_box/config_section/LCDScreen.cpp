@@ -91,17 +91,15 @@ void LCDScreen::paint(juce::Graphics& g)
     m_AudioBus.setFont(font.withPointHeight(STD_LABEL_PT));
     m_AudioBus.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
 
-    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::bezelColour));
-    g.fillRect(getLocalBounds());
-    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::lcdColour));
-    g.fillRect(getLocalBounds().reduced(1));
+//    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::bezelColour));
+//    g.fillRect(getLocalBounds());
+//    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::lcdColour));
+//    g.fillRect(getLocalBounds().reduced(1));
 }
 
 void LCDScreen::resized()
 {
-    auto bounds = getLocalBounds().reduced(1);
-    bounds.removeFromTop(3);
-
+    auto bounds = getLocalBounds();
     bounds.removeFromTop(BIG_LABEL_PT); // Bank Name
     bounds.removeFromTop(4);
 
@@ -125,6 +123,7 @@ void LCDScreen::resized()
         midiBounds.getX(), midiBounds.getY(),
         STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidthFloat(m_MidiNoteLabel.getText()), midiBounds.getHeight()
     );
+
     const auto noteLength = juce::Rectangle<int>(
         noteLabelLength.getRight() - STD_LABEL_PT, midiBounds.getY(),
         STD_LABEL_PT + m_MidiNoteLabel.getFont().getStringWidthFloat("000"), midiBounds.getHeight()
@@ -134,6 +133,7 @@ void LCDScreen::resized()
         noteLength.getRight() + 2, midiBounds.getY(),
         STD_LABEL_PT + m_MidiChanLabel.getFont().getStringWidthFloat(m_MidiChanLabel.getText()), midiBounds.getHeight()
     );
+
     const auto chanLength = juce::Rectangle<int>(
         chanLabelLength.getRight() - STD_LABEL_PT, midiBounds.getY(),
         STD_LABEL_PT + m_MidiChan.getFont().getStringWidthFloat("00"), midiBounds.getHeight()
