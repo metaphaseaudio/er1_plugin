@@ -61,7 +61,10 @@ class LCDLAF
 {
 public:
     LCDLAF();
+    [[nodiscard]] juce::ImageEffectFilter* getLCDFilter() const { return m_LCDFilter.get(); };
     juce::Font getLabelFont(juce::Label& label) override;
-
     void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
+
+private:
+    std::unique_ptr<juce::ImageEffectFilter> m_LCDFilter;
 };

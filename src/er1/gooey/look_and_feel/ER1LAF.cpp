@@ -29,7 +29,7 @@ ER1LAF::ER1LAF()
 
     setColour(LCDText::ColourIds::bezelColour, ER1Colours::defaultForeground);
     setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
-    setColour(LCDText::ColourIds::textColour, juce::Colours::red);
+    setColour(LCDText::ColourIds::textColour, juce::Colours::red.withAlpha(0.5f));
 }
 
 void ER1LAF::drawRotarySlider
@@ -471,7 +471,14 @@ Font LCDLAF::getLabelFont(Label& label)
 }
 
 LCDLAF::LCDLAF()
+    : m_LCDFilter(new juce::GlowEffect())
 {
-    setColour(juce::Label::ColourIds::backgroundColourId, ER1Colours::lcdRed);
-    setColour(juce::Label::ColourIds::textColourId, juce::Colours::red);
+    setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::ListBox::ColourIds::outlineColourId, juce::Colours::transparentBlack);
+    setColour(juce::ListBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    setColour(juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::Label::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+    dynamic_cast<juce::GlowEffect*>(m_LCDFilter.get())->
+        setGlowProperties(2, findColour(LCDText::ColourIds::textColour), juce::Point<int>(0, 0));
 }

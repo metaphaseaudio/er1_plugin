@@ -4,6 +4,7 @@
 
 #include "LCDButton.h"
 #include "../fonts/FontLCD.h"
+#include "LCDText.h"
 
 LCDButton::LCDButton(const juce::String& name)
     : juce::Button(name)
@@ -11,12 +12,15 @@ LCDButton::LCDButton(const juce::String& name)
 
 void LCDButton::paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
+    const auto colour = getLookAndFeel().findColour(LCDText::ColourIds::textColour);
     const auto lineWidth = 1;
-    g.setColour(isMouseOverButton ? juce::Colours::red : juce::Colours::red.darker());
-    g.drawRect(getLocalBounds(), lineWidth);
+    const auto localBounds = getLocalBounds();
 
-    g.setColour(isButtonDown ? juce::Colours::red.darker() : juce::Colours::red);
-    g.setFont(FontLCD::defaultFont().withPointHeight(12));
+    g.setColour(isMouseOverButton ? colour.brighter(0.1) : colour);
+    g.drawRect(localBounds, lineWidth);
+
+    g.setColour(isButtonDown ? colour.brighter(0.1) : colour);
+    g.setFont(FontLCD::defaultFont().withPointHeight(localBounds.getHeight() * 0.8f));
     g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
 }
 
@@ -26,13 +30,15 @@ LCDToggleButton::LCDToggleButton(const juce::String& name)
 
 void LCDToggleButton::paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
+    const auto colour = getLookAndFeel().findColour(LCDText::ColourIds::textColour);
     const auto lineWidth = 1;
-    const auto toggleColour = getToggleState() ? juce::Colours::red : juce::Colours::red.darker(0.6);
+    const auto localBounds = getLocalBounds();
+    const auto toggleColour = getToggleState() ? colour.brighter(0.1) : colour;
 
     g.setColour(isMouseOverButton ? toggleColour.brighter() : toggleColour);
     g.drawRect(getLocalBounds(), lineWidth);
 
     g.setColour(toggleColour);
-    g.setFont(FontLCD::defaultFont().withPointHeight(9));
+    g.setFont(FontLCD::defaultFont().withPointHeight(localBounds.getHeight() * 0.8f));
     g.drawFittedText(juce::Button::getName(), getLocalBounds(), juce::Justification::centred, 1);
 }

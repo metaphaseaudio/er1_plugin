@@ -8,9 +8,7 @@
 
 #include "osc_section/OscSectionComponent.h"
 #include "amp_section/AmpSectionComponent.h"
-#include "config_section/ConfigSectionComponent.h"
 #include "delay_section/DelaySectionComponent.h"
-#include "config_section/LCDScreen.h"
 
 #include "../widgets/LCDText.h"
 #include "../widgets/DividerLine.h"
@@ -23,12 +21,11 @@ class SoundEditorWindow
     , public juce::ChangeListener
 {
 public:
-    explicit SoundEditorWindow(GlobalOptions& opts, ER1SoundPatch::Ptr sound);
+    explicit SoundEditorWindow(GlobalOptions& opts, const ER1SoundPatch::Ptr& sound);
     void resized() override;
 
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* broadcaster) override;
-    ConfigSectionComponent m_VoiceSetup;
     OscSectionComponent m_OscSection;
     AmpSectionComponent m_AmpSection;
     DelaySectionComponent m_DelaySection;

@@ -4,6 +4,8 @@
 
 #include "Options.h"
 #include "look_and_feel/ER1Colours.h"
+#include "look_and_feel/ER1LAF.h"
+#include "widgets/LCDText.h"
 #include <meta/gooey/PerspectiveImageEffectFilter.h>
 
 
@@ -56,10 +58,8 @@ OptionsComponent::OptionsComponent(GlobalOptions& opts)
     , m_OptionsListBox("Options", nullptr)
     , m_Save("Save defaults")
     , m_Load("Load defaults")
-    , m_PerspectiveFilter(new meta::PerspectiveImageEffectFilter())
 {
     m_OptionsListBox.setModel(&m_Options);
-    m_OptionsListBox.setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
 
     m_Save.addListener(this);
     m_Load.addListener(this);
@@ -67,33 +67,28 @@ OptionsComponent::OptionsComponent(GlobalOptions& opts)
     addAndMakeVisible(m_Save);
     addAndMakeVisible(m_Load);
     addAndMakeVisible(m_OptionsListBox);
-
-    setComponentEffect(m_PerspectiveFilter.get());
 }
 
 void OptionsComponent::resized()
 {
     auto bounds = getLocalBounds();
-    auto buttonBounds = bounds.removeFromBottom(12);
+    auto buttonBounds = bounds.removeFromBottom(14);
     buttonBounds.removeFromLeft(1);
     buttonBounds.removeFromRight(1);
     m_Load.setBounds(buttonBounds.removeFromLeft((buttonBounds.getWidth() - 2) / 2));
     buttonBounds.removeFromLeft(2);
     m_Save.setBounds(buttonBounds);
 
-    m_OptionsListBox.setRowHeight(16);
+    m_OptionsListBox.setRowHeight(18);
     m_OptionsListBox.setBounds(bounds.reduced(2));
 
 }
 
 void OptionsComponent::paint(juce::Graphics& g)
 {
-    g.setColour(ER1Colours::lcdRed);
-    g.fillAll();
-
     auto bounds = getLocalBounds();
-    bounds.removeFromBottom(12);
-    g.setColour(juce::Colours::red.darker());
+    bounds.removeFromBottom(14);
+    g.setColour(findColour(LCDText::ColourIds::textColour));
     g.drawRect(bounds.reduced(1), 1);
 }
 

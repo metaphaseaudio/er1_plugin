@@ -3,14 +3,15 @@
 //
 
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include "../guts/MidiManager.h"
-#include "patch_manager/PatchManager.h"
-#include "widgets/KorgButton.h"
-#include "widgets/LCDText.h"
-#include "../guts/ER1AudioProcessor.h"
-#include "Options.h"
-#include "look_and_feel/ER1LAF.h"
+#include "juce_gui_basics/juce_gui_basics.h"
+#include "../../guts/MidiManager.h"
+#include "../patch_manager/PatchManager.h"
+#include "../widgets/KorgButton.h"
+#include "../widgets/LCDText.h"
+#include "../../guts/ER1AudioProcessor.h"
+#include "../Options.h"
+#include "../look_and_feel/ER1LAF.h"
+#include "LCDScreen.h"
 
 
 class GlobalCtrls
@@ -24,7 +25,7 @@ public:
     GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc);
     void resized() override;
 
-    void setVoice(JSONPatch* patch) { m_SoundPatchManager.changeTarget(patch); }
+    void setVoice(const ER1SoundPatch::Ptr& patch);
 
     juce::File getCurrentSoundFolder() const { return m_SoundPatchManager.getCurrentDirectory(); }
     juce::File getCurrentBankFolder() const { return m_BankPatchManager.getCurrentDirectory(); }
@@ -40,9 +41,11 @@ private:
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
     LCDLAF m_LCDLAF;
+
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
     OptionsComponent m_OptionsManager;
+    LCDScreen m_LCDScreen;
     LCDText m_Bank;
     juce::Label m_BankLabel;
     KorgToggleButton m_NoteListen, m_SelectSound, m_SelectBank, m_Options;

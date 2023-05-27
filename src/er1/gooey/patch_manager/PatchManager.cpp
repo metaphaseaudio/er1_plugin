@@ -5,6 +5,7 @@
 #include "PatchManager.h"
 #include "../look_and_feel/ER1Colours.h"
 #include "../fonts/FontLCD.h"
+#include "../widgets/LCDText.h"
 
 
 static std::string stripStar(const std::string& x)
@@ -34,9 +35,9 @@ PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const s
     m_Editor.setBorder(juce::BorderSize<int>(0));
     m_Editor.addListener(this);
 
-    m_FileListComponent.setRowHeight(14);
+    m_FileListComponent.setRowHeight(18);
     m_FileListComponent.addListener(this);
-    m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, juce::Colours::red);
+    m_FileListComponent.setColour(juce::DirectoryContentsDisplayComponent::ColourIds::textColourId, getLookAndFeel().findColour(LCDText::ColourIds::textColour));
     m_FileListComponent.setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
 
     addAndMakeVisible(m_FileListComponent);
@@ -57,15 +58,15 @@ PatchManager::PatchManager(Patch* target, const juce::File& startingDir, const s
 void PatchManager::paint(juce::Graphics& g)
 {
     auto bounds = getLocalBounds();
-    bounds.removeFromBottom(12);
-    g.setColour(juce::Colours::red.darker());
+    bounds.removeFromBottom(14);
+    g.setColour(getLookAndFeel().findColour(LCDText::ColourIds::textColour));
     g.drawRect(bounds.reduced(1), 1);
 }
 
 void PatchManager::resized()
 {
     auto bounds = getLocalBounds();
-    auto buttonRow = bounds.removeFromBottom(12);
+    auto buttonRow = bounds.removeFromBottom(14);
     m_FileListComponent.setBounds(bounds.reduced(2));
 
     buttonRow.removeFromLeft(1);
@@ -75,7 +76,7 @@ void PatchManager::resized()
     buttonRow.removeFromLeft(2);
     m_Save.setBounds(buttonRow.removeFromLeft((bounds.getWidth() - 4.0) * 0.25));
     buttonRow.removeFromLeft(2);
-    m_Delete.setBounds(buttonRow.removeFromLeft(((bounds.getWidth() - 4.0) * 0.333) - 1));
+    m_Delete.setBounds(buttonRow.removeFromLeft(((bounds.getWidth() - 4.0) * 0.333) - 11.0));
 }
 
 PatchManager::~PatchManager()

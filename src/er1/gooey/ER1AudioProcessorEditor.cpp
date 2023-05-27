@@ -29,6 +29,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
 
     p_VoiceSelector = std::make_unique<VoiceSelector>(p.getMidiManager(), p.getSynth().getVoices());
     p_GlobalCtrls = std::make_unique<GlobalCtrls>(p.getMidiManager(), p);
+    p_GlobalCtrls->setVoice(processor.getSound(0));
 
     for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
     {
@@ -58,7 +59,10 @@ ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 void ER1AudioProcessorEditor::paint (Graphics& g)
 {
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
-    auto file = juce::File(R"(C:\Users\Matt\code\rendered_ui_images\0001.png)");
+    auto file = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory)
+                       .getChildFile("Metaphase")
+                       .getChildFile("ER-1")
+                       .getChildFile("bg_img.png");
     auto img = std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
     Image bg = ImageCache::getFromMemory(Images::bg_2_png, Images::bg_2_pngSize);
     g.drawImage(*img, getLocalBounds().toFloat());
@@ -81,7 +85,7 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         const auto selected = p_VoiceSelector->getSelected();
         if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
 
-        p_GlobalCtrls->setVoice(processor.getSynth().getVoices()[selected]->getControlBlock());
+        p_GlobalCtrls->setVoice(processor.getSound(selected));
         m_SoundEditorWindows[selected]->setVisible(true);
         processor.triggerVoice(selected);
     }

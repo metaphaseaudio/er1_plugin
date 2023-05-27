@@ -3,10 +3,10 @@
 //
 
 #include "GlobalCtrls.h"
-#include "look_and_feel/StandardShapes.h"
-#include "fonts/FontLCD.h"
+#include "../look_and_feel/StandardShapes.h"
+#include "../fonts/FontLCD.h"
 
-#define BIG_LABEL_PT 19
+static constexpr int BIG_LABEL_PT = 26;
 
 
 GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
@@ -15,7 +15,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     , m_OptionsManager(proc.getOptions())
     , r_MidiManager(mgr)
     , m_Bank("Bank", "Default")
-    , m_BankLabel("Bank Label", "BNK:")
+    , m_BankLabel("Bank Label", "BANK:")
     , m_NoteListen(WidgetManager::WidgetID::listen, 0)
     , m_SelectSound(WidgetManager::WidgetID::sound, 0)
     , m_SelectBank(WidgetManager::WidgetID::bank, 0)
@@ -23,9 +23,19 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
 {
     setInterceptsMouseClicks(false, true);
 
+    m_LCDScreen.setLookAndFeel(&m_LCDLAF);
     m_SoundPatchManager.setLookAndFeel(&m_LCDLAF);
     m_BankPatchManager.setLookAndFeel(&m_LCDLAF);
     m_OptionsManager.setLookAndFeel(&m_LCDLAF);
+    m_Bank.setLookAndFeel(&m_LCDLAF);
+    m_BankLabel.setLookAndFeel(&m_LCDLAF);
+
+    m_LCDScreen.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_SoundPatchManager.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_BankPatchManager.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_OptionsManager.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_Bank.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_BankLabel.setComponentEffect(m_LCDLAF.getLCDFilter());
 
     addChildComponent(m_SoundPatchManager);
     addChildComponent(m_BankPatchManager);
@@ -34,6 +44,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     m_Bank.setEditable(false, true);
     m_Bank.onTextChange = [&]() { proc.setPatchName(m_Bank.getText().toStdString()); };
 
+    addAndMakeVisible(m_LCDScreen);
     addAndMakeVisible(m_BankLabel); addAndMakeVisible(m_Bank);
     addAndMakeVisible(m_NoteListen);
     addAndMakeVisible(m_Options);
@@ -79,7 +90,7 @@ void GlobalCtrls::resized()
     bounds = bounds.removeFromTop(93);
     bounds = bounds.removeFromLeft(286);
 
-
+    m_LCDScreen.setBounds(bounds);
     m_SoundPatchManager.setBounds(bounds);
     m_BankPatchManager.setBounds(bounds);
     m_OptionsManager.setBounds(bounds);
@@ -155,6 +166,7 @@ void GlobalCtrls::buttonClicked(juce::Button* btn)
     const auto patchMgrVisible = m_SelectBank.getToggleState() || m_SelectSound.getToggleState() || m_Options.getToggleState();
     m_BankLabel.setVisible(!patchMgrVisible);
     m_Bank.setVisible(!patchMgrVisible);
+    m_LCDScreen.setVisible(!patchMgrVisible);
 }
 
 void GlobalCtrls::changeListenerCallback(juce::ChangeBroadcaster* source)
@@ -166,4 +178,10 @@ void GlobalCtrls::setBankName(const std::string& bank)
 {
     m_Bank.setText(bank, juce::dontSendNotification);
     repaint();
+}
+
+void GlobalCtrls::setVoice(const ER1SoundPatch::Ptr& patch)
+{
+    m_LCDScreen.setPatch(patch);
+    m_SoundPatchManager.changeTarget(patch);
 }

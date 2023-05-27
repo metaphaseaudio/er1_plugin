@@ -16,7 +16,7 @@
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
 #include "../gooey/voice_selector/VoiceSelector.h"
 #include "look_and_feel/ER1LAF.h"
-#include "GlobalCtrls.h"
+#include "config_section/GlobalCtrls.h"
 
 //==============================================================================
 /**
