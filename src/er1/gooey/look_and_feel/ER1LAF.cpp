@@ -444,6 +444,19 @@ const WidgetManager::WidgetInfo&
 ER1LAF::getWidgetInfo(WidgetManager::WidgetID widget_id, WidgetManager::WidgetVariant variant, int index) const
 { return m_Widgets.getWidgetInfo(widget_id, variant, index); }
 
+void LCDLAF::drawComboBox
+(Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box)
+{
+    juce::Rectangle<int> arrowZone(width - 30, 0, 20, height);
+    Path path;
+    path.startNewSubPath((float) arrowZone.getX() + 3.0f, (float) arrowZone.getCentreY() - 2.0f);
+    path.lineTo((float) arrowZone.getCentreX(), (float) arrowZone.getCentreY() + 3.0f);
+    path.lineTo((float) arrowZone.getRight() - 3.0f, (float) arrowZone.getCentreY() - 2.0f);
+
+    g.setColour(box.findColour(ComboBox::arrowColourId));
+    g.strokePath(path, PathStrokeType (2.0f));
+}
+
 
 void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)
 {
@@ -479,6 +492,10 @@ LCDLAF::LCDLAF()
 
     setColour(juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
     setColour(juce::Label::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    setColour(juce::ComboBox::ColourIds::arrowColourId, findColour(LCDText::ColourIds::textColour));
+    setColour(juce::ComboBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
     dynamic_cast<juce::GlowEffect*>(m_LCDFilter.get())->
         setGlowProperties(2, findColour(LCDText::ColourIds::textColour), juce::Point<int>(0, 0));
 }

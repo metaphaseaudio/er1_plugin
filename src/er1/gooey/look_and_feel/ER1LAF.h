@@ -47,8 +47,6 @@ public:
 
     [[nodiscard]] const WidgetManager::WidgetInfo& getWidgetInfo(
             WidgetManager::WidgetID widget_id, WidgetManager::WidgetVariant variant, int index) const;
-
-
 private:
     std::unique_ptr<juce::Drawable> folderImage, documentImage;
     WidgetManager m_Widgets;
@@ -64,7 +62,11 @@ public:
     [[nodiscard]] juce::ImageEffectFilter* getLCDFilter() const { return m_LCDFilter.get(); };
     juce::Font getLabelFont(juce::Label& label) override;
     void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
-
+    void drawComboBox(
+            juce::Graphics& g, int width, int height, bool isButtonDown,
+            int buttonX, int buttonY, int buttonW, int buttonH,
+            juce::ComboBox& box
+    ) override;
 private:
     std::unique_ptr<juce::ImageEffectFilter> m_LCDFilter;
 };

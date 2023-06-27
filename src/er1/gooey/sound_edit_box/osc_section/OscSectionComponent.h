@@ -18,6 +18,7 @@
 #include "../../../guts/MidiManager.h"
 #include "../../widgets/Header.h"
 #include "../../../guts/GlobalOptions.h"
+#include "../../look_and_feel/ER1LAF.h"
 
 
 class OscSectionComponent
@@ -31,13 +32,14 @@ public:
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
+    LCDLAF m_LCDLAF;
     Header m_Header;
-    KorgKnob m_Pitch;    juce::Label m_PitchLabel;
-    KorgKnob m_ModDepth; juce::Label m_ModDepthLabel;
-    KorgKnob m_ModSpeed; juce::Label m_ModSpeedLabel;
+    KorgKnob m_Pitch;
+    KorgKnob m_ModDepth;
+    KorgKnob m_ModSpeed;
 
-    KorgComboBox  m_ModType;  juce::Label m_ModTypeLabel;
-    KorgComboBox  m_OscType;  juce::Label m_OscTypeLabel;
+    KorgComboBox  m_ModType;
+    KorgComboBox  m_OscType;
     GlobalOptions& r_Opts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscSectionComponent)
