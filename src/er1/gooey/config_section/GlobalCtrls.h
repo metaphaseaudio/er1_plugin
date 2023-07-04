@@ -40,8 +40,6 @@ private:
 
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
-    LCDLAF m_LCDLAF;
-
     MidiManager& r_MidiManager;
     PatchManager m_SoundPatchManager, m_BankPatchManager;
     OptionsComponent m_OptionsManager;

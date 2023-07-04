@@ -34,10 +34,8 @@ OscSectionComponent::OscSectionComponent(GlobalOptions& opts, OscParams& params)
     addAndMakeVisible(m_ModType);
     addAndMakeVisible(m_OscType);
 
-    m_ModType.setLookAndFeel(&m_LCDLAF);
-    m_OscType.setLookAndFeel(&m_LCDLAF);
-    m_ModType.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_OscType.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_ModType.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_OscType.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
 }
 
 void OscSectionComponent::resized()

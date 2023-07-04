@@ -25,11 +25,7 @@ public:
         bank, listen, options, ring_btn, sound, sound_btn, tempo_sync,
     };
 
-    enum WidgetVariant
-    {
-        // Button lighting types + a default in "standard"
-        standard = 0, lit, brighter, hover
-    };
+    enum WidgetVariant { standard = 0, hover };
 
     WidgetManager();
 

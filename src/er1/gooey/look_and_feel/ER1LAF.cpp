@@ -20,155 +20,29 @@ static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
 }
 
 ER1LAF::ER1LAF()
+    : m_LCDFilter(new juce::GlowEffect())
 {
     setColour(juce::Label::textColourId, juce::Colours::black);
     setColour(ResizableWindow::ColourIds::backgroundColourId, ER1Colours::defaultBackground);
 
-    setColour(SelectorButton::ColourIds::selectLitColour, juce::Colours::pink);
-    setColour(SelectorButton::ColourIds::selectUnlitColour, juce::Colours::darkgrey);
-
     setColour(LCDText::ColourIds::bezelColour, ER1Colours::defaultForeground);
     setColour(LCDText::ColourIds::lcdColour, ER1Colours::lcdRed);
     setColour(LCDText::ColourIds::textColour, juce::Colours::red.withAlpha(0.5f));
+
+    setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::ListBox::ColourIds::outlineColourId, juce::Colours::transparentBlack);
+    setColour(juce::ListBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    setColour(juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::Label::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    setColour(juce::ComboBox::ColourIds::arrowColourId, findColour(LCDText::ColourIds::textColour));
+    setColour(juce::ComboBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    dynamic_cast<juce::GlowEffect*>(m_LCDFilter.get())->
+            setGlowProperties(2, findColour(LCDText::ColourIds::textColour), juce::Point<int>(0, 0));
 }
 
-void ER1LAF::drawRotarySlider
-(juce::Graphics &g, int x, int y, int width, int height, float sliderPos,
- const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider &slider)
-{
-    auto outline   = slider.findColour(Slider::rotarySliderOutlineColourId);
-    auto fill      = slider.findColour(Slider::rotarySliderFillColourId);
-    auto thumb     = slider.findColour(Slider::thumbColourId);
-
-    if (!slider.isEnabled())
-    {
-        outline = outline.withSaturation(0.0f).withAlpha(0.5f);
-        fill = fill.withSaturation(0.0f).withAlpha(0.5f);
-        thumb = thumb.withSaturation(0.0f).withAlpha(0.5f);
-    }
-
-    auto bounds    = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
-    auto toAngle   = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    auto radius    = jmin(bounds.getWidth(), bounds.getHeight()) / 2.0f;
-
-    const float dotIncrement = 0.5;
-
-    Point<float> center(bounds.getCentreX(), bounds.getCentreY());
-    auto knobBounds = Rectangle<float>(radius * 1.3f, radius * 1.3f).withCentre(center);
-
-    auto shadow_centre = juce::Point<int>(x, y);
-    shadow_centre.addXY(2, 2);
-    auto circleShadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
-    juce::Path circle_path;
-    circle_path.addEllipse(knobBounds);
-    circleShadow.drawForPath(g, circle_path);
-
-    g.setColour(fill);
-    g.fillEllipse(knobBounds);
-
-    if (radius > 0.0)
-    {
-        auto rotation = AffineTransform::rotation(0.0f, center.x, center.y);
-        auto angle = rotaryStartAngle;
-
-        while (angle < rotaryEndAngle)
-        {
-            auto dotPoint = center.getPointOnCircumference(radius, radius, angle)
-                                  .transformedBy(rotation);
-
-            auto dotBounds = Rectangle<float>(4, 4).withCentre(dotPoint);
-            g.fillEllipse(dotBounds);
-            angle += dotIncrement;
-        }
-    }
-
-    g.setColour(outline);
-
-    const auto halfPi = MathConstants<float>::halfPi;
-    Point<float> thumbPoint(center.x + (radius / 1.25f) * std::cos(toAngle - halfPi)
-                          , center.y + (radius / 1.25f) * std::sin(toAngle - halfPi));
-    auto line = Line<float>(center, thumbPoint);
-
-    shadow_centre = juce::Point<int>(x, y);
-    shadow_centre.addXY(2, 2);
-    auto lineShadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 5, shadow_centre);
-    juce::Path line_path;
-    line_path.addLineSegment(line, 4);
-    lineShadow.drawForPath(g, line_path);
-
-    g.setColour(thumb);
-    g.drawLine(line, 4);
-}
-
-void ER1LAF::drawKorgButton
-(juce::Graphics &g, KorgButton &button, bool isMouseOverButton, bool isButtonDown)
-{
-    auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
-    auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-    drawPad(g, static_cast<juce::Button&>(button), (isButtonDown ? dwnColour : upColour).brighter(button.brightness));
-}
-
-void ER1LAF::drawKorgToggleButton
-(juce::Graphics &g, KorgToggleButton &button, bool isMouseOverButton, bool isButtonDown)
-{
-    auto toggleDown = button.getToggleState();
-    auto dwnColour = isMouseOverButton ? ER1Colours::padDwnOver : ER1Colours::padDwn;
-    auto upColour = isMouseOverButton ? ER1Colours::padUpOver : ER1Colours::padUp;
-
-    auto brightnessAdjust = button.brightness;
-    auto colour = toggleDown ? dwnColour : upColour;
-    auto litColour = toggleDown ? upColour : dwnColour;
-
-    colour = juce::Colour::fromRGBA(
-        int(meta::Interpolate<float>::linear(colour.getRed(), litColour.getRed() , brightnessAdjust)),
-        int(meta::Interpolate<float>::linear(colour.getGreen(), litColour.getGreen(), brightnessAdjust)),
-        int(meta::Interpolate<float>::linear(colour.getBlue(), litColour.getBlue(), brightnessAdjust)),
-        colour.getAlpha()
-    );
-
-    drawPad(g, static_cast<juce::Button&>(button), colour);
-}
-
-void ER1LAF::drawKorgPad(Graphics& g, juce::Component& pad, bool isPadLit, bool isPadDown, float brightnessAdjust)
-{
-    auto dwnColour = isPadLit ? ER1Colours::padDwnOver : ER1Colours::padDwn;
-    auto upColour = isPadLit ? ER1Colours::padUpOver : ER1Colours::padUp;
-    auto colour = isPadDown ? dwnColour : upColour;
-    drawPad(g, pad, colour.brighter(brightnessAdjust));
-}
-
-void ER1LAF::drawPad(Graphics& g, const juce::Component& area, const Colour& internalColour)
-{
-    auto bounds = area.getLocalBounds().reduced(5).toFloat();
-    auto calcCurve = [](const juce::Rectangle<float>& area, int x) {
-        return (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(x))) / 2.0f;
-    };
-    auto curve = (std::min(area.getWidth(), area.getHeight()) * (1.0/std::sqrt(5))) / 2.0f;
-
-    // Border
-    g.setColour(juce::Colours::darkgrey);
-    g.fillRoundedRectangle(bounds, calcCurve(area.getLocalBounds().toFloat(), 5));
-
-    // Shadow
-    auto shadow_centre = area.getLocalBounds().getTopLeft();
-    shadow_centre.addXY(1, 1);
-    auto shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 1, shadow_centre.toInt());
-    juce::Path button_path;
-    button_path.addRoundedRectangle(bounds, curve);
-    shadow.drawForPath(g, button_path);
-
-    // Fill
-    bounds = bounds.reduced(2);
-    g.setColour(internalColour);
-    g.fillRoundedRectangle(bounds, calcCurve(bounds, 5));
-
-    // Highlight
-    auto highlightBounds = bounds.reduced(2);
-    g.setColour(internalColour.withMultipliedLightness(1.05));
-    highlightBounds.setX(highlightBounds.getX() - 0.5);
-    highlightBounds.setY(highlightBounds.getY() - 0.5);
-    g.fillRoundedRectangle(highlightBounds, calcCurve(highlightBounds, 5));
-}
 
 void ER1LAF::drawFileBrowserRow(Graphics& g, int width, int height, const File& file, const String& filename, juce::Image* icon,
                                 const String& fileSizeDescription, const String& fileTimeDescription, bool isDirectory, bool isItemSelected,
@@ -444,7 +318,7 @@ const WidgetManager::WidgetInfo&
 ER1LAF::getWidgetInfo(WidgetManager::WidgetID widget_id, WidgetManager::WidgetVariant variant, int index) const
 { return m_Widgets.getWidgetInfo(widget_id, variant, index); }
 
-void LCDLAF::drawComboBox
+void ER1LAF::drawComboBox
 (Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box)
 {
     juce::Rectangle<int> arrowZone(width - 30, 0, 20, height);
@@ -458,7 +332,7 @@ void LCDLAF::drawComboBox
 }
 
 
-void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)
+void ER1LAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool isHighlighted, bool isDown)
 {
     const auto lineWidth = 1;
     const auto toggleColour = btn.getToggleState() ? juce::Colours::red : juce::Colours::red.darker(0.6);
@@ -477,25 +351,9 @@ void LCDLAF::drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool i
     }
 }
 
-Font LCDLAF::getLabelFont(Label& label)
+Font ER1LAF::getLabelFont(Label& label)
 {
     const auto font = label.getFont();
     return FontLCD::defaultFont().withPointHeight(font.getHeightInPoints());
 }
 
-LCDLAF::LCDLAF()
-    : m_LCDFilter(new juce::GlowEffect())
-{
-    setColour(juce::ListBox::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
-    setColour(juce::ListBox::ColourIds::outlineColourId, juce::Colours::transparentBlack);
-    setColour(juce::ListBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
-
-    setColour(juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
-    setColour(juce::Label::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
-
-    setColour(juce::ComboBox::ColourIds::arrowColourId, findColour(LCDText::ColourIds::textColour));
-    setColour(juce::ComboBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
-
-    dynamic_cast<juce::GlowEffect*>(m_LCDFilter.get())->
-        setGlowProperties(2, findColour(LCDText::ColourIds::textColour), juce::Point<int>(0, 0));
-}

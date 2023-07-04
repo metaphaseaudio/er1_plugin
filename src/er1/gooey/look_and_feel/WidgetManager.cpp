@@ -28,8 +28,6 @@ WidgetManager::WidgetManager()
 
     std::map<std::string, WidgetVariant> variantMap = {
         { "standard" , standard },
-        { "lit", lit },
-        { "brighter" , brighter },
         { "hover" , hover }
     };
 
@@ -78,6 +76,7 @@ WidgetManager::WidgetManager()
         );
 
         jassert(widgetIndex + 1 == m_WidgetInfo[widgetName][variant].size());
+        std::cout << "Loaded " << entryInfo->filename << std::endl;
     }
 }
 

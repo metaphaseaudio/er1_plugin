@@ -23,19 +23,12 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
 {
     setInterceptsMouseClicks(false, true);
 
-    m_LCDScreen.setLookAndFeel(&m_LCDLAF);
-    m_SoundPatchManager.setLookAndFeel(&m_LCDLAF);
-    m_BankPatchManager.setLookAndFeel(&m_LCDLAF);
-    m_OptionsManager.setLookAndFeel(&m_LCDLAF);
-    m_Bank.setLookAndFeel(&m_LCDLAF);
-    m_BankLabel.setLookAndFeel(&m_LCDLAF);
-
-    m_LCDScreen.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_SoundPatchManager.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_BankPatchManager.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_OptionsManager.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_Bank.setComponentEffect(m_LCDLAF.getLCDFilter());
-    m_BankLabel.setComponentEffect(m_LCDLAF.getLCDFilter());
+    m_LCDScreen.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_SoundPatchManager.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_BankPatchManager.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_OptionsManager.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_Bank.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
+    m_BankLabel.setComponentEffect(dynamic_cast<ER1LAF&>(getLookAndFeel()).getLCDFilter());
 
     addChildComponent(m_SoundPatchManager);
     addChildComponent(m_BankPatchManager);

@@ -32,7 +32,6 @@ public:
 private:
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
-    LCDLAF m_LCDLAF;
     Header m_Header;
     KorgKnob m_Pitch;
     KorgKnob m_ModDepth;

@@ -23,7 +23,6 @@ class KorgButton
 public:
     KorgButton(WidgetManager::WidgetID id, int index);
     KorgButton(WidgetManager::WidgetID id, int index, const juce::String& name);
-    void paintButton(juce::Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 
     float brightness = 0.0f; // For doing things like flashing buttons
 private:
