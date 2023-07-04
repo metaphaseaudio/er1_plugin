@@ -78,10 +78,10 @@ void GlobalCtrls::resized()
     m_Bank.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
 
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(50);
-    bounds.removeFromLeft(108);
-    bounds = bounds.removeFromTop(93);
-    bounds = bounds.removeFromLeft(286);
+    bounds.removeFromTop(46);
+    bounds.removeFromLeft(101);
+    bounds = bounds.removeFromTop(95);
+    bounds = bounds.removeFromLeft(294);
 
     m_LCDScreen.setBounds(bounds);
     m_SoundPatchManager.setBounds(bounds);

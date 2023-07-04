@@ -33,7 +33,7 @@ public:
     const juce::Drawable* getDefaultFolderImage() override;
 
     void drawToggleButton(juce::Graphics& g, juce::ToggleButton& btn, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
-    
+
     void drawScrollbar(juce::Graphics& graphics, juce::ScrollBar& bar, int x, int y, int width, int height, bool isScrollbarVertical,
                        int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown) override;
 
@@ -47,8 +47,6 @@ public:
 
 private:
     std::unique_ptr<juce::Drawable> folderImage, documentImage;
-
     WidgetManager m_Widgets;
-
     std::unique_ptr<juce::ImageEffectFilter> m_LCDFilter;
 };
