@@ -81,7 +81,7 @@ void GlobalCtrls::resized()
     bounds.removeFromTop(46);
     bounds.removeFromLeft(101);
     bounds = bounds.removeFromTop(95);
-    bounds = bounds.removeFromLeft(294);
+    bounds = bounds.removeFromLeft(296);
 
     m_LCDScreen.setBounds(bounds);
     m_SoundPatchManager.setBounds(bounds);
