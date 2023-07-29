@@ -3,10 +3,7 @@
 //
 
 #include "VoiceSelector.h"
-#include <meta/util/container_helpers/array.h>
-#include "../look_and_feel/StandardShapes.h"
-#include "Arrows.h"
-
+#include "meta/util/container_helpers/array.h"
 
 VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::unique_ptr<ER1Voice>>& voices)
     : r_Voices(voices)
@@ -41,10 +38,11 @@ VoiceSelector::VoiceSelector(MidiManager& midiManager, const std::vector<std::un
 
 int VoiceSelector::getSelected() const
 {
-    for (const auto& i_btn : meta::enumerate(m_Buttons))
+
+    for (int i = 0; i < m_Buttons.size(); i++)
     {
-        if (std::get<1>(i_btn)->getToggleState())
-            { return int(std::get<0>(i_btn)); }
+        if (m_Buttons.at(i)->getToggleState())
+            { return i; }
     }
     return -1;
 }

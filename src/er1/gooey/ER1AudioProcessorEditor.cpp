@@ -14,14 +14,14 @@
 #include <memory>
 #include "BGImage.h"
 #include "Images.h"
-#include "look_and_feel/StandardShapes.h"
 
 using namespace juce;
 
 //==============================================================================
-ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p)
+ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p, WidgetManager& widgetManager)
     : AudioProcessorEditor(&p)
     , processor(p)
+    , m_LAF(widgetManager)
 {
     processor.addChangeListener(this);
     setLookAndFeel(&m_LAF);
@@ -83,15 +83,13 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
     {
         for (auto& editor : m_SoundEditorWindows) { editor->setVisible(false); }
         const auto selected = p_VoiceSelector->getSelected();
-        if (selected >= meta::ER1::ER1_SOUND_COUNT) { return; }
+        if (selected >= meta::ER1::ER1_SOUND_COUNT)
+            { return; }
 
         p_GlobalCtrls->setVoice(processor.getSound(selected));
         m_SoundEditorWindows[selected]->setVisible(true);
         processor.triggerVoice(selected);
-    }
 
-    if (source == p_GlobalCtrls.get())
-    {
         processor.setBankPresetFolder(p_GlobalCtrls->getCurrentBankFolder());
         processor.setSoundPresetFolder(p_GlobalCtrls->getCurrentSoundFolder());
         repaint();

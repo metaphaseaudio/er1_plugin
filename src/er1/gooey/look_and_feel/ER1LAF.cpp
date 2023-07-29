@@ -19,8 +19,9 @@ static std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
     return Drawable::createFromSVG (*xml);
 }
 
-ER1LAF::ER1LAF()
-    : m_LCDFilter(new juce::GlowEffect())
+ER1LAF::ER1LAF(WidgetManager& widgetManager)
+    : r_Widgets(widgetManager)
+    , m_LCDFilter(new juce::GlowEffect())
 {
     setColour(juce::Label::textColourId, juce::Colours::black);
     setColour(ResizableWindow::ColourIds::backgroundColourId, ER1Colours::defaultBackground);
@@ -38,6 +39,12 @@ ER1LAF::ER1LAF()
 
     setColour(juce::ComboBox::ColourIds::arrowColourId, findColour(LCDText::ColourIds::textColour));
     setColour(juce::ComboBox::ColourIds::textColourId, findColour(LCDText::ColourIds::textColour));
+
+    setColour(juce::Slider::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::ColourIds::textBoxOutlineColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::ColourIds::trackColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::transparentBlack);
+    setColour(juce::Slider::ColourIds::textBoxTextColourId, findColour(LCDText::ColourIds::textColour));
 
     dynamic_cast<juce::GlowEffect*>(m_LCDFilter.get())->
             setGlowProperties(2, findColour(LCDText::ColourIds::textColour), juce::Point<int>(0, 0));
@@ -316,7 +323,7 @@ void ER1LAF::drawLabel(juce::Graphics& g, juce::Label& label)
 
 const WidgetManager::WidgetInfo&
 ER1LAF::getWidgetInfo(WidgetManager::WidgetID widget_id, WidgetManager::WidgetVariant variant, int index) const
-{ return m_Widgets.getWidgetInfo(widget_id, variant, index); }
+{ return r_Widgets.getWidgetInfo(widget_id, variant, index); }
 
 void ER1LAF::drawComboBox
 (Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box)
@@ -355,5 +362,11 @@ Font ER1LAF::getLabelFont(Label& label)
 {
     const auto font = label.getFont();
     return FontLCD::defaultFont().withPointHeight(font.getHeightInPoints());
+}
+
+juce::Label *ER1LAF::createSliderTextBox(Slider &slider) {
+    auto l =  LookAndFeel_V4::createSliderTextBox(slider);
+    l->setFont(FontLCD::defaultFont().withPointHeight(18.0f));
+    return l;
 }
 

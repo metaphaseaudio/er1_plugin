@@ -22,7 +22,9 @@ public:
 
 private:
     ER1SoundPatch* p_LivePatch;
-    LCDText m_Name, m_MidiNote, m_MidiChan, m_AudioBus;
+    LCDText m_Name;
+//    LCDText m_Name, m_MidiNote, m_MidiChan, m_AudioBus;
+    juce::Slider m_MidiNote, m_MidiChan, m_AudioBus;
     LCDToggleButton m_NoteFollow, m_Solo, m_Mute;
     juce::Label m_NameLabel, m_MidiNoteLabel, m_MidiChanLabel, m_AudioBusLabel;
 };

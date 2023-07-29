@@ -5,7 +5,7 @@
 #pragma once
 #include "juce_gui_basics/juce_gui_basics.h"
 #include "../../guts/MidiManager.h"
-#include "../patch_manager/PatchManager.h"
+#include "../PatchManager.h"
 #include "../widgets/KorgButton.h"
 #include "../widgets/LCDText.h"
 #include "../../guts/ER1AudioProcessor.h"

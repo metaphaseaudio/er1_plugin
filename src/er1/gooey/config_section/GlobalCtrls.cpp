@@ -3,7 +3,6 @@
 //
 
 #include "GlobalCtrls.h"
-#include "../look_and_feel/StandardShapes.h"
 #include "../fonts/FontLCD.h"
 
 static constexpr int BIG_LABEL_PT = 26;

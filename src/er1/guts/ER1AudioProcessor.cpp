@@ -127,9 +127,10 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 {
     ScopedNoDenormals noDenormals;
     m_MidiManager.processBlock(midiMessages);
+
+    // Get the BPM info
     juce::AudioPlayHead::CurrentPositionInfo positionInfo;
     auto ph = playHead.load();
-
     if (ph != nullptr)
         playHead.load()->getCurrentPosition(positionInfo);
 
@@ -152,7 +153,7 @@ void ER1AudioProcessor::processBlock(AudioBuffer<float> &buffer, MidiBuffer& mid
 
 //==============================================================================
 bool ER1AudioProcessor::hasEditor() const { return true; }
-AudioProcessorEditor *ER1AudioProcessor::createEditor() { return new ER1AudioProcessorEditor(*this); }
+AudioProcessorEditor *ER1AudioProcessor::createEditor() { return new ER1AudioProcessorEditor(*this, m_WidgetManager); }
 
 //==============================================================================
 void ER1AudioProcessor::getStateInformation(MemoryBlock &destData)

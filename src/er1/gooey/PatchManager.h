@@ -3,9 +3,9 @@
 //
 
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include "../widgets/LCDButton.h"
-#include "../../guts/Patch.h"
+#include "juce_gui_basics/juce_gui_basics.h"
+#include "widgets/LCDButton.h"
+#include "../guts/Patch.h"
 
 
 class PatchManager

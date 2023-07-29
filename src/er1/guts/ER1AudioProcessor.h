@@ -22,6 +22,7 @@
 #include "MidiManager.h"
 #include "GlobalOptions.h"
 #include "Patch.h"
+#include "../gooey/look_and_feel/WidgetManager.h"
 
 //==============================================================================
 /**
@@ -110,6 +111,10 @@ private:
     juce::File m_BankPresetFolder, m_SoundPresetFolder;
 
     juce::AudioBuffer<float> m_OversampleBuffer;
+
+    // We have to add the widget manager here because the widgets themselves take a while to load in to memory,
+    // and that kind of boot-time should be a one-time cost, not an every-time cost.
+    WidgetManager m_WidgetManager;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };

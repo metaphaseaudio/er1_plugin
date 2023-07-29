@@ -11,10 +11,10 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
-#include "../gooey/widgets/DividerLine.h"
 #include "../guts/ER1AudioProcessor.h"
+#include "../gooey/widgets/DividerLine.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
-#include "../gooey/voice_selector/VoiceSelector.h"
+#include "VoiceSelector.h"
 #include "look_and_feel/ER1LAF.h"
 #include "config_section/GlobalCtrls.h"
 
@@ -26,7 +26,7 @@ class ER1AudioProcessorEditor
     , juce::ChangeListener
 {
 public:
-    explicit ER1AudioProcessorEditor(ER1AudioProcessor&);
+    explicit ER1AudioProcessorEditor(ER1AudioProcessor&, WidgetManager& widgetManager);
     ~ER1AudioProcessorEditor() override;
 
     //==============================================================================

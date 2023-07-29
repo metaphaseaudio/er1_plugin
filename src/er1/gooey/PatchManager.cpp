@@ -3,9 +3,9 @@
 //
 
 #include "PatchManager.h"
-#include "../look_and_feel/ER1Colours.h"
-#include "../fonts/FontLCD.h"
-#include "../widgets/LCDText.h"
+#include "look_and_feel/ER1Colours.h"
+#include "fonts/FontLCD.h"
+#include "widgets/LCDText.h"
 
 
 static std::string stripStar(const std::string& x)

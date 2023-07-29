@@ -11,7 +11,7 @@ class ER1LAF
     : public juce::LookAndFeel_V4
 {
 public:
-    ER1LAF();
+    ER1LAF(WidgetManager& widgetManager);
 
     void drawFileBrowserRow(
         juce::Graphics&, int width, int height,
@@ -45,8 +45,9 @@ public:
 
     [[nodiscard]] juce::ImageEffectFilter* getLCDFilter() const { return m_LCDFilter.get(); };
 
+    juce::Label* createSliderTextBox(juce::Slider& slider) override;
 private:
     std::unique_ptr<juce::Drawable> folderImage, documentImage;
-    WidgetManager m_Widgets;
+    WidgetManager& r_Widgets;
     std::unique_ptr<juce::ImageEffectFilter> m_LCDFilter;
 };

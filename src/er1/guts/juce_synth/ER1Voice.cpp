@@ -74,7 +74,6 @@ void ER1Voice::processBlock(float** inData, float** outData, const float* lastDa
     if (p_Ctrls->config.bus.load() >= m_BusCount){ outData = nullptr; }
 
     const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config.bus.load()));
-
     m_Channel.processBlock(tmpData, outData != nullptr ? outData + (2 * busIndex) : nullptr, samps, offset);
 }
 

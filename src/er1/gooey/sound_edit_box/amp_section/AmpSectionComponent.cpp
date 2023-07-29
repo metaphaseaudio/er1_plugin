@@ -9,7 +9,6 @@
 */
 
 #include "AmpSectionComponent.h"
-#include "../../look_and_feel/StandardShapes.h"
 #include "../../look_and_feel/ER1Colours.h"
 
 using namespace juce;
