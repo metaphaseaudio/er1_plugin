@@ -50,13 +50,12 @@ void KorgToggleButton::paintButton(juce::Graphics &g, bool isMouseOverButton, bo
 }
 
 
-
 KorgBooleanParameterButton::KorgBooleanParameterButton(WidgetManager::WidgetID id, int index, juce::AudioParameterBool* param)
     : TimedParameterListener(param)
     , KorgToggleButton(id, index)
 {
     if (param == nullptr) { setEnabled(false); }
-    handleNewParameterValue();
+    setToggleState(isParameterOn(), juce::dontSendNotification);
     onClick = [this](){ buttonClicked(); };
 }
 
