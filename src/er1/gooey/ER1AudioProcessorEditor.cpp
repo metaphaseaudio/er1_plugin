@@ -53,6 +53,11 @@ ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
     processor.removeChangeListener(this);
+    p_GlobalCtrls->removeChangeListener(this);
+    p_VoiceSelector->removeChangeListener(this);
+
+    for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT; i++)
+        { processor.getMidiManager().removeChangeListener(m_SoundEditorWindows.at(i).get()); }
 }
 
 //==============================================================================
