@@ -63,7 +63,7 @@ void ER1Voice::updateParams(float tempo)
 }
 
 
-void ER1Voice::processBlock(float** inData, float** outData, const float* lastData, int samps, int offset)
+void ER1Voice::processBlock(float* const* inData, float* const* outData, const float* lastData, int samps, int offset)
 {
     const auto* ringData = isRingModCarrier() ? lastData : nullptr;
     auto* tmpData = inData[m_Sound->wantsAudioChannel()];

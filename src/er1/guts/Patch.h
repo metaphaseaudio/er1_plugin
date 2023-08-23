@@ -18,7 +18,7 @@ public:
 
     virtual std::string getDefaultPatchName() const { return "<default>"; }
 
-    std::string getPatchName() const { return m_PatchName; }
+    std::string getPatchName() const { return m_PatchName != "" ? m_PatchName : getDefaultPatchName(); }
     void setPatchName(const std::string& newName);
 
 protected:

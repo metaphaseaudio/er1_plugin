@@ -14,6 +14,7 @@ class ToggleOptionComponent
 {
 public:
     ToggleOptionComponent(const std::string& label, meta::ChangeBroadcastingProperty<bool>& option);
+    ~ToggleOptionComponent();
     void buttonClicked(juce::Button* button) override;
     void resized() override;
 

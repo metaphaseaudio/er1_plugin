@@ -20,6 +20,14 @@ ToggleOptionComponent::ToggleOptionComponent(const std::string& label, meta::Cha
     m_OptToggle.setToggleState(option.load(), juce::NotificationType::dontSendNotification);
 }
 
+
+ToggleOptionComponent::~ToggleOptionComponent()
+{
+    m_OptToggle.removeListener(this);
+    m_Opt.removeChangeListener(this);
+}
+
+
 void ToggleOptionComponent::resized()
 {
     auto localBounds = getLocalBounds().reduced(1);
@@ -33,7 +41,6 @@ void ToggleOptionComponent::buttonClicked(juce::Button* button)
 
 void ToggleOptionComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
     { m_OptToggle.setToggleState(m_Opt.load(), juce::NotificationType::dontSendNotification); }
-
 
 OptionsListBoxModel::OptionsListBoxModel(GlobalOptions& opts)
     : r_Opts(opts)

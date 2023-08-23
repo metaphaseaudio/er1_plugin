@@ -19,7 +19,6 @@ class LearnableSerializeable
     , public Serializeable
     , public meta::MidiLearnBroadcaster
 {
-    static_assert(std::derived_from<ParamType, juce::RangedAudioParameter>, "ParamType must be derived from a juce::RangedAudioParameter");
     static constexpr auto key_value = "value";
     static constexpr auto key_midi_ctrl_num = "midi_ctrl_num";
     static constexpr auto key_midi_chan = "midi_chan";

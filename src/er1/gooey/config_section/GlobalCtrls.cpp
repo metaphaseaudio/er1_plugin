@@ -34,6 +34,7 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     addChildComponent(m_OptionsManager);
 
     m_Bank.setEditable(false, true);
+    setBankName(proc.getPatchName());
     m_Bank.onTextChange = [&]() { proc.setPatchName(m_Bank.getText().toStdString()); };
 
     addAndMakeVisible(m_LCDScreen);
@@ -51,6 +52,19 @@ GlobalCtrls::GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc)
     m_SelectBank.addListener(this);
     m_Options.addListener(this);
 }
+
+
+GlobalCtrls::~GlobalCtrls()
+{
+    m_SoundPatchManager.removeChangeListener(this);
+    m_BankPatchManager.removeChangeListener(this);
+
+    m_NoteListen.removeListener(this);
+    m_SelectSound.removeListener(this);
+    m_SelectBank.removeListener(this);
+    m_Options.removeListener(this);
+}
+
 
 void GlobalCtrls::timerCallback()
 {

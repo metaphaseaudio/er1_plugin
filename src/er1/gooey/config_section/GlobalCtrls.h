@@ -23,6 +23,7 @@ class GlobalCtrls
 {
 public:
     GlobalCtrls(MidiManager& mgr, ER1AudioProcessor& proc);
+    ~GlobalCtrls();
     void resized() override;
 
     void setVoice(const ER1SoundPatch::Ptr& patch);

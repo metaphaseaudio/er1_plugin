@@ -19,7 +19,7 @@ public:
     void setSampleRate(double sr);
     void setMaxBusCount(int busCount) { m_BusCount = busCount; }
     void addToChokeList(ER1Voice* voice) { m_Sound->addSoundToChokeList(voice->m_Sound.get()); }
-    void processBlock(float** inData, float** outData, const float* lastData, int samps, int offset);
+    void processBlock(float* const* inData, float* const* outData, const float* lastData, int samps, int offset);
 
     [[nodiscard]] ER1SoundPatch::Ptr getControlBlock() const { return p_Ctrls; }
     [[nodiscard]] float getDecayEnvValue() const { return m_Sound->getEnvValue(); }
