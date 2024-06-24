@@ -149,7 +149,7 @@ void PatchManager::buttonClicked(juce::Button* btn)
 void PatchManager::startRenameSelected()
 {
     const auto selected_i = m_FileListComponent.getSelectedRows()[0];
-    auto selected_point = m_FileListComponent.getRowPosition(selected_i, false);
+    auto selected_point = m_FileListComponent.getRowPosition(selected_i, true);
     selected_point.removeFromLeft(selected_point.getHeight());
     selected_point.removeFromTop(2);
     const auto selected_file = m_DirList.getFile(selected_i);
@@ -167,6 +167,18 @@ void PatchManager::textEditorReturnKeyPressed(juce::TextEditor& editor)
     m_Editor.giveAwayKeyboardFocus();
     m_Editor.setVisible(false);
 }
+
+
+void PatchManager::textEditorEscapeKeyPressed(juce::TextEditor& editor)
+{
+    // Reset the name so that we don't rename things
+    // when the text editor loses focus
+    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
+    m_Editor.setText(m_DirList.getFile(selected_i).getFileName());
+    m_Editor.giveAwayKeyboardFocus();
+    m_Editor.setVisible(false);
+}
+
 
 void PatchManager::textEditorFocusLost(juce::TextEditor& editor)
 {
@@ -223,4 +235,3 @@ void PatchManager::changeDir(const juce::File& dir)
 {
     m_DirList.setDirectory(dir, true, true);
 }
-

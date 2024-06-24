@@ -27,6 +27,9 @@ public:
 
 private:
     void textEditorReturnKeyPressed(juce::TextEditor& editor) override;
+
+    void textEditorEscapeKeyPressed(juce::TextEditor& editor) override;
+
     void selectionChanged() override;
 
     std::string safeName() const;
