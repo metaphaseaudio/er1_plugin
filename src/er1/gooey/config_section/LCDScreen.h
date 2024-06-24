@@ -26,4 +26,6 @@ private:
     juce::Slider m_MidiNote, m_MidiChan, m_AudioBus;
     LCDToggleButton m_NoteFollow, m_Solo, m_Mute;
     juce::Label m_NameLabel, m_MidiNoteLabel, m_MidiChanLabel, m_AudioBusLabel;
+
+    JUCE_DECLARE_NON_COPYABLE(LCDScreen);
 };

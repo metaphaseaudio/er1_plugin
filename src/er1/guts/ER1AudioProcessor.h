@@ -106,6 +106,7 @@ private:
 
     MidiManager m_MidiManager;
 
+    std::vector<std::unique_ptr<ConfigParams>> m_SoundSlotConfigs;
     juce::ReferenceCountedArray<ER1SoundPatch> m_CtrlBlocks;
     ER1Synth m_Synth;
     juce::File m_BankPresetFolder, m_SoundPresetFolder;

@@ -4,6 +4,7 @@
   "version_string": "1.0.0",
   "publisher": "Metaphase" ,
   "url": "metaphaseaudio.com",
+  "signing_cert": "C:\\Users\\Matt\\code\\er1_plugin\\LICENSE",
   "components": [
     {
       "name": "VST3",

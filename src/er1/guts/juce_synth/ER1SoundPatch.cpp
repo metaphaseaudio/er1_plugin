@@ -23,7 +23,7 @@ static juce::StringArray ModulationNames =
 
 ER1SoundPatch::ER1SoundPatch(std::string name, OscParams osc, AmpParams amp, DelayParams delay, unsigned int midiNoteNumber, unsigned int
 midiChannel)
-    : config{false, midiNoteNumber, midiChannel}
+    : config(nullptr)
     , amp(amp)
     , osc(osc)
     , delay(delay)
@@ -34,8 +34,8 @@ midiChannel)
 void ER1SoundPatch::printStatus()
 {
     std::cout << m_PatchName << std::endl;
-    std::cout << "Note: " << config.note << std::endl;
-    std::cout << "Chan: " << config.chan << std::endl;
+    std::cout << "Note: " << config->note << std::endl;
+    std::cout << "Chan: " << config->chan << std::endl;
     std::cout << "Shape: " << osc.oscType->getCurrentValueAsText() << std::endl;
     std::cout << "Pitch: " << osc.pitch->getCurrentValueAsText() << std::endl;
     std::cout << "Mod Type: " << osc.modType->getCurrentValueAsText() << std::endl;
@@ -58,7 +58,6 @@ void ER1SoundPatch::printStatus()
 json ER1SoundPatch::toJsonInternal() const
 {
     return json({
-        {"config", config.asJSON()},
         {"osc", osc.asJSON()},
         {"amp", amp.asJSON()},
         {"delay", delay.asJSON()},
@@ -69,7 +68,6 @@ void ER1SoundPatch::fromJsonInternal(const json& j)
 {
     try
     {
-        config.fromJSON(j["config"]);
         osc.fromJSON(j["osc"]);
         amp.fromJSON(j["amp"]);
         delay.fromJSON(j["delay"]);

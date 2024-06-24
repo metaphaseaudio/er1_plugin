@@ -40,25 +40,25 @@ LCDScreen::LCDScreen()
     };
 
     m_MidiNote.onValueChange = [&](){
-        p_LivePatch->config.note = int(std::min(127.0, std::max(0.0, m_MidiNote.getValue())));
+        p_LivePatch->config->note = int(std::min(127.0, std::max(0.0, m_MidiNote.getValue())));
     };
 
     m_MidiChan.onValueChange = [&](){
-        p_LivePatch->config.chan = int(std::min(16.0, std::max(1.0, m_MidiChan.getValue())));
+        p_LivePatch->config->chan = int(std::min(16.0, std::max(1.0, m_MidiChan.getValue())));
     };
 
     m_AudioBus.onValueChange = [&](){
-        p_LivePatch->config.bus = int(std::min(meta::ER1::NumOutBuses - 1.0, std::max(0.0, m_AudioBus.getValue())));
+        p_LivePatch->config->bus = int(std::min(meta::ER1::NumOutBuses - 1.0, std::max(0.0, m_AudioBus.getValue())));
     };
 
     m_NoteFollow.onClick = [&]()
-        { p_LivePatch->config.noteFollow = !p_LivePatch->config.noteFollow; };
+        { p_LivePatch->config->noteFollow = !p_LivePatch->config->noteFollow; };
 
     m_Mute.onClick = [&]()
-        { p_LivePatch->config.mute = !p_LivePatch->config.mute; };
+        { p_LivePatch->config->mute = !p_LivePatch->config->mute; };
 
     m_Solo.onClick = [&]()
-        { p_LivePatch->config.solo = !p_LivePatch->config.solo; };
+        { p_LivePatch->config->solo = !p_LivePatch->config->solo; };
 
     refreshText(juce::dontSendNotification);
 }
@@ -147,17 +147,17 @@ void LCDScreen::refreshText(juce::NotificationType notify)
     if (!p_LivePatch) { return; }
     if (!m_Name.isBeingEdited()) { m_Name.setText(p_LivePatch->getPatchName(), notify); }
 
-    m_MidiChan.setValue(p_LivePatch->config.chan, notify);
-    m_MidiNote.setValue(p_LivePatch->config.note, notify);
-    m_AudioBus.setValue(p_LivePatch->config.bus, notify);
+    m_MidiChan.setValue(p_LivePatch->config->chan, notify);
+    m_MidiNote.setValue(p_LivePatch->config->note, notify);
+    m_AudioBus.setValue(p_LivePatch->config->bus, notify);
 }
 
 void LCDScreen::setPatch(ER1SoundPatch *newPatch)
 {
     p_LivePatch = newPatch;
-    m_NoteFollow.setToggleState(p_LivePatch->config.noteFollow, juce::dontSendNotification);
-    m_Mute.setToggleState(p_LivePatch->config.mute, juce::dontSendNotification);
-    m_Solo.setToggleState(p_LivePatch->config.solo, juce::dontSendNotification);
+    m_NoteFollow.setToggleState(p_LivePatch->config->noteFollow, juce::dontSendNotification);
+    m_Mute.setToggleState(p_LivePatch->config->mute, juce::dontSendNotification);
+    m_Solo.setToggleState(p_LivePatch->config->solo, juce::dontSendNotification);
     refreshText(juce::dontSendNotification);
 }
 

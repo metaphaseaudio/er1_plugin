@@ -12,8 +12,6 @@
 #include "ER1AudioProcessorEditor.h"
 
 #include <memory>
-#include "BGImage.h"
-#include "Images.h"
 
 using namespace juce;
 
@@ -69,7 +67,6 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
                        .getChildFile("ER-1")
                        .getChildFile("bg_img.png");
     auto img = std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
-    Image bg = ImageCache::getFromMemory(Images::bg_2_png, Images::bg_2_pngSize);
     g.drawImage(*img, getLocalBounds().toFloat());
 }
 

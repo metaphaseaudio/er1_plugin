@@ -21,7 +21,7 @@ struct ConfigParams
     std::atomic<bool> mute = false;
     std::atomic<bool> solo = false;
 
-    json asJSON() const
+    json toJson() const
     {
         return json({
             {"note", note.load()},
@@ -33,7 +33,7 @@ struct ConfigParams
         });
     }
 
-    void fromJSON(json j)
+    void fromJson(json j)
     {
         note = j.value("note", 1);
         chan = j.value("chan", 1);

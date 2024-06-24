@@ -19,7 +19,7 @@ public:
     bool isRingModCarrier() const { return osc.enableRing != nullptr && osc.enableRing->get(); }
     void printStatus();
 
-    ConfigParams config;
+    ConfigParams* config;
     AmpParams amp;
     OscParams osc;
     DelayParams delay;

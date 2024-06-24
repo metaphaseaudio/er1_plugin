@@ -15,6 +15,8 @@ using namespace juce;
 using json = nlohmann::json;
 using FloatParam = LearnableSerializeable<juce::AudioParameterFloat>;
 
+constexpr int kDefaultStartingNote = 60;
+
 static juce::StringArray OscNames =
 {
     "Sine"
@@ -176,12 +178,12 @@ void ER1AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
         json j = json::parse(stream.readString().toStdString());
 
         fromJson(j);
-        setBankPresetFolder(j.value("bank_dir", getPatchDir("banks")));
-        setSoundPresetFolder(j.value("sound_dir", getPatchDir("sounds")));
+        setBankPresetFolder(juce::File(j.value("bank_dir", getPatchDir("banks").getFullPathName().toStdString())));
+        setSoundPresetFolder(juce::File(j.value("sound_dir", getPatchDir("sounds").getFullPathName().toStdString())));
     }
     catch (json::exception& err)
     {
-        std::cout << "Error loading ER1 State:" << err.what() << std::endl;
+        std::cerr << "Error loading ER1 State:" << err.what() << std::endl;
     }
 }
 
@@ -236,9 +238,9 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
 
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.chan = 1;
-    sound->config.note = m_CtrlBlocks.size();
-    sound->config.bus = 0;
+
+    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
     m_Synth.addVoice(new ER1Voice(sound, new meta::ER1::AnalogSound(getSampleRate())));
@@ -279,9 +281,9 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
 
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.chan = 1;
-    sound->config.note = m_CtrlBlocks.size();
-    sound->config.bus = 0;
+
+    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
     m_Synth.addVoice(
@@ -328,9 +330,9 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, int
 
     m_CtrlBlocks.add(new ER1SoundPatch(name, osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
-    sound->config.chan = 1;
-    sound->config.note = m_CtrlBlocks.size();
-    sound->config.bus = 0;
+
+    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
     return m_Synth.addVoice(
@@ -381,6 +383,7 @@ nlohmann::json ER1AudioProcessor::toJsonInternal() const
     j["analog"] = json::array();
     j["audio"] = json::array();
     j["pcm"] = json::array();
+    j["btn_config"] = json::array();
 
     for (auto i = 0; i < meta::ER1::ANALOG_SOUND_COUNT; i++)
     {
@@ -400,6 +403,11 @@ nlohmann::json ER1AudioProcessor::toJsonInternal() const
         j["pcm"].push_back(sound->toJson());
     }
 
+    for (auto& cfg : m_SoundSlotConfigs)
+    {
+        j["btn_config"].push_back(cfg->toJson());
+    }
+
     return j;
 }
 
@@ -407,28 +415,33 @@ void ER1AudioProcessor::fromJsonInternal(const json& j)
 {
     try
     {
-        for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT && i < j["analog"].size(); i++)
+        for (int i = 0; i < meta::ER1::ER1_SOUND_COUNT && i < j.at("btn_config").size(); i++)
+        {
+            // This propagates automatically to each of the sounds' control blocks.
+            m_SoundSlotConfigs[i]->fromJson(j["btn_config"][i]);
+        }
+
+        for (int i = 0; i < meta::ER1::ANALOG_SOUND_COUNT && i < j.at("analog").size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i];
             ctrls->fromJson(j["analog"][i]);
         }
 
-        for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT && i < j["audio"].size(); i++)
+        for (int i = 0; i < meta::ER1::AUDIO_SOUND_COUNT && i < j.at("audio").size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT];
             ctrls->fromJson(j["audio"][i]);
         }
 
-        for (int i = 0; i < meta::ER1::SAMPLE_SOUND_COUNT && i < j["pcm"].size(); i++)
+        for (int i = 0; i < meta::ER1::SAMPLE_SOUND_COUNT && i < j.at("pcm").size(); i++)
         {
             auto ctrls = m_CtrlBlocks[i + meta::ER1::ANALOG_SOUND_COUNT + meta::ER1::AUDIO_SOUND_COUNT];
             ctrls->fromJson(j["pcm"][i]);
         }
 
-        if (j.contains("options"))
-            { m_Opts.fromJson(j); }
+        m_Opts.fromJson(j.at("options"));
     }
-    catch (json::exception& err)
+    catch (std::exception& err)
     {
         std::cout << "Error loading ER1 State:" << err.what() << std::endl;
     }

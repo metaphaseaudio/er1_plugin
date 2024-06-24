@@ -25,7 +25,7 @@ void ER1Synth::processBlock(juce::dsp::AudioBlock<float>& audio, const juce::Mid
     for (auto& voice : m_Voices)
     {
         voice->updateParams(tempo);
-        if (voice->getControlBlock()->config.solo) { isSolod = true;}
+        if (voice->getControlBlock()->config->solo) { isSolod = true;}
     }
 
     m_Tmp.copyFrom(0, 0, audio.getChannelPointer(0), audio.getNumSamples());
@@ -49,7 +49,7 @@ void ER1Synth::processBlock(juce::dsp::AudioBlock<float>& audio, const juce::Mid
             // Determine if the voice has an output.
             const auto is_ring_modulator = i + 1 < m_Voices.size() && m_Voices[i + 1]->isRingModCarrier();
             auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
-            if (isSolod && !voice->getControlBlock()->config.solo) { outData = nullptr; }
+            if (isSolod && !voice->getControlBlock()->config->solo) { outData = nullptr; }
 
             voice->processBlock(m_Tmp.getArrayOfWritePointers(), outData, m_Tmp.getReadPointer(0), toRender, startSample);
 
@@ -71,7 +71,7 @@ void ER1Synth::processBlock(juce::dsp::AudioBlock<float>& audio, const juce::Mid
         auto& voice = m_Voices[i];
         const bool is_ring_modulator = ((i + 1) < m_Voices.size()) && m_Voices[i + 1]->isRingModCarrier();
         auto outData = !is_ring_modulator ? audioOut.getArrayOfWritePointers() : nullptr;
-        if (isSolod && !voice->getControlBlock()->config.solo) { outData = nullptr; }
+        if (isSolod && !voice->getControlBlock()->config->solo) { outData = nullptr; }
         voice->processBlock(m_Tmp.getArrayOfWritePointers(), outData, m_Tmp.getReadPointer(0), toRender, startSample);
     }
 }

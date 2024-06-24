@@ -13,7 +13,7 @@ ER1Voice::ER1Voice(ER1SoundPatch::Ptr& sound, meta::ER1::BaseSound* voice)
 
 void ER1Voice::startNote(int midiNoteNumber, float velocity, int currentPitchWheelPosition)
 {
-    if (p_Ctrls->config.noteFollow)
+    if (p_Ctrls->config->noteFollow)
     {
         constexpr float frequencyOfA = 440;
         const auto pitch = p_Ctrls->osc.pitch != nullptr ? p_Ctrls->osc.pitch->get() : 0.5f;
@@ -43,7 +43,7 @@ void ER1Voice::updateParams(float tempo)
         m_Sound->setModulationSpeed(p_Ctrls->osc.modSpeed->get());
         m_Sound->setModulationDepth(p_Ctrls->osc.modDepth->get());
 
-        if (!p_Ctrls->config.noteFollow)
+        if (!p_Ctrls->config->noteFollow)
             { m_Sound->setPitch(meta::Interpolate<float>::parabolic(20.0f, 12000.0, p_Ctrls->osc.pitch->get(), 5)); }
     }
 
@@ -70,10 +70,10 @@ void ER1Voice::processBlock(float* const* inData, float* const* outData, const f
     m_Sound->processBlock(tmpData, ringData, samps, offset);
 
     // redirect the output to null if muted or the bus is out of range
-    if (p_Ctrls->config.mute) { outData = nullptr; }
-    if (p_Ctrls->config.bus.load() >= m_BusCount){ outData = nullptr; }
+    if (p_Ctrls->config->mute) { outData = nullptr; }
+    if (p_Ctrls->config->bus.load() >= m_BusCount){ outData = nullptr; }
 
-    const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config.bus.load()));
+    const auto busIndex = std::max(0, std::min<int>(m_BusCount - 1, p_Ctrls->config->bus.load()));
     m_Channel.processBlock(tmpData, outData != nullptr ? outData + (2 * busIndex) : nullptr, samps, offset);
 }
 
