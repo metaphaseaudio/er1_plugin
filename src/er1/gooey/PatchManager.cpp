@@ -152,8 +152,8 @@ void PatchManager::startRenameSelected()
     auto selected_point = m_FileListComponent.getRowPosition(selected_i, true);
     selected_point.removeFromLeft(selected_point.getHeight());
     selected_point.removeFromTop(2);
-    const auto selected_file = m_DirList.getFile(selected_i);
-    const auto filename = selected_file.getFileName();
+    m_RenameTarget = m_DirList.getFile(selected_i);
+    const auto filename = m_RenameTarget.getFileName();
 
     m_Editor.setBounds(selected_point);
     m_Editor.setVisible(true);
@@ -167,7 +167,6 @@ void PatchManager::textEditorReturnKeyPressed(juce::TextEditor& editor)
     m_Editor.giveAwayKeyboardFocus();
     m_Editor.setVisible(false);
 }
-
 
 void PatchManager::textEditorEscapeKeyPressed(juce::TextEditor& editor)
 {
@@ -183,10 +182,8 @@ void PatchManager::textEditorEscapeKeyPressed(juce::TextEditor& editor)
 void PatchManager::textEditorFocusLost(juce::TextEditor& editor)
 {
     auto newName = m_Editor.getText();
-    const auto selected_i = m_FileListComponent.getSelectedRows()[0];
-    auto file = m_DirList.getFile(selected_i);
-    auto newFile = file.getParentDirectory().getChildFile(newName).withFileExtension(m_Suffix);
-    file.moveFileTo(newFile);
+    auto newFile = m_RenameTarget.getParentDirectory().getChildFile(newName).withFileExtension(m_Suffix);
+    m_RenameTarget.moveFileTo(newFile);
     m_Editor.setVisible(false);
     refreshAndSetSelected(newFile);
 }

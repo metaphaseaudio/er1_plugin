@@ -46,6 +46,7 @@ private:
 
     Patch* p_Target;
     std::string m_Suffix;
+    juce::File m_RenameTarget;
     juce::TextEditor m_Editor;
     juce::WildcardFileFilter m_WildcardFilter;
     juce::TimeSliceThread m_DirectoryThread;
