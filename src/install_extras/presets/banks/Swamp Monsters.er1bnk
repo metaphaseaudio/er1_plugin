@@ -3,100 +3,10 @@
         {
             "amp": {
                 "decay": {
-                    "value": 0.6499999761581421
-                },
-                "level": {
                     "value": 0.5999999642372131
                 },
-                "lowBoost": {
-                    "value": 0.48499998450279236
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 0.675000011920929
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 0.7799999713897705
-                },
-                "mod_type": 7,
-                "osc_type": 0,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.0
-                }
-            },
-            "patch_name": "Classikick"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.5
-                },
                 "level": {
-                    "value": 0.5
-                },
-                "lowBoost": {
-                    "value": 0.0
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 0.7749999761581421
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 0.75
-                },
-                "mod_type": 0,
-                "osc_type": 0,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.5299999713897705
-                }
-            },
-            "patch_name": "Error Bonk"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.3199999928474426
-                },
-                "level": {
-                    "value": 0.2199999988079071
+                    "value": 0.3799999952316284
                 },
                 "lowBoost": {
                     "value": 1.0
@@ -115,247 +25,25 @@
                 }
             },
             "osc": {
-                "enable_ring": false,
                 "mod_depth": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 27,
-                    "value": 0.7799999713897705
+                    "value": 0.625
                 },
                 "mod_speed": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 26,
-                    "value": 0.08999999612569809
-                },
-                "mod_type": 6,
-                "osc_type": 0,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.7599999904632568
-                }
-            },
-            "patch_name": "oh baby"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.6699999570846558
-                },
-                "level": {
-                    "value": 0.11999999731779099
-                },
-                "lowBoost": {
-                    "value": 0.8899999856948853
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 0.5649999976158142
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 0.3799999952316284
+                    "value": 0.7999999523162842
                 },
                 "mod_type": 7,
-                "osc_type": 2,
+                "osc_type": 0,
                 "pitch": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 74,
                     "value": 0.029999999329447746
                 }
             },
-            "patch_name": "health loss"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.6699999570846558
-                },
-                "level": {
-                    "value": 0.11999999731779099
-                },
-                "lowBoost": {
-                    "value": 0.8899999856948853
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "enable_ring": false,
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 0.5649999976158142
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 0.3799999952316284
-                },
-                "mod_type": 7,
-                "osc_type": 2,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.09999999403953552
-                }
-            },
-            "patch_name": "health loss 2"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.6699999570846558
-                },
-                "level": {
-                    "value": 0.11999999731779099
-                },
-                "lowBoost": {
-                    "value": 0.8899999856948853
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 0.5649999976158142
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 0.3799999952316284
-                },
-                "mod_type": 7,
-                "osc_type": 2,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.14000000059604645
-                }
-            },
-            "patch_name": "health loss 3"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.5
-                },
-                "level": {
-                    "value": 0.5
-                },
-                "lowBoost": {
-                    "value": 0.0
-                },
-                "pan": {
-                    "value": 0.5
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.5
-                }
-            },
-            "osc": {
-                "enable_ring": false,
-                "mod_depth": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 27,
-                    "value": 1.0
-                },
-                "mod_speed": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 26,
-                    "value": 1.0
-                },
-                "mod_type": 5,
-                "osc_type": 1,
-                "pitch": {
-                    "midi_chan": 1,
-                    "midi_ctrl_num": 74,
-                    "value": 0.19999998807907104
-                }
-            },
-            "patch_name": "Slapstick"
-        },
-        {
-            "amp": {
-                "decay": {
-                    "value": 0.5799999833106995
-                },
-                "level": {
-                    "value": 0.5
-                },
-                "lowBoost": {
-                    "value": 1.0
-                },
-                "pan": {
-                    "value": 0.6800000071525574
-                }
-            },
-            "delay": {
-                "depth": {
-                    "value": 0.0
-                },
-                "sync": true,
-                "time": {
-                    "value": 0.22999998927116394
-                }
-            },
-            "osc": {
-                "mod_depth": {
-                    "value": 0.8449999690055847
-                },
-                "mod_speed": {
-                    "value": 0.9399999976158142
-                },
-                "mod_type": 5,
-                "osc_type": 3,
-                "pitch": {
-                    "value": 0.0
-                }
-            },
-            "patch_name": "western punch"
+            "patch_name": "whomp"
         },
         {
             "amp": {
@@ -363,6 +51,324 @@
                     "value": 0.699999988079071
                 },
                 "level": {
+                    "value": 0.07000000029802322
+                },
+                "lowBoost": {
+                    "value": 1.0
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.7599999904632568
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.7799999713897705
+                },
+                "mod_type": 2,
+                "osc_type": 1,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.5099999904632568
+                }
+            },
+            "patch_name": "Growell"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6200000047683716
+                },
+                "level": {
+                    "value": 1.0
+                },
+                "lowBoost": {
+                    "value": 0.5099999904632568
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.07777778059244156
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.019999999552965164
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.3649999797344208
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.550000011920929
+                },
+                "mod_type": 4,
+                "osc_type": 1,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.29999998211860657
+                }
+            },
+            "patch_name": "cistern"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6599999666213989
+                },
+                "level": {
+                    "value": 0.6100000143051147
+                },
+                "lowBoost": {
+                    "value": 0.5049999952316284
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.08999999612569809
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.8499999642372131
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.7599999904632568
+                },
+                "mod_type": 5,
+                "osc_type": 1,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.1899999976158142
+                }
+            },
+            "patch_name": "Frog Monster"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.699999988079071
+                },
+                "level": {
+                    "value": 0.26999998092651367
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.7299999594688416
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.7444444298744202
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.029999999329447746
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.699999988079071
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.7899999618530273
+                },
+                "mod_type": 3,
+                "osc_type": 3,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.3100000023841858
+                }
+            },
+            "patch_name": "Mosquito Swarm"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.699999988079071
+                },
+                "level": {
+                    "value": 0.26999998092651367
+                },
+                "lowBoost": {
+                    "value": 0.0
+                },
+                "pan": {
+                    "value": 0.7299999594688416
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.7444444298744202
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.029999999329447746
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.6699999570846558
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.7599999904632568
+                },
+                "mod_type": 3,
+                "osc_type": 3,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.2199999988079071
+                }
+            },
+            "patch_name": "Mosquito Swarm"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.6299999952316284
+                },
+                "level": {
+                    "value": 0.5
+                },
+                "lowBoost": {
+                    "value": 0.32999998331069946
+                },
+                "pan": {
+                    "value": 0.5
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 0.0
+                },
+                "sync": true,
+                "time": {
+                    "value": 0.5
+                }
+            },
+            "osc": {
+                "enable_ring": false,
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 1.0
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 1.0
+                },
+                "mod_type": 6,
+                "osc_type": 1,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.19999998807907104
+                }
+            },
+            "patch_name": "flimsy snare"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.4099999964237213
+                },
+                "level": {
+                    "value": 0.25
+                },
+                "lowBoost": {
+                    "value": 0.3799999952316284
+                },
+                "pan": {
+                    "value": 0.29999998211860657
+                }
+            },
+            "delay": {
+                "depth": {
+                    "value": 1.0
+                },
+                "sync": false,
+                "time": {
+                    "value": 0.009999999776482582
+                }
+            },
+            "osc": {
+                "mod_depth": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 27,
+                    "value": 0.6449999809265137
+                },
+                "mod_speed": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 26,
+                    "value": 0.5699999928474426
+                },
+                "mod_type": 3,
+                "osc_type": 2,
+                "pitch": {
+                    "midi_chan": 1,
+                    "midi_ctrl_num": 74,
+                    "value": 0.25999999046325684
+                }
+            },
+            "patch_name": "horsefly"
+        },
+        {
+            "amp": {
+                "decay": {
+                    "value": 0.8100000023841858
+                },
+                "level": {
                     "value": 0.5
                 },
                 "lowBoost": {
@@ -374,20 +380,20 @@
             },
             "delay": {
                 "depth": {
-                    "value": 0.7555555701255798
+                    "value": 0.42222222685813904
                 },
                 "sync": false,
                 "time": {
-                    "value": 0.05999999865889549
+                    "value": 0.25999999046325684
                 }
             },
             "osc": {
                 "enable_ring": false,
                 "mod_depth": {
-                    "value": 0.7199999690055847
+                    "value": 0.5399999618530273
                 },
                 "mod_speed": {
-                    "value": 0.429999977350235
+                    "value": 0.4899999797344208
                 },
                 "mod_type": 0,
                 "osc_type": 0,
@@ -395,12 +401,12 @@
                     "value": 0.38999998569488525
                 }
             },
-            "patch_name": "Dr. Who"
+            "patch_name": "UFO Sonar Ping"
         },
         {
             "amp": {
                 "decay": {
-                    "value": 1.0
+                    "value": 0.8700000047683716
                 },
                 "level": {
                     "value": 0.5
@@ -425,22 +431,22 @@
                 "mod_depth": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 27,
-                    "value": 0.7749999761581421
+                    "value": 0.6499999761581421
                 },
                 "mod_speed": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 26,
-                    "value": 0.4099999964237213
+                    "value": 0.8999999761581421
                 },
                 "mod_type": 5,
-                "osc_type": 0,
+                "osc_type": 2,
                 "pitch": {
                     "midi_chan": 1,
                     "midi_ctrl_num": 74,
                     "value": 0.5299999713897705
                 }
             },
-            "patch_name": "70's Computer"
+            "patch_name": "Horror Scream"
         }
     ],
     "audio": [
