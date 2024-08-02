@@ -1,4 +1,5 @@
 #include <meta/util/math.h>
+#include <meta/util/container_helpers/memory.h>
 #include <nlohmann/json.hpp>
 #include <memory>
 #include "ER1AudioProcessor.h"
@@ -42,10 +43,17 @@ static juce::StringArray ModulationNames =
 static juce::File getPatchDir(const std::string& dir)
 {
     const auto defaultDir = juce::File(
+#ifdef  JUCE_LINUX
+            juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory)
+                .getChildFile("metaphase")
+                .getChildFile("er1_presets")
+#elif JUCE_WINDOWS
             juce::WindowsRegistry::getValue(
             R"(HKEY_CURRENT_USER\SOFTWARE\Metaphase\ER1\PresetInstallPath)",
             juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory).getFullPathName()
         )
+#else
+#endif
     );
 
     auto patchDir = defaultDir
@@ -54,7 +62,7 @@ static juce::File getPatchDir(const std::string& dir)
             .getChildFile(dir);
 
     if (!patchDir.exists())
-    { patchDir.createDirectory(); }
+        { patchDir.createDirectory(); }
     return patchDir;
 }
 
@@ -239,7 +247,7 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
@@ -282,7 +290,7 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
@@ -331,7 +339,7 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, int
     m_CtrlBlocks.add(new ER1SoundPatch(name, osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(std::make_unique<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
