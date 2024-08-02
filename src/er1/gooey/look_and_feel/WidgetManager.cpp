@@ -31,7 +31,7 @@ WidgetManager::WidgetManager()
         { "hover" , hover }
     };
 
-    auto widgetZipFile = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory)
+    auto widgetZipFile = juce::File::getSpecialLocation(juce::File::SpecialLocationType::commonApplicationDataDirectory)
                        .getChildFile("Metaphase")
                        .getChildFile("ER-1")
                        .getChildFile("widgets.zip");

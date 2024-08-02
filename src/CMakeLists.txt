@@ -78,7 +78,7 @@ install(
 
 # Install widgets
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/install_extras/widgets.zip
+    FILES install_extras/gui/widgets.zip
     DESTINATION  $ENV{APPDATA}/Metaphase/ER-1
     COMPONENT widgets
 )
