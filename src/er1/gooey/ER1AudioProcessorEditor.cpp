@@ -15,10 +15,21 @@
 
 using namespace juce;
 
+static std::unique_ptr<juce::Image> getBGImg()
+{
+    auto file = juce::File::getSpecialLocation(juce::File::SpecialLocationType::commonApplicationDataDirectory)
+            .getChildFile("Metaphase")
+            .getChildFile("ER-1")
+            .getChildFile("bg_img.png");
+    return std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
+}
+
+
 //==============================================================================
 ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p, WidgetManager& widgetManager)
     : AudioProcessorEditor(&p)
     , processor(p)
+    , p_BGImg(getBGImg())
     , m_LAF(widgetManager)
 {
     processor.addChangeListener(this);
@@ -62,12 +73,7 @@ ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
 void ER1AudioProcessorEditor::paint (Graphics& g)
 {
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
-    auto file = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory)
-                       .getChildFile("Metaphase")
-                       .getChildFile("ER-1")
-                       .getChildFile("bg_img.png");
-    auto img = std::make_unique<juce::Image>(juce::ImageFileFormat::loadFrom(file));
-    g.drawImage(*img, getLocalBounds().toFloat());
+    g.drawImage(*p_BGImg.get(), getLocalBounds().toFloat());
 }
 
 void ER1AudioProcessorEditor::resized()

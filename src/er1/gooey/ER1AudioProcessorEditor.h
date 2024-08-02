@@ -38,6 +38,7 @@ private:
 
     ER1LAF m_LAF;
     ER1AudioProcessor& processor;
+    std::unique_ptr<juce::Image> p_BGImg;
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     DividerLine m_Divider;
     std::unique_ptr<VoiceSelector> p_VoiceSelector;
