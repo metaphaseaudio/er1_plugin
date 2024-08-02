@@ -36,6 +36,9 @@ WidgetManager::WidgetManager()
                        .getChildFile("ER-1")
                        .getChildFile("widgets.zip");
 
+    if (!widgetZipFile.existsAsFile())
+        { throw std::runtime_error("UI widgets missing, install is corrupted, please re-install."); }
+
     auto zip = juce::ZipFile(widgetZipFile);
     std::vector<juce::ZipFile::ZipEntry> zipEntries;
 
@@ -52,6 +55,7 @@ WidgetManager::WidgetManager()
 
         return xI < yI;
     });
+    // End of stupid crap
 
     for(auto pair : nameIndexPairs)
     {

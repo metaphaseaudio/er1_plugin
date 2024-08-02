@@ -16,7 +16,7 @@ using namespace juce;
 using json = nlohmann::json;
 using FloatParam = LearnableSerializeable<juce::AudioParameterFloat>;
 
-constexpr int kDefaultStartingNote = 60;
+constexpr unsigned int kDefaultStartingNote = 60;
 
 static juce::StringArray OscNames =
 {
@@ -247,7 +247,8 @@ void ER1AudioProcessor::addAnalogVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    unsigned int startNote = kDefaultStartingNote + m_SoundSlotConfigs.size();
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(startNote, (unsigned int) 1, (unsigned int) 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
@@ -290,7 +291,8 @@ void ER1AudioProcessor::addAudioVoice(int voiceNumber, bool canBeRingCarrier)
     m_CtrlBlocks.add(new ER1SoundPatch(voiceIDStr.toStdString(), osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    unsigned int startNote = kDefaultStartingNote + m_SoundSlotConfigs.size();
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(startNote, (unsigned int) 1, (unsigned int) 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
@@ -339,7 +341,8 @@ ER1Voice* ER1AudioProcessor::addPCMVoice(std::string name, const char* data, int
     m_CtrlBlocks.add(new ER1SoundPatch(name, osc, amp, delay, 1, 1));
     auto sound = m_CtrlBlocks.getLast();
 
-    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(kDefaultStartingNote + m_SoundSlotConfigs.size(), 1, 0, false, false, false));
+    unsigned int startNote = kDefaultStartingNote + m_SoundSlotConfigs.size();
+    m_SoundSlotConfigs.emplace_back(meta::make_unique_struct<ConfigParams>(startNote, (unsigned int) 1, (unsigned int) 0, false, false, false));
     sound->config = m_SoundSlotConfigs.back().get();
 
     addMidiLearn(sound);
