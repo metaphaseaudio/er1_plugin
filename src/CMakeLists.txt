@@ -76,6 +76,14 @@ install(
     COMPONENT vst3
 )
 
+# Install widgets
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/install_extras/widgets.zip
+    DESTINATION  $ENV{APPDATA}/Metaphase/ER-1
+    COMPONENT widgets
+)
+
+# Install preset data
 set(ER1_PRESET_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install_extras/presets/)
 file(GLOB_RECURSE ER1_PRESET_FILES "${ER1_PRESET_DATA_DIR}/*")
 
