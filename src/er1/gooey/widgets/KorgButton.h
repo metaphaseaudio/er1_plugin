@@ -13,7 +13,6 @@ class DoubleClickable
 public:
     DoubleClickable() : onDoubleClick([](const juce::MouseEvent&){}) {};
     std::function<void(const juce::MouseEvent& event)> onDoubleClick;
-
 };
 
 
@@ -25,6 +24,7 @@ public:
     KorgButton(WidgetManager::WidgetID id, int index, const juce::String& name);
 
     float brightness = 0.0f; // For doing things like flashing buttons
+
 private:
     WidgetManager::WidgetID m_WidgetID;
     int m_Index;

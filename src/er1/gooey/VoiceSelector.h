@@ -20,6 +20,7 @@ class VoiceSelector
 public:
     VoiceSelector(MidiManager& midiManager, const std::vector<std::unique_ptr<ER1Voice>>& voices);
     int getSelected() const;
+    void resized() override;
 
 private:
     void timerCallback() override;

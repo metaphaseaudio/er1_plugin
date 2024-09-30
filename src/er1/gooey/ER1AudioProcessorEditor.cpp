@@ -10,6 +10,7 @@
 
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
+#include <meta/gooey/ComponentHelpers.h>
 
 #include <memory>
 
@@ -49,7 +50,6 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p, WidgetMan
     }
 
     addAndMakeVisible(p_VoiceSelector.get());
-    addAndMakeVisible(m_Divider);
     addAndMakeVisible(p_GlobalCtrls.get());
     getChildComponent(0)->setVisible(true);
     p_GlobalCtrls->addChangeListener(this);
@@ -78,11 +78,13 @@ void ER1AudioProcessorEditor::paint (Graphics& g)
 
 void ER1AudioProcessorEditor::resized()
 {
-    for (auto& window : m_SoundEditorWindows)
-        { window->setBounds(getLocalBounds()); }
+    auto localBounds = getLocalBounds();
 
-    p_GlobalCtrls->setBounds(getLocalBounds());
-    p_VoiceSelector->setBounds(getLocalBounds());
+    for (auto& window : m_SoundEditorWindows)
+        { window->setBounds(getLocalBounds().removeFromTop(localBounds.getHeight() - 200)); }
+
+    p_GlobalCtrls->setBounds(getLocalBounds().removeFromTop(200).removeFromLeft(400));
+    p_VoiceSelector->setBounds(getLocalBounds().removeFromBottom(200));
 }
 
 void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
@@ -100,7 +102,7 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
 
         processor.setBankPresetFolder(p_GlobalCtrls->getCurrentBankFolder());
         processor.setSoundPresetFolder(p_GlobalCtrls->getCurrentSoundFolder());
-        repaint();
+        p_GlobalCtrls->repaint();
     }
 
     if (source == &processor)

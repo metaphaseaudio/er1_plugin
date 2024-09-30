@@ -41,6 +41,13 @@ void OscSectionComponent::resized()
 {
     m_OscType.setBounds(juce::Rectangle<int>::leftTopRightBottom(763, 137, 875, 156));
     m_ModType.setBounds(juce::Rectangle<int>::leftTopRightBottom(763, 185, 875, 204));
+
+    auto rootPosition = getBounds().getPosition();
+
+    for (auto child : getChildren())
+    {
+        child->setTopLeftPosition(child->getBounds().getPosition() - rootPosition);
+    }
 }
 
 void OscSectionComponent::changeListenerCallback(ChangeBroadcaster* source)

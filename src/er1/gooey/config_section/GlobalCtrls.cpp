@@ -91,6 +91,13 @@ void GlobalCtrls::resized()
     m_Bank.setColour(juce::Label::ColourIds::textColourId, lcdTextColour);
 
     auto bounds = getLocalBounds();
+
+    for (auto child : {&m_NoteListen, &m_SelectSound, &m_SelectBank, &m_Options})
+    {
+        auto newPosition = child->getPosition() - getPosition();
+        child->setTopLeftPosition(newPosition);
+    }
+
     bounds.removeFromTop(46);
     bounds.removeFromLeft(101);
     bounds = bounds.removeFromTop(95);
@@ -105,12 +112,12 @@ void GlobalCtrls::resized()
     const auto bankBounds = bounds.removeFromTop(BIG_LABEL_PT);
 
     const auto bankLabelLength = juce::Rectangle<int>(
-            bankBounds.getX(), bankBounds.getY(),
-            BIG_LABEL_PT + m_BankLabel.getFont().getStringWidthFloat(m_BankLabel.getText()) + 5, bankBounds.getHeight()
+        bankBounds.getX(), bankBounds.getY(),
+        BIG_LABEL_PT + m_BankLabel.getFont().getStringWidthFloat(m_BankLabel.getText()) + 5, bankBounds.getHeight()
     );
     const auto bankLength = juce::Rectangle<int>(
-            bankLabelLength.getRight() - BIG_LABEL_PT, bankBounds.getY(),
-            bankBounds.getWidth() - (bankBounds.getY() + BIG_LABEL_PT), bankBounds.getHeight()
+        bankLabelLength.getRight() - BIG_LABEL_PT, bankBounds.getY(),
+        bankBounds.getWidth() - (bankBounds.getY() + BIG_LABEL_PT), bankBounds.getHeight()
     );
 
     m_BankLabel.setBounds(bankLabelLength);

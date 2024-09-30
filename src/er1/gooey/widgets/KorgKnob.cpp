@@ -32,6 +32,8 @@ KorgKnob::KorgKnob(WidgetManager::WidgetID id, LearnableSerializeable<juce::Audi
     auto dimension = widget.filmstrip.getFrameDimensions();
     setSize(dimension.getWidth(), dimension.getHeight());
     setTopLeftPosition(widget.position);
+
+    setOpaque(true);
 }
 
 void KorgKnob::handleNewParameterValue()

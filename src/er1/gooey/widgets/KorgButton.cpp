@@ -6,18 +6,21 @@
 #include "../look_and_feel/ER1LAF.h"
 #include "../look_and_feel/ER1Colours.h"
 
-
 KorgButton::KorgButton(WidgetManager::WidgetID id, int index)
     : juce::Button("")
     , m_WidgetID(id)
     , m_Index(index)
-{};
+{
+    setOpaque(true);
+};
 
 KorgButton::KorgButton(WidgetManager::WidgetID id, int index, const juce::String& name)
     : juce::Button(name)
     , m_WidgetID(id)
     , m_Index(index)
-{}
+{
+    setOpaque(true);
+}
 
 KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index)
     : juce::ToggleButton("")
@@ -27,6 +30,7 @@ KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index)
     auto& widget = dynamic_cast<ER1LAF*>(&getLookAndFeel())->getWidgetInfo(m_WidgetID, WidgetManager::WidgetVariant::standard, m_Index);
     setSize(widget.filmstrip.getFrameDimensions().getWidth(), widget.filmstrip.getFrameDimensions().getHeight());
     setTopLeftPosition(widget.position);
+    setOpaque(true);
 };
 
 KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index, const juce::String& name)
@@ -37,6 +41,7 @@ KorgToggleButton::KorgToggleButton(WidgetManager::WidgetID id, int index, const 
     auto& widget = dynamic_cast<ER1LAF*>(&getLookAndFeel())->getWidgetInfo(m_WidgetID, WidgetManager::WidgetVariant::standard, m_Index);
     setSize(widget.filmstrip.getFrameDimensions().getWidth(), widget.filmstrip.getFrameDimensions().getHeight());
     setTopLeftPosition(widget.position);
+    setOpaque(true);
 }
 
 

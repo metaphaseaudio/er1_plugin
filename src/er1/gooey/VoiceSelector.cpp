@@ -57,3 +57,14 @@ void VoiceSelector::timerCallback()
         btn->repaint();
     }
 }
+
+
+void VoiceSelector::resized()
+{
+    auto rootPosition = getBounds().getPosition();
+
+    for (auto child : getChildren())
+    {
+        child->setTopLeftPosition(child->getBounds().getPosition() - rootPosition);
+    }
+}
