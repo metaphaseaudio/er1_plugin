@@ -10,7 +10,6 @@
 
 #include "../guts/ER1AudioProcessor.h"
 #include "ER1AudioProcessorEditor.h"
-#include <meta/gooey/ComponentHelpers.h>
 
 #include <memory>
 
