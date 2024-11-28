@@ -12,8 +12,10 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "../guts/ER1AudioProcessor.h"
+#include "../guts/Authentication.h"
 #include "../gooey/widgets/DividerLine.h"
 #include "../gooey/sound_edit_box/SoundEditorWindow.h"
+#include "RegistrationForm.h"
 #include "VoiceSelector.h"
 #include "look_and_feel/ER1LAF.h"
 #include "config_section/GlobalCtrls.h"
@@ -24,6 +26,7 @@
 class ER1AudioProcessorEditor
     : public juce::AudioProcessorEditor
     , juce::ChangeListener
+    , juce::Timer
 {
 public:
     explicit ER1AudioProcessorEditor(ER1AudioProcessor&, WidgetManager& widgetManager);
@@ -34,6 +37,7 @@ public:
     void resized() override;
 
 private:
+    void timerCallback() override;
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
     ER1LAF m_LAF;
@@ -42,5 +46,7 @@ private:
     std::vector<std::unique_ptr<SoundEditorWindow>>  m_SoundEditorWindows;
     std::unique_ptr<VoiceSelector> p_VoiceSelector;
     std::unique_ptr<GlobalCtrls> p_GlobalCtrls;
+    RegistrationForm m_RegistrationForm;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessorEditor);
 };

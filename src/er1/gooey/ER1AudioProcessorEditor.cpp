@@ -31,6 +31,7 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p, WidgetMan
     , processor(p)
     , p_BGImg(getBGImg())
     , m_LAF(widgetManager)
+    , m_RegistrationForm(p.getAuth())
 {
     processor.addChangeListener(this);
     setLookAndFeel(&m_LAF);
@@ -55,6 +56,10 @@ ER1AudioProcessorEditor::ER1AudioProcessorEditor(ER1AudioProcessor& p, WidgetMan
     p_VoiceSelector->addChangeListener(this);
 
     setSize(960, 540);
+
+    addChildComponent(m_RegistrationForm);
+    m_RegistrationForm.setSize(960, 540);
+    startTimer(500);
 }
 
 ER1AudioProcessorEditor::~ER1AudioProcessorEditor()
@@ -110,4 +115,9 @@ void ER1AudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* so
         p_GlobalCtrls->setCurrentSoundFolder(processor.getSoundPresetFolder());
         p_GlobalCtrls->setBankName(processor.getPatchName());
     }
+}
+
+void ER1AudioProcessorEditor::timerCallback()
+{
+    m_RegistrationForm.setVisible(!processor.getAuth().isUnlocked());
 }

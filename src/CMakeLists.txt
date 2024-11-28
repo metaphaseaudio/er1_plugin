@@ -60,6 +60,7 @@ target_compile_definitions(MP-1
 target_link_libraries(MP-1
     PRIVATE
         juce::juce_audio_utils
+        juce::juce_product_unlocking
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags

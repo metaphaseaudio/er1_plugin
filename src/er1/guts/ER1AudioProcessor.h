@@ -22,6 +22,7 @@
 #include "MidiManager.h"
 #include "GlobalOptions.h"
 #include "Patch.h"
+#include "Authentication.h"
 #include "../gooey/look_and_feel/WidgetManager.h"
 
 //==============================================================================
@@ -86,6 +87,8 @@ public:
     void setBankPresetFolder(const juce::File& folder);
     void setSoundPresetFolder(const juce::File& folder);
 
+    [[ nodiscard ]] Authentication& getAuth() { return m_Auth; };
+
     nlohmann::json toJsonInternal() const override;
     void fromJsonInternal(const nlohmann::json& json) override;
 
@@ -116,6 +119,8 @@ private:
     // We have to add the widget manager here because the widgets themselves take a while to load in to memory,
     // and that kind of boot-time should be a one-time cost, not an every-time cost.
     WidgetManager m_WidgetManager;
+
+    Authentication m_Auth;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ER1AudioProcessor)
 };
