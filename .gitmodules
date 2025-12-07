@@ -1,21 +1,21 @@
 [submodule "src/shared/JUCE"]
 	path = src/shared/JUCE
-	url = https://github.com/WeAreROLI/JUCE.git
+	url = git@github.com:WeAreROLI/JUCE.git
 [submodule "src/shared/er1_dsp"]
 	path = src/shared/er1_dsp
-	url = https://github.com/metaphaseaudio/er1_dsp.git
+	url = git@github.com:metaphaseaudio/er1_dsp.git
 [submodule "src/shared/MUDS"]
 	path = src/shared/MUDS
-	url = https://github.com/metaphaseaudio/MUDS.git
+	url = git@github.com:metaphaseaudio/MUDS.git
 [submodule "src/shared/metaphase_core"]
 	path = src/shared/metaphase_core
-	url = https://github.com/metaphaseaudio/metaphase_core.git
+	url = git@github.com:metaphaseaudio/metaphase_core.git
 [submodule "src/shared/vst3sdk"]
 	path = src/shared/vst3sdk
-	url = https://github.com/steinbergmedia/vst3sdk.git
+	url = git@github.com:steinbergmedia/vst3sdk.git
 [submodule "src/shared/googletest"]
 	path = src/shared/googletest
-	url = https://github.com/google/googletest.git
+	url = git@github.com:google/googletest.git
 [submodule "src/shared/json"]
 	path = src/shared/json
-	url = https://github.com/nlohmann/json.git
+	url = git@github.com:nlohmann/json.git
